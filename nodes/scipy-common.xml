@@ -1,0 +1,26 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+<description>
+SciPy - Scientific Tools for Python
+http://www.scipy.org
+</description>
+
+<copyright>
+Copyright (c) 2000 - 2008 The Regents of the University of California.
+All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
+</copyright>
+
+<changelog>
+</changelog>
+
+<!-- Set of RPMs to install, surrounded by individual package tags. -->
+<package>nose</package>
+<package>numpy</package>
+<package>scipy</package>
+
+<post>
+</post>
+
+</kickstart>

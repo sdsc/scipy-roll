@@ -1,0 +1,3 @@
+NAME	= nose
+VERSION	= 0.11.1
+RELEASE	= 1
