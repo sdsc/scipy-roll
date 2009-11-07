@@ -1,3 +1,3 @@
-NAME	= nose
-VERSION	= 0.11.1
-RELEASE	= 1
+NAME    = nose
+VERSION = 0.11.1
+RELEASE = 1
