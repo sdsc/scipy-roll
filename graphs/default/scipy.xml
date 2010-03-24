@@ -18,5 +18,8 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <edge from="base">
   <to>scipy-common</to>
 </edge>
+<order head="base">
+  <tail>scipy-common</tail>
+</order>
 
 </graph>
