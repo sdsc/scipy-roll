@@ -19,7 +19,6 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>nose</package>
 <package>numpy</package>
 <package>scipy</package>
-<package>roll-scipy-usersguide</package>
 
 <post>
 </post>

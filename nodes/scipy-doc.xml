@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 
-<graph>
+<kickstart>
 
 <description>
 SciPy - Scientific Tools for Python
@@ -15,18 +15,9 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <changelog>
 </changelog>
 
-<edge from="base">
-  <to>scipy-common</to>
-</edge>
-<order head="base">
-  <tail>scipy-common</tail>
-</order>
+<package>roll-scipy-usersguide</package>
 
-<edge from="server">
-  <to>scipy-doc</to>
-</edge>
-<order head="server">
-  <tail>scipy-doc</tail>
-</order>
+<post>
+</post>
 
-</graph>
+</kickstart>
