@@ -62,6 +62,6 @@ default:
 
 # Note: it's important that scipy be built after numpy
 copyright rpm pkg clean::
-	for i in nose numpy scipy ; do \
+	for i in nose numpy scipy usersguide ; do \
 		(cd $$i; $(MAKE) $@) ; \
 	done
