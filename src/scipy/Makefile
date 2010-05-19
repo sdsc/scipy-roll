@@ -63,7 +63,7 @@ REDHAT.ROOT = $(PWD)/../../
 build:
 	tar zxvf $(NAME)-$(VERSION).tar.gz
 #       tar zxvf dependencies.tgz
- 	if test -f site-packages.tgz; then \
+	if test -f site-packages.tgz; then \
  	  tar zxvf site-packages.tgz; \
  	fi
 
