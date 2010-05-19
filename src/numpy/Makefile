@@ -76,7 +76,7 @@ install::
 	( \
 	  cd $(NAME)-$(VERSION); \
            . $(F_INTEL_ENV); . $(C_INTEL_ENV); export INTEL_LICENSE_FILE=$(INTEL_LICENSE_FILE); \
-          cp ../patch-files/numpy-numpy-1.3.0rc2/site.cfg .
+          cp ../patch-files/numpy-1.3.0rc2/site.cfg .
 	  python setup.py build --fcompiler=intel; \
 	  python setup.py install \
 	)
