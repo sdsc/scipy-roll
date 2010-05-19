@@ -74,10 +74,10 @@ install::
 	  if test -d site-packages; then \
 	    export PYTHONPATH=`pwd`/site-packages:$${PYTHONPATH}; \
 	  fi; \
-	  cp dependencies/lib/*.a $(NAME)-$(VERSION); \
-	  cd $(NAME)-$(VERSION); \
-	  export BLAS=`pwd`; \
-	  export LAPACK=`pwd`; \
+#	  cp dependencies/lib/*.a $(NAME)-$(VERSION); \
+#	  cd $(NAME)-$(VERSION); \
+#	  export BLAS=`pwd`; \
+#	  export LAPACK=`pwd`; \
 	  python setup.py build --fcompiler=gfortran; \
 	  python setup.py install \
 	)
