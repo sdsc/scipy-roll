@@ -59,12 +59,6 @@ PKGROOT = /usr/lib64/python2.4/site-packages
 REDHAT.ROOT = $(PWD)/../../
 
 
-INTEL_BASE=/opt/intel/Compiler/11.1/072/
-MKL=$(INTEL_BASE)/mkl
-F_INTEL_ENV=$(INTEL_BASE)/bin/intel64/ifortvars_intel64.sh
-C_INTEL_ENV=$(INTEL_BASE)/bin/intel64/iccvars_intel64.sh
-INTEL_LICENSE_FILE=/opt/flexlm/license/license-intel.txt
-
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
@@ -75,7 +69,6 @@ install::
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(NAME)-$(VERSION); \
-           . $(F_INTEL_ENV); . $(C_INTEL_ENV); export INTEL_LICENSE_FILE=$(INTEL_LICENSE_FILE); \
           cp ../patch-files/numpy-1.3.0rc2/site.cfg .; \
 	  python setup.py build --fcompiler=gfortran; \
 	  python setup.py install \
