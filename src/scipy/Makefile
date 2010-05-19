@@ -62,10 +62,10 @@ REDHAT.ROOT = $(PWD)/../../
 
 build:
 	tar zxvf $(NAME)-$(VERSION).tar.gz
-	tar zxvf dependencies.tgz
-	if test -f site-packages.tgz; then \
-	  tar zxvf site-packages.tgz; \
-	fi
+#       tar zxvf dependencies.tgz
+ 	if test -f site-packages.tgz; then \
+ 	  tar zxvf site-packages.tgz; \
+ 	fi
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
@@ -75,9 +75,10 @@ install::
 	    export PYTHONPATH=`pwd`/site-packages:$${PYTHONPATH}; \
 	  fi; \
 #	  cp dependencies/lib/*.a $(NAME)-$(VERSION); \
-#	  cd $(NAME)-$(VERSION); \
+ 	  cd $(NAME)-$(VERSION); \
 #	  export BLAS=`pwd`; \
 #	  export LAPACK=`pwd`; \
+          cp ../patch-files/scipy-0.7.1rc3/site.cfg . ; \
 	  python setup.py build --fcompiler=gfortran; \
 	  python setup.py install \
 	)
