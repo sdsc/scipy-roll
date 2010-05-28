@@ -55,6 +55,13 @@
 # @Copyright@
 #
 
+INTEL_BASE=/opt/intel/Compiler/11.1/072/
+MKL=$(INTEL_BASE)/mkl
+F_INTEL_ENV=$(INTEL_BASE)/bin/intel64/ifortvars_intel64.sh
+C_INTEL_ENV=$(INTEL_BASE)/bin/intel64/iccvars_intel64.sh
+INTEL_LICENSE_FILE=/opt/flexlm/license/license-intel.txt
+LIB_PATH=$(MKL)/lib/em64t
+
 PKGROOT = /usr/lib64/python2.4/site-packages
 REDHAT.ROOT = $(PWD)/../../
 
@@ -70,6 +77,9 @@ install::
 	( \
 	  cd $(NAME)-$(VERSION); \
           cp ../patch-files/numpy-1.3.0rc2/site.cfg .; \
+          . $(F_INTEL_ENV); . $(C_INTEL_ENV); export INTEL_LICENSE_FILE=$(INTEL_LICENSE_FILE); \
+          export MKL_ROOT=$(MKL); \
+          export LD_LIBRARY_PATH=/opt/intel/Compiler/11.1/072/mkl/lib/em64t:/opt/intel/Compiler/11.1/072/tbb/em64t/cc4.1.0_libc2.4_kernel2.6.16.21/lib:/opt/intel/libtemp:$$LD_LIBRARY_PATH; \
 	  python setup.py build --fcompiler=gfortran; \
 	  python setup.py install \
 	)

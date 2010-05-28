@@ -55,6 +55,13 @@
 # @Copyright@
 #
 
+
+INTEL_BASE=/opt/intel/Compiler/11.1/072/
+MKL=$(INTEL_BASE)/mkl
+F_INTEL_ENV=$(INTEL_BASE)/bin/intel64/ifortvars_intel64.sh
+C_INTEL_ENV=$(INTEL_BASE)/bin/intel64/iccvars_intel64.sh
+INTEL_LICENSE_FILE=/opt/flexlm/license/license-intel.txt
+
 PKGROOT = /usr/lib64/python2.4/site-packages
 REDHAT.ROOT = $(PWD)/../../
 
@@ -79,8 +86,12 @@ install::
 #	  export BLAS=`pwd`; \
 #	  export LAPACK=`pwd`; \
           cp ../patch-files/scipy-0.7.1rc3/site.cfg . ; \
-	  python setup.py build --fcompiler=gfortran; \
-	  python setup.py install \
+          echo  $$LD_LIBRARY_PATH  > ../o1; \
+          . $(F_INTEL_ENV); . $(C_INTEL_ENV); export INTEL_LICENSE_FILE=$(INTEL_LICENSE_FILE); \
+          export MKL_ROOT=$(MKL); \
+          export LD_LIBRARY_PATH=/opt/intel/Compiler/11.1/072/mkl/lib/em64t:/opt/intel/Compiler/11.1/072/tbb/em64t/cc4.1.0_libc2.4_kernel2.6.16.21/lib:/opt/intel/libtemp:$$LD_LIBRARY_PATH; \
+          python setup.py build --fcompiler=gfortran; \
+          python setup.py install \
 	)
 	/bin/umount $(PKGROOT)
 
