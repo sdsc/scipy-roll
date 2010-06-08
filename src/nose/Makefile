@@ -68,6 +68,7 @@ install::
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(NAME)-$(VERSION); \
+	  python setup.py build \
 	  python setup.py install \
 	)
 	/bin/umount $(PKGROOT)
