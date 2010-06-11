@@ -1,0 +1,9 @@
+#!/bin/bash
+for x in csr csc coo bsr dia; do
+    icpc -xHost -O3 -fPIC -shared \
+        build/temp.linux-x86_64-2.4/scipy/sparse/sparsetools/${x}_wrap.o \
+        -o build/lib.linux-x86_64-2.4/scipy/sparse/sparsetools/_${x}.so
+done
+icpc -xHost -O3 -fPIC -openmp -shared \
+    build/temp.linux-x86_64-2.4/scipy/interpolate/src/_interpolate.o \
+    -o build/lib.linux-x86_64-2.4/scipy/interpolate/_interpolate.so
