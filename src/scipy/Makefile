@@ -69,10 +69,6 @@ REDHAT.ROOT = $(PWD)/../../
 
 build:
 	tar zxvf $(NAME)-$(VERSION).tar.gz
-#       tar zxvf dependencies.tgz
-	if test -f site-packages.tgz; then \
- 	  tar zxvf site-packages.tgz; \
- 	fi
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
@@ -81,10 +77,7 @@ install::
 	  if test -d site-packages; then \
 	    export PYTHONPATH=`pwd`/site-packages:$${PYTHONPATH}; \
 	  fi; \
-#	  cp dependencies/lib/*.a $(NAME)-$(VERSION); \
  	  cd $(NAME)-$(VERSION); \
-#	  export BLAS=`pwd`; \
-#	  export LAPACK=`pwd`; \
           cp ../patch-files/$(NAME)-$(VERSION)/site.cfg . ; \
           cp ../patch-files/$(NAME)-$(VERSION)/const.c  scipy/special/cephes; \
           cp ../patch-files/$(NAME)-$(VERSION)/testsh . ; \
@@ -99,5 +92,3 @@ install::
 
 clean::
 	rm -rf $(NAME)-$(VERSION)
-	rm -rf dependencies
-	rm -fr site-packages

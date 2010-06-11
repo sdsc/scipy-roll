@@ -85,10 +85,6 @@ install::
           python setup.py build_src config --compiler=intel build_clib --compiler=intel build_ext --compiler=intel; \
           python setup.py install; \
 	)
-	( \
-	  cd $(ROOT)/$(PKGROOT)/..; \
-	  tar zcvf $(REDHAT.ROOT)/src/scipy/site-packages.tgz site-packages/ \
-	)
 	/bin/umount $(PKGROOT)
 
 clean::
