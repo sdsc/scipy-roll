@@ -15,7 +15,9 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <changelog>
 </changelog>
 
-<!-- Set of RPMs to install, surrounded by individual package tags. -->
+<package>tix</package>
+<package>tkinter</package>
+<package>tk-devel</package>
 <package>nose</package>
 <package>numpy</package>
 <package>scipy</package>
