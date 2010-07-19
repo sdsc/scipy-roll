@@ -21,6 +21,10 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>nose</package>
 <package>numpy</package>
 <package>scipy</package>
+<package>ipython</package>
+<package>pyfits</package>
+<package>matplotlib</package>
+<package>pytz</package>
 
 <post>
 </post>
