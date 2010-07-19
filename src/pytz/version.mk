@@ -1,0 +1,3 @@
+NAME    = pytz
+VERSION = 2006p
+RELEASE = 1
