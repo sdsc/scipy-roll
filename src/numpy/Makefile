@@ -73,18 +73,20 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
+	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(NAME)-$(VERSION); \
-          cp ../patch-files/$(NAME)-$(VERSION)/site.cfg .; \
-          cp ../patch-files/$(NAME)-$(VERSION)/intel.py numpy/distutils/fcompiler; \
-          cp ../patch-files/$(NAME)-$(VERSION)/intelccompiler.py numpy/distutils; \
-          . $(F_INTEL_ENV); . $(C_INTEL_ENV); export INTEL_LICENSE_FILE=$(INTEL_LICENSE_FILE); \
-          export MKL_ROOT=$(MKL); \
-          export LD_LIBRARY_PATH=/opt/intel/Compiler/11.1/072/mkl/lib/em64t:/opt/intel/Compiler/11.1/072/tbb/em64t/cc4.1.0_libc2.4_kernel2.6.16.21/lib:/opt/intel/libtemp:$$LD_LIBRARY_PATH; \
-          python setup.py build_src config --compiler=intel build_clib --compiler=intel build_ext --compiler=intel; \
-          python setup.py install; \
+	  cp ../patch-files/$(NAME)-$(VERSION)/site.cfg .; \
+	  cp ../patch-files/$(NAME)-$(VERSION)/intel.py numpy/distutils/fcompiler; \
+	  cp ../patch-files/$(NAME)-$(VERSION)/intelccompiler.py numpy/distutils; \
+	  . $(F_INTEL_ENV); . $(C_INTEL_ENV); export INTEL_LICENSE_FILE=$(INTEL_LICENSE_FILE); \
+	  export MKL_ROOT=$(MKL); \
+	  export LD_LIBRARY_PATH=/opt/intel/Compiler/11.1/072/mkl/lib/em64t:/opt/intel/Compiler/11.1/072/tbb/em64t/cc4.1.0_libc2.4_kernel2.6.16.21/lib:/opt/intel/libtemp:$$LD_LIBRARY_PATH; \
+	  python setup.py build_src config --compiler=intel build_clib --compiler=intel build_ext --compiler=intel; \
+	  python setup.py install; \
 	)
+	/bin/cp -r $(ROOT)/$(PKGROOT)/../site-packages $(REDHAT.ROOT)/src/
 	/bin/umount $(PKGROOT)
 
 clean::

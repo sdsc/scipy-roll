@@ -72,10 +72,11 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
+	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
-	  if test -d site-packages; then \
-	    export PYTHONPATH=`pwd`/site-packages:$${PYTHONPATH}; \
+	  if test -d $(REDHAT.ROOT)/src/site-packages; then \
+	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
 	  fi; \
  	  cd $(NAME)-$(VERSION); \
           cp ../patch-files/$(NAME)-$(VERSION)/site.cfg . ; \

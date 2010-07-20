@@ -54,6 +54,8 @@
 # @Copyright@
 #
 
-SRCDIRS = `find . -type d -maxdepth 1 \
-	-not -name CVS \
-	-not -name .`
+# Note: it's important that scipy be built after numpy
+#SRCDIRS = `find . -type d -maxdepth 1 \
+#	-not -name CVS \
+#	-not -name .`
+SRCDIRS = numpy scipy nose pyfits pytz matplotlib ipython usersguide

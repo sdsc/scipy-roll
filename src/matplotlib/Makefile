@@ -71,8 +71,12 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
+	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
+	  if test -d $(REDHAT.ROOT)/src/site-packages; then \
+	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
+	  fi; \
 	  cd $(NAME)-$(VERSION); \
 	  . $(F_INTEL_ENV); . $(C_INTEL_ENV); \
 	  export LD_LIBRARY_PATH=/opt/intel/Compiler/11.1/072/mkl/lib/em64t:/opt/intel/Compiler/11.1/072/tbb/em64t/cc4.1.0_libc2.4_kernel2.6.16.21/lib:/opt/intel/libtemp:$$LD_LIBRARY_PATH; \

@@ -66,12 +66,10 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(NAME)-$(VERSION); \
-          python setup.py install --home $(PKGROOT); \
+          python setup.py install --home $(ROOT)/$(PKGROOT) \
 	)
-	/bin/umount $(PKGROOT)
 
 clean::
 	rm -rf $(NAME)-$(VERSION)

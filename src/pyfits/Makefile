@@ -70,6 +70,7 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
+	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(NAME)-$(VERSION); \
