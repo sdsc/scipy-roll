@@ -55,13 +55,6 @@
 # @Copyright@
 #
 
-INTEL_BASE=/opt/intel/Compiler/11.1/072/
-MKL=$(INTEL_BASE)/mkl
-F_INTEL_ENV=$(INTEL_BASE)/bin/intel64/ifortvars_intel64.sh
-C_INTEL_ENV=$(INTEL_BASE)/bin/intel64/iccvars_intel64.sh
-INTEL_LICENSE_FILE=/opt/flexlm/license/license-intel.txt
-LIB_PATH=$(MKL)/lib/em64t
-
 PKGROOT = /usr/lib64/python2.4/site-packages
 REDHAT.ROOT = $(PWD)/../../
 
@@ -76,13 +69,17 @@ install::
 	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
+	  if test -z "$${INTEL_LICENSE_FILE}" -a \
+                  -e /etc/profile.d/modules.sh; then \
+	    . /etc/profile.d/modules.sh; \
+	    module load intel; \
+	  fi; \
+	  export INTEL_ROOT=`echo $${MKL_ROOT} | sed 's/.mkl.*//'`; \
 	  cd $(NAME)-$(VERSION); \
 	  cp ../patch-files/$(NAME)-$(VERSION)/site.cfg .; \
+	  perl -pi -e "s#MKL_ROOT#$${MKL_ROOT}#; s#INTEL_ROOT#$${INTEL_ROOT}#" site.cfg; \
 	  cp ../patch-files/$(NAME)-$(VERSION)/intel.py numpy/distutils/fcompiler; \
 	  cp ../patch-files/$(NAME)-$(VERSION)/intelccompiler.py numpy/distutils; \
-	  . $(F_INTEL_ENV); . $(C_INTEL_ENV); export INTEL_LICENSE_FILE=$(INTEL_LICENSE_FILE); \
-	  export MKL_ROOT=$(MKL); \
-	  export LD_LIBRARY_PATH=/opt/intel/Compiler/11.1/072/mkl/lib/em64t:/opt/intel/Compiler/11.1/072/tbb/em64t/cc4.1.0_libc2.4_kernel2.6.16.21/lib:/opt/intel/libtemp:$$LD_LIBRARY_PATH; \
 	  python setup.py build_src config --compiler=intel build_clib --compiler=intel build_ext --compiler=intel; \
 	  python setup.py install; \
 	)

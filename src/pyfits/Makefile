@@ -58,11 +58,6 @@
 PKGROOT = /usr/lib64/python2.4/site-packages
 REDHAT.ROOT = $(PWD)/../../
 
-INTEL_BASE=/opt/intel/Compiler/11.1/072/
-MKL=$(INTEL_BASE)/mkl
-F_INTEL_ENV=$(INTEL_BASE)/bin/intel64/ifortvars_intel64.sh
-C_INTEL_ENV=$(INTEL_BASE)/bin/intel64/iccvars_intel64.sh
-
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
@@ -73,9 +68,15 @@ install::
 	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
+	  if test -d $(REDHAT.ROOT)/src/site-packages; then \
+	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
+	  fi; \
+	  if test -z "$${INTEL_LICENSE_FILE}" -a \
+                  -e /etc/profile.d/modules.sh; then \
+	    . /etc/profile.d/modules.sh; \
+	    module load intel; \
+	  fi; \
 	  cd $(NAME)-$(VERSION); \
-          . $(F_INTEL_ENV); . $(C_INTEL_ENV); \
-          export LD_LIBRARY_PATH=/opt/intel/Compiler/11.1/072/mkl/lib/em64t:/opt/intel/Compiler/11.1/072/tbb/em64t/cc4.1.0_libc2.4_kernel2.6.16.21/lib:/opt/intel/libtemp:$$LD_LIBRARY_PATH; \
           python setup.py install; \
 	)
 	/bin/umount $(PKGROOT)

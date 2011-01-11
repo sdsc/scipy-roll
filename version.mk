@@ -1,4 +1,4 @@
-ROLLNAME = scipy
+ROLLNAME = scipy-intel
 RELEASE  = 0
 COLOR    = orange
 
