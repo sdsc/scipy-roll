@@ -71,7 +71,8 @@ install::
 	  if test -d $(REDHAT.ROOT)/src/site-packages; then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
 	  fi; \
-	  if test -z "$${INTEL_LICENSE_FILE}" -a \
+	  export ICCPATH=`which icc 2>/dev/null || true`; \
+          if test -z "$${ICCPATH}" -a \
                   -e /etc/profile.d/modules.sh; then \
 	    . /etc/profile.d/modules.sh; \
 	    module load intel; \

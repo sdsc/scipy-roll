@@ -69,7 +69,8 @@ install::
 	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
-	  if test -z "$${INTEL_LICENSE_FILE}" -a \
+	  export ICCPATH=`which icc 2>/dev/null || true`; \
+          if test -z "$${ICCPATH}" -a \
                   -e /etc/profile.d/modules.sh; then \
 	    . /etc/profile.d/modules.sh; \
 	    module load intel; \
