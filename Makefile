@@ -61,4 +61,4 @@ default: roll
 
 clean::
 	rm -f _arch bootstrap.py
-	rm -fr RPMS SRPMS src/site-packages
+	rm -fr src/site-packages
