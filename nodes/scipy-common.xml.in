@@ -8,7 +8,7 @@ http://www.scipy.org
 </description>
 
 <copyright>
-Copyright (c) 2000 - 2009 The Regents of the University of California.
+Copyright (c) 2000 - 2011 The Regents of the University of California.
 All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 </copyright>
 
@@ -19,8 +19,8 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 <package>nose</package>
-<package>numpy</package>
-<package>scipy</package>
+<package>numpy_ROLLCOMPILER</package>
+<package>scipy_ROLLCOMPILER</package>
 <package>ipython</package>
 <package>pyfits</package>
 <package>matplotlib</package>

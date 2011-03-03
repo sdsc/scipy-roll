@@ -1,4 +1,4 @@
-ROLLNAME = scipy-intel
+ROLLNAME = scipy$(ROLLSUFFIX)
 RELEASE  = 0
 COLOR    = orange
 

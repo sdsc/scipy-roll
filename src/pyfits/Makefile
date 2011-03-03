@@ -7,7 +7,7 @@
 # 		         www.rocksclusters.org
 # 		        version 4.3 (Mars Hill)
 #
-# Copyright (c) 2000 - 2007 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -53,34 +53,41 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # @Copyright@
-#
+
+# Although this package isn't compiler-dependent, it relies on numpy, and we
+# have to do compiler setup to find the dynamic libraries numpy uses.
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
 
 PKGROOT = /usr/lib64/python2.4/site-packages
-REDHAT.ROOT = $(PWD)/../../
+SOURCE = pyfits-$(VERSION)
+REDHAT.ROOT = $(PWD)/../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
+COMPILERSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module load $(ROLLCOMPILER); \
+  fi
+
 build:
-	tar zxvf $(NAME)-$(VERSION).tar.gz
+	tar zxvf $(SOURCE).tar.gz
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
+	  $(COMPILERSETUP); \
 	  if test -d $(REDHAT.ROOT)/src/site-packages; then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
 	  fi; \
-	  export ICCPATH=`which icc 2>/dev/null || true`; \
-          if test -z "$${ICCPATH}" -a \
-                  -e /etc/profile.d/modules.sh; then \
-	    . /etc/profile.d/modules.sh; \
-	    module load intel; \
-	  fi; \
-	  cd $(NAME)-$(VERSION); \
+	  cd $(SOURCE); \
           python setup.py install; \
 	)
 	/bin/umount $(PKGROOT)
 
 clean::
-	rm -rf $(NAME)-$(VERSION)
+	rm -rf $(SOURCE)

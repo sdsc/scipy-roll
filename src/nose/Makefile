@@ -7,7 +7,7 @@
 # 		         www.rocksclusters.org
 # 		        version 4.3 (Mars Hill)
 #
-# Copyright (c) 2000 - 2007 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -53,25 +53,25 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # @Copyright@
-#
 
 PKGROOT = /usr/lib/python2.4/site-packages
-REDHAT.ROOT = $(PWD)/../../
+SOURCE = nose-$(VERSION)
+REDHAT.ROOT = $(PWD)/../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
-	tar zxvf $(NAME)-$(VERSION).tar.gz
+	tar zxvf $(SOURCE).tar.gz
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
-	  cd $(NAME)-$(VERSION); \
+	  cd $(SOURCE); \
 	  python setup.py install; \
 	)
 	/bin/umount $(PKGROOT)
 
 clean::
-	rm -rf $(NAME)-$(VERSION)
+	rm -rf $(SOURCE)

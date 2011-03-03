@@ -6,7 +6,7 @@
 # 		         www.rocksclusters.org
 # 		        version 4.3 (Mars Hill)
 # 
-# Copyright (c) 2000 - 2007 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -58,4 +58,4 @@
 #SRCDIRS = `find . -type d -maxdepth 1 \
 #	-not -name CVS \
 #	-not -name .`
-SRCDIRS = numpy scipy nose pyfits pytz matplotlib ipython usersguide
+SRCDIRS = numpy scipy nose pyfits pytz matplotlib ipython

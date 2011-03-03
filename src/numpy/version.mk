@@ -1,3 +1,3 @@
-NAME    = numpy
+NAME    = numpy_$(ROLLCOMPILER)
 VERSION = 1.3.0rc2
 RELEASE = 1

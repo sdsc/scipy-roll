@@ -7,7 +7,7 @@
 # 		         www.rocksclusters.org
 # 		        version 4.3 (Mars Hill)
 # 
-# Copyright (c) 2000 - 2007 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -55,10 +55,32 @@
 # @Copyright@
 #
 
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+empty:=
+space:=$(empty) $(empty)
+ROLLSUFFIX = _$(subst $(space),,$(ROLLCOMPILER))
+
 -include $(ROLLSROOT)/etc/Rolls.mk
 
-default: roll
+default:
+# Copy and substitute lines of nodes/*.in that reference ROLLCOMPILER, making
+# one copy for each ROLLCOMPILER value
+	for i in `ls nodes/*.in`; do \
+	  export o=`echo $$i | sed 's/\.in//'`; \
+	  cp $$i $$o; \
+	  for c in $(ROLLCOMPILER); do \
+	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
+	  done; \
+	  perl -pi -e '$$_ = "" if m/ROLLCOMPILER/' $$o; \
+	done
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" roll
 
 clean::
 	rm -f _arch bootstrap.py
+	for i in `ls nodes/*.in`; do \
+	  export o=`echo $$i | sed 's/\.in//'`; \
+	  rm -f $$o; \
+	done
 	rm -fr src/site-packages

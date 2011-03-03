@@ -1,3 +1,3 @@
-NAME    = matplotlib
+NAME    = matplotlib_$(ROLLCOMPILER)
 VERSION = 1.0.0
 RELEASE = 1

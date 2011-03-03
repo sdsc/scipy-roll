@@ -7,7 +7,7 @@
 # 		         www.rocksclusters.org
 # 		        version 4.3 (Mars Hill)
 #
-# Copyright (c) 2000 - 2007 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -53,41 +53,69 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # @Copyright@
-#
+
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
 
 PKGROOT = /usr/lib64/python2.4/site-packages
-REDHAT.ROOT = $(PWD)/../../
+SOURCE = scipy-$(VERSION)
+REDHAT.ROOT = $(PWD)/../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
+COMPILERSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module load $(ROLLCOMPILER); \
+  fi
+
+COMPILERLIB = /usr/lib64
+COMMENTMKL = \#
+CPPCOMP = g++
+COMPILER_FLAGS = -O2 -shared -fPIC
+MKLLIB =
+SETUPOPTS = --compiler=gcc --fcompiler=gfortran
+ifeq ("$(ROLLCOMPILER)", "intel")
+  COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
+  COMMENTMKL =
+  CPPCOMP = icpc
+  COMPILER_FLAGS = -xHost -O3 -shared -fPIC -openmp
+  MKLLIB = $${MKL_ROOT}/lib/em64t
+  SETUPOPTS = --compiler=intel --fcompiler=intelem
+endif
+
 build:
-	tar zxvf $(NAME)-$(VERSION).tar.gz
+	tar zxvf $(SOURCE).tar.gz
+	cp patch-files/$(SOURCE)/const.c $(SOURCE)/scipy/special/cephes
+	cp patch-files/$(SOURCE)/site.cfg $(SOURCE)
+	$(COMPILERSETUP); \
+        perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
+	  $(COMPILERSETUP); \
 	  if test -d $(REDHAT.ROOT)/src/site-packages; then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
 	  fi; \
-	  export ICCPATH=`which icc 2>/dev/null || true`; \
-          if test -z "$${ICCPATH}" -a \
-                  -e /etc/profile.d/modules.sh; then \
-	    . /etc/profile.d/modules.sh; \
-	    module load intel; \
-	  fi; \
-	  export INTEL_ROOT=`echo $${MKL_ROOT} | sed 's/.mkl.*//'`; \
- 	  cd $(NAME)-$(VERSION); \
-          cp ../patch-files/$(NAME)-$(VERSION)/site.cfg . ; \
-	  perl -pi -e "s#MKL_ROOT#$${MKL_ROOT}#; s#INTEL_ROOT#$${INTEL_ROOT}#" site.cfg; \
-          cp ../patch-files/$(NAME)-$(VERSION)/const.c  scipy/special/cephes; \
-          cp ../patch-files/$(NAME)-$(VERSION)/testsh . ; \
-          python setup.py config --compiler=intel --fcompiler=intelem build_clib --compiler=intel --fcompiler=intelem build_ext --compiler=intel --fcompiler=intelem; \
-          chmod 0777 testsh; ./testsh; \
-          python setup.py install; \
+	  cd $(SOURCE); \
+	  python setup.py config $(SETUPOPTS) \
+	                  build_clib $(SETUPOPTS) \
+	                  build_ext $(SETUPOPTS); \
+	  for x in csr csc coo bsr dia; do \
+	    $(CPPCOMP) $(COMPILER_FLAGS) \
+	      build/temp.linux-x86_64-2.4/scipy/sparse/sparsetools/$${x}_wrap.o\
+	      -o build/lib.linux-x86_64-2.4/scipy/sparse/sparsetools/_$${x}.so;\
+	  done; \
+	  $(CPPCOMP) $(COMPILER_FLAGS) \
+	    build/temp.linux-x86_64-2.4/scipy/interpolate/src/_interpolate.o \
+	    -o build/lib.linux-x86_64-2.4/scipy/interpolate/_interpolate.so; \
+	  python setup.py install; \
 	)
 	/bin/umount $(PKGROOT)
 
 clean::
-	rm -rf $(NAME)-$(VERSION)
+	rm -rf $(SOURCE)

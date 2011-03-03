@@ -1,3 +1,3 @@
-NAME    = pyfits
+NAME    = pyfits_$(ROLLCOMPILER)
 VERSION = 2.3.1
 RELEASE = 1

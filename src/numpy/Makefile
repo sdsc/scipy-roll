@@ -7,7 +7,7 @@
 # 		         www.rocksclusters.org
 # 		        version 4.3 (Mars Hill)
 #
-# Copyright (c) 2000 - 2007 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -53,39 +53,58 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # @Copyright@
-#
+
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
 
 PKGROOT = /usr/lib64/python2.4/site-packages
-REDHAT.ROOT = $(PWD)/../../
-
+SOURCE = numpy-$(VERSION)
+REDHAT.ROOT = $(PWD)/../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
+COMPILERSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module load $(ROLLCOMPILER); \
+  fi
+
+COMPILERLIB = /usr/lib64
+COMMENTMKL = \#
+MKLLIB =
+SETUPOPTS = --compiler=gcc --fcompiler=gfortran
+ifeq ("$(ROLLCOMPILER)", "intel")
+  COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
+  COMMENTMKL =
+  MKLLIB = $${MKL_ROOT}/lib/em64t
+  SETUPOPTS = --compiler=intel --fcompiler=ifort
+endif
+
 build:
-	tar zxvf $(NAME)-$(VERSION).tar.gz
+	tar zxvf $(SOURCE).tar.gz
+	cp patch-files/$(SOURCE)/site.cfg $(SOURCE)
+	cp patch-files/$(SOURCE)/intel.py $(SOURCE)/numpy/distutils/fcompiler
+	cp patch-files/$(SOURCE)/intelccompiler.py $(SOURCE)/numpy/distutils
+	$(COMPILERSETUP); \
+	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
-	  export ICCPATH=`which icc 2>/dev/null || true`; \
-          if test -z "$${ICCPATH}" -a \
-                  -e /etc/profile.d/modules.sh; then \
-	    . /etc/profile.d/modules.sh; \
-	    module load intel; \
-	  fi; \
-	  export INTEL_ROOT=`echo $${MKL_ROOT} | sed 's/.mkl.*//'`; \
-	  cd $(NAME)-$(VERSION); \
-	  cp ../patch-files/$(NAME)-$(VERSION)/site.cfg .; \
-	  perl -pi -e "s#MKL_ROOT#$${MKL_ROOT}#; s#INTEL_ROOT#$${INTEL_ROOT}#" site.cfg; \
-	  cp ../patch-files/$(NAME)-$(VERSION)/intel.py numpy/distutils/fcompiler; \
-	  cp ../patch-files/$(NAME)-$(VERSION)/intelccompiler.py numpy/distutils; \
-	  python setup.py build_src config --compiler=intel build_clib --compiler=intel build_ext --compiler=intel; \
+	  $(COMPILERSETUP); \
+	  cd $(SOURCE); \
+	  python setup.py build_src \
+	                  config $(SETUPOPTS) \
+	                  build_clib $(SETUPOPTS) \
+	                  build_ext $(SETUPOPTS); \
 	  python setup.py install; \
 	)
 	/bin/cp -r $(ROOT)/$(PKGROOT)/../site-packages $(REDHAT.ROOT)/src/
 	/bin/umount $(PKGROOT)
 
 clean::
-	rm -rf $(NAME)-$(VERSION)
+	rm -rf $(SOURCE)
+
