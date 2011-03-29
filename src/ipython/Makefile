@@ -67,7 +67,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  cd $(SOURCE); \
-          python setup.py install --home $(ROOT)/$(PKGROOT) \
+          python setup.py install; \
 	)
 
 clean::
