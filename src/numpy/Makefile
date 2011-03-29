@@ -83,9 +83,9 @@ endif
 
 build:
 	tar zxvf $(SOURCE).tar.gz
-	cp patch-files/$(SOURCE)/site.cfg $(SOURCE)
-	cp patch-files/$(SOURCE)/intel.py $(SOURCE)/numpy/distutils/fcompiler
-	cp patch-files/$(SOURCE)/intelccompiler.py $(SOURCE)/numpy/distutils
+	cp patch-files/site.cfg $(SOURCE)
+	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
+	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	$(COMPILERSETUP); \
 	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
 
