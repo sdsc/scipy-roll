@@ -1,3 +1,3 @@
 NAME    = numpy_$(ROLLCOMPILER)
-VERSION = 1.6.0b1
+VERSION = 1.5.1
 RELEASE = 1
