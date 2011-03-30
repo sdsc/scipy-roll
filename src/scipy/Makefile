@@ -87,8 +87,7 @@ endif
 
 build:
 	tar zxvf $(SOURCE).tar.gz
-	cp patch-files/$(SOURCE)/const.c $(SOURCE)/scipy/special/cephes
-	cp patch-files/$(SOURCE)/site.cfg $(SOURCE)
+	cp patch-files/site.cfg $(SOURCE)
 	$(COMPILERSETUP); \
         perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
 

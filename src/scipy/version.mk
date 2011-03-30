@@ -1,3 +1,3 @@
 NAME    = scipy_$(ROLLCOMPILER)
-VERSION = 0.7.1rc3
+VERSION = 0.9.0
 RELEASE = 1
