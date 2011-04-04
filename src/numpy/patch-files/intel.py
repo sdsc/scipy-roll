@@ -1,3 +1,6 @@
+# -*- encoding: iso-8859-1 -*-
+# above encoding b/c there's a non-ASCII character in the sample output
+# of intele
 # http://developer.intel.com/software/products/compilers/flin/
 
 import sys
@@ -8,7 +11,7 @@ from numpy.distutils.fcompiler import FCompiler, dummy_fortran_file
 
 compilers = ['IntelFCompiler', 'IntelVisualFCompiler',
              'IntelItaniumFCompiler', 'IntelItaniumVisualFCompiler',
-             'IntelEM64VisualFCompiler', 'IntelEM64TFCompiler']
+             'IntelEM64TFCompiler']
 
 def intel_version_match(type):
     # Match against the important stuff in the version string
@@ -44,7 +47,7 @@ class IntelFCompiler(BaseIntelFCompiler):
     module_include_switch = '-I'
 
     def get_flags(self):
-        return ['-fPIC','-cm']
+        return [ '-fPIC','-cm' ]
         v = self.get_version()
         if v >= '10.0':
             # Use -fPIC instead of -KPIC.
@@ -61,7 +64,7 @@ class IntelFCompiler(BaseIntelFCompiler):
         return ['-O3','-unroll']
 
     def get_flags_arch(self):
-        return ['-xHost']
+        return [ '-xHost' ]
         v = self.get_version()
         opt = []
         if cpu.has_fdiv_bug():
@@ -121,7 +124,12 @@ class IntelItaniumFCompiler(IntelFCompiler):
     compiler_aliases = ()
     description = 'Intel Fortran Compiler for Itanium apps'
 
-    version_match = intel_version_match('Itanium|IA-64')
+    version_match = intel_version_match('Itanium')
+
+#Intel(R) Fortran Itanium(R) Compiler for Itanium(R)-based applications
+#Version 9.1    Build 20060928 Package ID: l_fc_c_9.1.039
+#Copyright (C) 1985-2006 Intel Corporation.  All rights reserved.
+#30 DAY EVALUATION LICENSE
 
     possible_executables = ['ifort', 'efort', 'efc']
 
@@ -167,14 +175,9 @@ class IntelVisualFCompiler(BaseIntelFCompiler):
     compiler_type = 'intelv'
     description = 'Intel Visual Fortran Compiler for 32-bit apps'
     version_match = intel_version_match('32-bit|IA-32')
-    
-    def update_executables(self):
-        f = dummy_fortran_file()    
-        self.executables['version_cmd'] = ['<F77>', '/FI', '/c',
-                                           f + '.f', '/o', f + '.o']
 
     ar_exe = 'lib.exe'
-    possible_executables = ['ifort', 'ifl']
+    possible_executables = ['ifl']
 
     executables = {
         'version_cmd'  : None,
@@ -203,7 +206,7 @@ class IntelVisualFCompiler(BaseIntelFCompiler):
         return ['/4Yb','/d2']
 
     def get_flags_opt(self):
-        return ['/O3','/Qip']
+        return ['/O3','/Qip','/Qipo','/Qipo_obj']
 
     def get_flags_arch(self):
         opt = []
@@ -238,17 +241,10 @@ class IntelItaniumVisualFCompiler(IntelVisualFCompiler):
         'ranlib'       : None
         }
 
-class IntelEM64VisualFCompiler(IntelVisualFCompiler):
-    compiler_type = 'intelvem'
-    description = 'Intel Visual Fortran Compiler for 64-bit apps'
-
-    version_match = simple_version_match(start='Intel\(R\).*?64,')
-
-
 if __name__ == '__main__':
     from distutils import log
     log.set_verbosity(2)
     from numpy.distutils.fcompiler import new_fcompiler
     compiler = new_fcompiler(compiler='intel')
     compiler.customize()
-    print(compiler.get_version())
+    print compiler.get_version()

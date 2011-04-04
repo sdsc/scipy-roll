@@ -58,7 +58,7 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
-PKGROOT = /usr/lib64/python2.4/site-packages
+PKGROOT = /state/partition1/python/lib64/python2.4/site-packages
 SOURCE = numpy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
@@ -78,14 +78,12 @@ ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
   COMMENTMKL =
   MKLLIB = $${MKL_ROOT}/lib/em64t
-  SETUPOPTS = --compiler=intel --fcompiler=ifort
+  SETUPOPTS = --compiler=intelem --fcompiler=intelem
 endif
 
 build:
 	tar zxvf $(SOURCE).tar.gz
 	cp patch-files/site.cfg $(SOURCE)
-	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
-	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	$(COMPILERSETUP); \
 	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
 
