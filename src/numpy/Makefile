@@ -58,7 +58,7 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
-PKGROOT = /state/partition1/python/lib64/python2.4/site-packages
+PKGROOT = /usr/lib64/python2.4/site-packages
 SOURCE = numpy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
@@ -85,7 +85,8 @@ build:
 	tar zxvf $(SOURCE).tar.gz
 	cp patch-files/site.cfg $(SOURCE)
 	$(COMPILERSETUP); \
-	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
+	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!;\
+                     s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE)/site.cfg
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
