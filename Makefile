@@ -79,7 +79,6 @@ default:
 
 clean::
 	rm -f _arch bootstrap.py
-	rm -fr src/site-packages
 
 cvsclean: clean
 	for i in `ls nodes/*.in`; do \
@@ -87,3 +86,4 @@ cvsclean: clean
 	  rm -f $$o; \
 	done
 	rm -fr RPMS SRPMS
+	rm -fr src/site-packages*

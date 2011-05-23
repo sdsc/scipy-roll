@@ -103,7 +103,7 @@ install::
 	                  build_ext $(SETUPOPTS); \
 	  python setup.py install; \
 	)
-	/bin/cp -r $(ROOT)/$(PKGROOT)/../site-packages $(REDHAT.ROOT)/src/
+	/bin/cp -r $(ROOT)/$(PKGROOT)/../site-packages $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 	/bin/umount $(PKGROOT)
 
 clean::

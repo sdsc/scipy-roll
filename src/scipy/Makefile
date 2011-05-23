@@ -97,8 +97,8 @@ install::
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
-	  if test -d $(REDHAT.ROOT)/src/site-packages; then \
-	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
+	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
+	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
 	  python setup.py config $(SETUPOPTS) \
