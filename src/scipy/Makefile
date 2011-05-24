@@ -70,6 +70,12 @@ COMPILERSETUP = \
     module load $(ROLLCOMPILER); \
   fi
 
+LIBSETUP = \
+   if test $(ROLLCOMPILER) = "gnu"; then  \
+        export BLAS=$(PWD)/$(SOURCE)/libblas.a; \
+        export LAPACK=$(PWD)/$(SOURCE)/liblapack.a; \
+   fi
+
 COMPILERLIB = /usr/lib64
 COMMENTMKL = \#
 CPPCOMP = g++
@@ -88,6 +94,8 @@ endif
 build:
 	tar zxvf $(SOURCE).tar.gz
 	cp patch-files/site.cfg $(SOURCE)
+	cp patch-files/libblas.a $(SOURCE); \
+	cp patch-files/liblapack.a $(SOURCE); \
 	$(COMPILERSETUP); \
         perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
 
@@ -97,6 +105,7 @@ install::
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
+          $(LIBSETUP); \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
