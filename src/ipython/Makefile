@@ -54,7 +54,7 @@
 #
 # @Copyright@
 
-PKGROOT = /opt/ipython
+PKGROOT = /usr/lib64/python2.4/site-packages
 SOURCE = ipython-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
@@ -65,10 +65,13 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
+	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
+	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(SOURCE); \
           python setup.py install; \
 	)
+	/bin/umount $(PKGROOT)
 
 clean::
 	rm -rf $(SOURCE)
