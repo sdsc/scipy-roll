@@ -19,11 +19,11 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 <package>nose</package>
-<package cond="select_scipy_compiler == 'ROLLCOMPILER'">numpy_ROLLCOMPILER</package>
-<package cond="select_scipy_compiler == 'ROLLCOMPILER'">scipy_ROLLCOMPILER</package>
+<package>numpy_ROLLCOMPILER</package>
+<package>scipy_ROLLCOMPILER</package>
 <package>ipython</package>
-<package>pyfits</package>
-<package>matplotlib</package>
+<package>pyfits_ROLLCOMPILER</package>
+<package>matplotlib_ROLLCOMPILER</package>
 <package>pytz</package>
 
 <post>
