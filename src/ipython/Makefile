@@ -69,7 +69,7 @@ install::
 	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  cd $(SOURCE); \
-          python setup.py install; \
+          python setup.py install --install-scripts /opt/ipython; \
 	)
 	/bin/umount $(PKGROOT)
 
