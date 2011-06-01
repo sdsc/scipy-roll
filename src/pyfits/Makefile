@@ -85,7 +85,7 @@ install::
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
-          python setup.py install; \
+          python setup.py install --install-scripts /opt/pyfits; \
 	)
 	/bin/umount $(PKGROOT)
 
