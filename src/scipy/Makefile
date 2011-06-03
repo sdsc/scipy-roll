@@ -58,7 +58,7 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
-PKGROOT = /usr/lib64/python2.4/site-packages
+PKGROOT = /opt/scipy
 SOURCE = scipy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
@@ -101,8 +101,6 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
-	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
           $(LIBSETUP); \
@@ -121,9 +119,8 @@ install::
 	  $(CPPCOMP) $(COMPILER_FLAGS) \
 	    build/temp.linux-x86_64-2.4/scipy/interpolate/src/_interpolate.o \
 	    -o build/lib.linux-x86_64-2.4/scipy/interpolate/_interpolate.so; \
-	  python setup.py install; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
-	/bin/umount $(PKGROOT)
 
 clean::
 	rm -rf $(SOURCE)

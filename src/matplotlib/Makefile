@@ -60,7 +60,7 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
-PKGROOT = /usr/lib64/python2.4/site-packages
+PKGROOT = /opt/scipy
 SOURCE = matplotlib-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
@@ -77,8 +77,6 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
-	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
@@ -86,9 +84,8 @@ install::
 	  fi; \
 	  cd $(SOURCE); \
 	  python setup.py build; \
-	  python setup.py install; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
-	/bin/umount $(PKGROOT)
 
 clean::
 	rm -rf $(SOURCE)

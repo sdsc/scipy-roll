@@ -58,5 +58,6 @@
 SRCDIRS = `find . -type d -maxdepth 1 \
 	-not -name CVS \
 	-not -name matplotlib \
+	-not -name pyfits \
 	-not -name scipy \
-	-not -name .` matplotlib scipy
+	-not -name .` matplotlib pyfits scipy

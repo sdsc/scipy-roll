@@ -58,7 +58,7 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
-PKGROOT = /usr/lib64/python2.4/site-packages
+PKGROOT = /opt/scipy
 SOURCE = numpy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
@@ -92,8 +92,6 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	-/bin/umount $(PKGROOT) 2>&1 > /dev/null
-	/bin/mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
@@ -101,10 +99,9 @@ install::
 	                  config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \
-	  python setup.py install; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
-	/bin/cp -r $(ROOT)/$(PKGROOT)/../site-packages $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
-	/bin/umount $(PKGROOT)
+	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 
 clean::
 	rm -rf $(SOURCE)
