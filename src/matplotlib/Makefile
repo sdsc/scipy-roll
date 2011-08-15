@@ -72,6 +72,14 @@ COMPILERSETUP = \
     module load $(ROLLCOMPILER); \
   fi
 
+SETUPOPTS="-cc=gcc"
+ifeq ("$(ROLLCOMPILER)", "intel")
+  SETUPOPTS = "-cc=icc"
+endif
+ifeq ("$(ROLLCOMPILER)", "pgi")
+  SETUPOPTS = "-cc=pgcc"
+endif
+
 build:
 	tar zxvf $(SOURCE).tar.gz
 
@@ -83,7 +91,7 @@ install::
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
-	  python setup.py build; \
+	  python setup.py $(SETUPOPTS) build; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
