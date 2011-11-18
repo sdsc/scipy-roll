@@ -77,7 +77,7 @@ SETUPOPTS = --compiler=gcc --fcompiler=gfortran
 ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
   COMMENTMKL =
-  MKLLIB = $${MKL_ROOT}/lib/em64t
+  MKLLIB = `find $${MKL_ROOT}/lib/* -maxdepth 0`
   SETUPOPTS = --compiler=intelem --fcompiler=intelem
 endif
 
