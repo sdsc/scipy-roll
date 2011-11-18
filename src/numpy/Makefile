@@ -100,6 +100,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
+	  cd $(SOURCE); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
