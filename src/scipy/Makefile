@@ -87,7 +87,7 @@ ifeq ("$(ROLLCOMPILER)", "intel")
   COMMENTMKL =
   CPPCOMP = icpc
   COMPILER_FLAGS = -xHost -O3 -shared -fPIC -openmp
-  MKLLIB = $${MKL_ROOT}/lib/em64t
+  MKLLIB = `find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
   SETUPOPTS = --compiler=intel --fcompiler=intelem
 endif
 
