@@ -77,7 +77,7 @@ SETUPOPTS = --compiler=gcc --fcompiler=gfortran
 ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
   COMMENTMKL =
-  MKLLIB = `find $${MKL_ROOT}/lib/* -maxdepth 0`
+  MKLLIB = `find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
   SETUPOPTS = --compiler=intelem --fcompiler=intelem
 endif
 
@@ -86,19 +86,21 @@ build:
 	cp patch-files/site.cfg $(SOURCE)
 	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
-	$(COMPILERSETUP); \
 	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!;\
                      s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE)/site.cfg
-
-install::
-	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
 	  python setup.py build_src \
 	                  config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
-	                  build_ext $(SETUPOPTS); \
+	                  build_ext $(SETUPOPTS) \
+	)
+
+install::
+	mkdir -p $(ROOT)/$(PKGROOT)
+	( \
+	  $(COMPILERSETUP); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
