@@ -86,11 +86,10 @@ build:
 	cp patch-files/site.cfg $(SOURCE)
 	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
-	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!;\
-                     s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE)/site.cfg
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
+	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKL_ROOT}!" site.cfg; \
 	  python setup.py build_src \
 	                  config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
