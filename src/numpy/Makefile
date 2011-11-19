@@ -86,6 +86,7 @@ build:
 	cp patch-files/site.cfg $(SOURCE)
 	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
+	cp patch-files/system_info.py $(SOURCE)/numpy/distutils
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
