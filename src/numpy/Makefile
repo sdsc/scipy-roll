@@ -104,7 +104,7 @@ install::
 	  cd $(SOURCE); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
-	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
+	/bin/cp -r `find $(ROOT)/$(PKGROOT)/lib64 -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 
 clean::
 	rm -rf $(SOURCE)
