@@ -64,7 +64,7 @@ build:
 	tar zxvf $(SOURCE).tar.gz
 
 install::
-	export PATH=/opt/scipy/bin:$${PATH}
+	export PATH=/opt/python/bin:$${PATH}
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  cd $(SOURCE); \
