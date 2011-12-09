@@ -64,6 +64,7 @@ build:
 	tar zxvf $(SOURCE).tgz
 
 install::
+	export PATH=/opt/scipy/bin:$${PATH}
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  cd $(SOURCE); \

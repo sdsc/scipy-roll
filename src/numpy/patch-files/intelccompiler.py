@@ -30,7 +30,7 @@ class IntelEM64TCCompiler(UnixCCompiler):
     """ A modified Intel x86_64 compiler compatible with a 64bit gcc built Python.
     """
     compiler_type = 'intelem'
-    cc_exe = 'icc -fPIC -openmp'
+    cc_exe = 'icc -O3 -fPIC -openmp'
     cc_args = "-fPIC"
     def __init__ (self, verbose=0, dry_run=0, force=0):
         UnixCCompiler.__init__ (self, verbose,dry_run, force)

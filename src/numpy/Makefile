@@ -87,6 +87,7 @@ build:
 	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
 	cp patch-files/system_info.py $(SOURCE)/numpy/distutils
+	export PATH=/opt/scipy/bin:$${PATH}
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
@@ -99,12 +100,13 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
+	export PATH=/opt/scipy/bin:$${PATH}
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
-	/bin/cp -r `find $(ROOT)/$(PKGROOT)/lib64 -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
+ 	/bin/cp -r `find $(ROOT)/$(PKGROOT)/lib -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 
 clean::
 	rm -rf $(SOURCE)
