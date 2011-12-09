@@ -88,7 +88,7 @@ build:
 	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
 	cp patch-files/system_info.py $(SOURCE)/numpy/distutils
 	export PATH=/opt/python/bin:$${PATH}
-        export PYTHONPATH=/opt/scipy/lib/python2.7/site-packages
+	export PYTHONPATH=/opt/scipy/lib/python2.7/site-packages
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
