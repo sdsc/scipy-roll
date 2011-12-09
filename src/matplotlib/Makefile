@@ -85,7 +85,6 @@ build:
 
 install::
 	export PATH=/opt/python/bin:$${PATH}
-	export PYTHONPATH=/opt/scipy/lib/python2.7/site-packages
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
