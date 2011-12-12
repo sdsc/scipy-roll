@@ -67,17 +67,17 @@ REDHAT.ROOT = $(PWD)/../..
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
+    module load intel; \
+    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+    module unload intel; \
     module load $(ROLLCOMPILER); \
   fi
 
 COMPILERLIB = /usr/lib64
-COMMENTMKL = \#
-MKLLIB =
+COMMENTMKL =
 SETUPOPTS = --compiler=gcc --fcompiler=gfortran
 ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
-  COMMENTMKL =
-  MKLLIB = `find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
   SETUPOPTS = --compiler=intelem --fcompiler=intelem
 endif
 
@@ -91,7 +91,7 @@ build:
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
-	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKL_ROOT}!" site.cfg; \
+	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKL_ROOT}!" site.cfg; \
 	  python setup.py build_src \
 	                  config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \

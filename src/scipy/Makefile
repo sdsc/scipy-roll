@@ -67,27 +67,27 @@ REDHAT.ROOT = $(PWD)/../..
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
+    module load intel; \
+    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+    module unload intel; \
     module load $(ROLLCOMPILER); \
   fi
 
 LIBSETUP = \
-   if test $(ROLLCOMPILER) = "gnu"; then  \
+   if test "$(ROLLCOMPILER)" = "gnu"; then  \
         export BLAS=$(PWD)/$(SOURCE)/libblas.a; \
         export LAPACK=$(PWD)/$(SOURCE)/liblapack.a; \
    fi
 
 COMPILERLIB = /usr/lib64
-COMMENTMKL = \#
+COMMENTMKL =
 CPPCOMP = g++
 COMPILER_FLAGS = -O2 -shared -fPIC
-MKLLIB =
 SETUPOPTS = --compiler=gcc --fcompiler=gfortran
 ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
-  COMMENTMKL =
   CPPCOMP = icpc
   COMPILER_FLAGS = -xHost -O3 -shared -fPIC -openmp
-  MKLLIB = `find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
   SETUPOPTS = --compiler=intel --fcompiler=intelem
 endif
 
@@ -97,7 +97,7 @@ build:
 	cp patch-files/libblas.a $(SOURCE); \
 	cp patch-files/liblapack.a $(SOURCE); \
 	$(COMPILERSETUP); \
-        perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$(MKLLIB)!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
+        perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE)/site.cfg
 
 install::
 	export PATH=/opt/python/bin:$${PATH}
