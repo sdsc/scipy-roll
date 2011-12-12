@@ -68,6 +68,7 @@ COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
     module load intel; \
+    export MKLHOME=$${MKL_ROOT}; \
     export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
     module unload intel; \
     module load $(ROLLCOMPILER); \
@@ -91,7 +92,7 @@ build:
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
-	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKL_ROOT}!" site.cfg; \
+	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKLHOME}!" site.cfg; \
 	  python setup.py build_src \
 	                  config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
@@ -106,7 +107,7 @@ install::
 	  cd $(SOURCE); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
-	/bin/cp -r `find $(ROOT)/$(PKGROOT)/lib -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
+	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 
 clean::
 	rm -rf $(SOURCE)
