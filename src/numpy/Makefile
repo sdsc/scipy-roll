@@ -68,7 +68,7 @@ COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
     module load intel; \
-    export MKLHOME=$${MKL_ROOT}; \
+    export MKL_HOME=$${MKL_ROOT}; \
     export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
     module unload intel; \
     module load $(ROLLCOMPILER); \
@@ -92,7 +92,7 @@ build:
 	( \
 	  $(COMPILERSETUP); \
 	  cd $(SOURCE); \
-	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKLHOME}!" site.cfg; \
+	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKL_HOME}!" site.cfg; \
 	  python setup.py build_src \
 	                  config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
