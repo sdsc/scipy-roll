@@ -84,11 +84,11 @@ build:
 	tar zxvf $(SOURCE).tar.gz
 
 install::
-	export PATH=/opt/python/bin:$${PATH}
 	cp patch-files/setupext.py $(SOURCE)
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
+	  export PATH=/opt/python/bin:$${PATH}; \
           export -n DISPLAY; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \

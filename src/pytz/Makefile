@@ -64,9 +64,9 @@ build:
 	tar zxvf $(SOURCE).tgz
 
 install::
-	export PATH=/opt/python/bin:$${PATH}
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
+	  export PATH=/opt/python/bin:$${PATH}; \
 	  cd $(SOURCE); \
           python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)

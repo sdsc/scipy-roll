@@ -76,10 +76,10 @@ build:
 	tar zxvf $(SOURCE).tar.gz
 
 install::
-	export PATH=/opt/python/bin:$${PATH}
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
+	  export PATH=/opt/python/bin:$${PATH}; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages; then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH}; \
 	  fi; \

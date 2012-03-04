@@ -101,9 +101,9 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	export PATH=/opt/python/bin:$${PATH}
 	( \
 	  $(COMPILERSETUP); \
+	  export PATH=/opt/python/bin:$${PATH}; \
 	  cd $(SOURCE); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
