@@ -3,8 +3,14 @@
 <kickstart>
 
 <description>
-SciPy - Scientific Tools for Python roll doc
-http://www.scipy.org
+Python scientific libraries
+iPython http://ipython.org
+matplotlib http://matplotlib.sourceforge.net
+nose http://pypi.python.org/pypi/nose
+numpy http://numpy.scipy.org
+pyFits http://www.stsci.edu/institute/software_hardware/pyfits
+pytz http://pytz.sourceforge.net
+scipy http://www.scipy.org
 </description>
 
 <copyright>
