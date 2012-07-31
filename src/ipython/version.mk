@@ -1,3 +1,3 @@
 NAME    = ipython
-VERSION = 0.10.1
+VERSION = 0.13
 RELEASE = 1
