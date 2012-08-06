@@ -68,7 +68,7 @@ SKIP: {
   foreach my $f(glob("/opt/scipy/lib*/python*/site-packages/*")) {
     my $link = $f;
     $link =~ s#.*/#ROLLPYTHONLIB/#;
-    push(@missingLinks, $lib) if ! -l $link;
+    push(@missingLinks, $link) if ! -l $link;
   }
   ok(int(@missingLinks) == 0, 'all scipy libs linked');
   foreach my $module(@MODULES) {

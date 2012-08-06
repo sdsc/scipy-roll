@@ -80,8 +80,8 @@ default:
 	  for c in $(ROLLCOMPILER); do \
 	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
 	  done; \
-	  perl -pi -e 'print and s/ROLLPYTHON/'$${c}'/g if m/ROLLPYTHON/' $$o; \
-	  perl -pi -e 'print and s/ROLLPYTHONLIB/'$${c}'/g if m/ROLLPYTHONLIB/' $$o; \
+	  perl -pi -e 'print and s#ROLLPYTHONLIB#$(ROLLPYTHONLIB)#g if m/ROLLPYTHONLIB/' $$o; \
+	  perl -pi -e 'print and s#ROLLPYTHON#$(ROLLPYTHON)#g if m/ROLLPYTHON\b/' $$o; \
 	  perl -pi -e '$$_ = "" if m/ROLL(COMPILER|PYTHON|PYTHONLIB)/' $$o; \
 	done
 	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYTHON="$(ROLLPYTHON)" ROLLPYTHONLIB="$(ROLLPYTHONLIB)" roll
