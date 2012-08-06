@@ -59,7 +59,7 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 ifndef ROLLPYTHON
-  ROLLPYTHON = `which python`/..
+  ROLLPYTHON = `which python`
 endif
 ifndef ROLLPYTHONLIB
   ROLLPYTHONLIB = `find /usr/lib64 -name site-packages | tail -1`
