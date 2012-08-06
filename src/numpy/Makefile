@@ -70,6 +70,7 @@ COMPILERSETUP = \
     module load intel; \
     export MKL_HOME=$${MKL_ROOT}; \
     export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+    export MKLLIB=`echo $LD_LIBRARY_PATH | sed 's/:/,/g'`; \
     module unload intel; \
     module load $(ROLLCOMPILER); \
   fi
@@ -103,7 +104,9 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
-	  export PATH=/opt/python/bin:$${PATH}; \
+	  if test -n "$(ROLLPYTHON)"; then \
+	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
+	  fi; \
 	  cd $(SOURCE); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)

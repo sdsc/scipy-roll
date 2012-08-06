@@ -104,7 +104,9 @@ install::
 	( \
 	  $(COMPILERSETUP); \
           $(LIBSETUP); \
-	  export PATH=/opt/python/bin:$${PATH}; \
+	  if test -n "$(ROLLPYTHON)"; then \
+	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
+	  fi; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \

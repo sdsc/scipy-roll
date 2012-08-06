@@ -68,9 +68,9 @@ copyright rpm pkg clean::
 	  if test $$? -eq 0; then \
 	    for c in $(ROLLCOMPILER); do \
 	      echo make $@ in $$i with ROLLCOMPILER=$$c; \
-	      (cd $$i; $(MAKE) ROLLCOMPILER=$$c $@); \
+	      (cd $$i; $(MAKE) ROLLCOMPILER=$$c ROLLPYTHON=$(ROLLPYTHON) ROLLPYTHONLIB=$(ROLLPYTHONLIB) $@); \
 	    done; \
 	  else \
-	    (cd $$i; $(MAKE) $@) ; \
+	    (cd $$i; $(MAKE) ROLLPYTHON=$(ROLLPYTHON) ROLLPYTHONLIB=$(ROLLPYTHONLIB) $@) ; \
 	  fi; \
 	done

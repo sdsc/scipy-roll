@@ -1,8 +1,9 @@
-This roll source supports building with different compilers.  By default, it
-builds using the gnu compilers.  To build for a different configuration, use
-the ROLLCOMPILER make variable, e.g.,
+This roll source supports building with different compilers and python
+interpreters.  By default, it builds using the gnu compilers and the system
+python.  To build for a different configuration, use the ROLLCOMPILER,
+PYTHON, and ROLLPYTHONLIB make variables, e.g.,
 
-make ROLLCOMPILER=intel
+make ROLLCOMPILER=intel ROLLPYTHON=/opt/python/bin/python ROLLPYTHONLIB=/opt/python/lib/python2.7
 
 The build process currently supports the values "intel" and "gnu" for the
 ROLLCOMPILER variable, defaulting to "gnu".

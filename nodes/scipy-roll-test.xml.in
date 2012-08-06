@@ -46,7 +46,8 @@ if test -f /etc/profile.d/modules.sh; then
   . /etc/profile.d/modules.sh
   module load ROLLCOMPILER
 fi
-python <<ENDPY
+export PYTHONPATH=ROLLPYTHONLIB:\${PYTHONPATH}
+ROLLPYTHONBIN <<ENDPY
 import \$1
 help(\$1)
 print \$1.__version__
@@ -64,9 +65,9 @@ SKIP: {
 
   skip 'scipy not installed', int(@MODULES) + 1 if ! $isInstalled;
   my @missingLinks;
-  foreach my $lib(glob("/opt/scipy/lib*/site-packages/*")) {
-    my $link = $lib;
-    $link =~ s#/opt/scipy/lib[^/]*#/usr/lib64#;
+  foreach my $f(glob("/opt/scipy/lib*/python*/site-packages/*")) {
+    my $link = $f;
+    $link =~ s#.*/#ROLLPYTHONLIB/#;
     push(@missingLinks, $lib) if ! -l $link;
   }
   ok(int(@missingLinks) == 0, 'all scipy libs linked');

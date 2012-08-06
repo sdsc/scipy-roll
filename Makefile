@@ -58,6 +58,12 @@
 ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
+ifndef ROLLPYTHON
+  ROLLPYTHON = `which python`/..
+endif
+ifndef ROLLPYTHONLIB
+  ROLLPYTHONLIB = `find /usr/lib64 -name site-packages | tail -1`
+endif
 empty:=
 space:=$(empty) $(empty)
 ROLLSUFFIX = _$(subst $(space),+,$(ROLLCOMPILER))
@@ -66,16 +72,19 @@ ROLLSUFFIX = _$(subst $(space),+,$(ROLLCOMPILER))
 
 default:
 # Copy and substitute lines of nodes/*.in that reference ROLLCOMPILER, making
-# one copy for each ROLLCOMPILER value
+# one copy for each ROLLCOMPILER value, also pluggin in values for
+# ROLLPYTHON and ROLLPYTHONLIB
 	for i in `ls nodes/*.in`; do \
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
 	  for c in $(ROLLCOMPILER); do \
 	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
 	  done; \
-	  perl -pi -e '$$_ = "" if m/ROLLCOMPILER/' $$o; \
+	  perl -pi -e 'print and s/ROLLPYTHON/'$${c}'/g if m/ROLLPYTHON/' $$o; \
+	  perl -pi -e 'print and s/ROLLPYTHONLIB/'$${c}'/g if m/ROLLPYTHONLIB/' $$o; \
+	  perl -pi -e '$$_ = "" if m/ROLL(COMPILER|PYTHON|PYTHONLIB)/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYTHON="$(ROLLPYTHON)" ROLLPYTHONLIB="$(ROLLPYTHONLIB)" roll
 
 clean::
 	rm -f _arch bootstrap.py

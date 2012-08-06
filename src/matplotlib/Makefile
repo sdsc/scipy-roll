@@ -84,11 +84,12 @@ build:
 	tar zxvf $(SOURCE).tar.gz
 
 install::
-	cp patch-files/setupext.py $(SOURCE)
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
-	  export PATH=/opt/python/bin:$${PATH}; \
+	  if test -n "$(ROLLPYTHON)"; then \
+	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
+	  fi; \
           export -n DISPLAY; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \

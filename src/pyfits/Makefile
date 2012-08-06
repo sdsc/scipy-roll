@@ -76,15 +76,21 @@ build:
 	tar zxvf $(SOURCE).tar.gz
 
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)/lib/python2.7/site-packages
 	( \
 	  $(COMPILERSETUP); \
-	  export PATH=/opt/python/bin:$${PATH}; \
+	  if test -n "$(ROLLPYTHON)"; then \
+	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
+	  fi; \
+	  if test -n "$(ROLLPYTHONLIB)"; then \
+	    export PYTHONPATH=$(ROLLPYTHONLIB):$${PYTHONPATH}; \
+	  fi; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
+	  version=`python -c "import sys; print sys.version[:3]"`; \
+	  mkdir -p $(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages:$${PYTHONPATH}; \
 	  cd $(SOURCE); \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python2.7/site-packages:$${PYTHONPATH}; \
           python setup.py install --prefix $(ROOT)/$(PKGROOT) \
 	)
 
