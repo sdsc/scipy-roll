@@ -47,7 +47,7 @@ if test -f /etc/profile.d/modules.sh; then
   module load ROLLCOMPILER
 fi
 export PYTHONPATH=ROLLPYTHONLIB:\${PYTHONPATH}
-ROLLPYTHONBIN <<ENDPY
+ROLLPYTHON <<ENDPY
 import \$1
 help(\$1)
 print \$1.__version__
@@ -63,17 +63,12 @@ if($appliance =~ /$installedOnAppliancesPattern/) {
 }
 SKIP: {
 
-  skip 'scipy not installed', int(@MODULES) + 1 if ! $isInstalled;
-  my @missingLinks;
-  foreach my $f(glob("/opt/scipy/lib*/python*/site-packages/*")) {
-    my $link = $f;
-    $link =~ s#.*/#ROLLPYTHONLIB/#;
-    push(@missingLinks, $link) if ! -l $link;
-  }
-  ok(int(@missingLinks) == 0, 'all scipy libs linked');
+  skip 'scipy not installed', int(@MODULES) * 2 if ! $isInstalled;
   foreach my $module(@MODULES) {
+    my $link = "ROLLPYTHONLIB/site-packages/$module";
+    ok(-l $link, "$module linked");
     `bash $TESTFILE.sh $module 2>&1`;
-    ok($? == 0, "$module module installed");
+    ok($? == 0, "$module module load works");
   }
 
 }
