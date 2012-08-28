@@ -82,12 +82,12 @@ LIBSETUP = \
 COMPILERLIB = /usr/lib64
 COMMENTMKL =
 CPPCOMP = g++
-COMPILER_FLAGS = -O2 -shared -fPIC
+COMPILE_FLAGS = -O2 -shared -fPIC
 SETUPOPTS = --compiler=gcc --fcompiler=gfortran
 ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
   CPPCOMP = icpc
-  COMPILER_FLAGS = -xHost -O3 -shared -fPIC -openmp
+  COMPILE_FLAGS = -xHost -O3 -shared -fPIC -openmp
   SETUPOPTS = --compiler=intel --fcompiler=intelem
 endif
 
@@ -115,11 +115,11 @@ install::
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \
 	  for x in csr csc coo bsr dia; do \
-	    $(CPPCOMP) $(COMPILER_FLAGS) \
+	    $(CPPCOMP) $(COMPILE_FLAGS) \
 	      build/temp.linux-x86_64-2.4/scipy/sparse/sparsetools/$${x}_wrap.o\
 	      -o build/lib.linux-x86_64-2.4/scipy/sparse/sparsetools/_$${x}.so;\
 	  done; \
-	  $(CPPCOMP) $(COMPILER_FLAGS) \
+	  $(CPPCOMP) $(COMPILE_FLAGS) \
 	    build/temp.linux-x86_64-2.4/scipy/interpolate/src/_interpolate.o \
 	    -o build/lib.linux-x86_64-2.4/scipy/interpolate/_interpolate.so; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \

@@ -18,3 +18,6 @@ installs a similarly-named rpm.
 
 NOTE: the BLAS and ATLAS dynamic libraries need to be installed in order to
 build this roll.  The intel compiler comes packaged with these.
+
+This roll also supports the ROLLOPTS make variable.  If it contains 'avx',
+options are passed to the compiler to produce AVX instructions.
