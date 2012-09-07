@@ -70,7 +70,6 @@ COMPILERSETUP = \
     module load intel; \
     export MKL_HOME=$${MKL_ROOT}; \
     export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
-    module unload intel; \
     module load $(ROLLCOMPILER); \
   fi
 

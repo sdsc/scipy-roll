@@ -69,7 +69,6 @@ COMPILERSETUP = \
     . /etc/profile.d/modules.sh; \
     module load intel; \
     export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
-    module unload intel; \
     module load $(ROLLCOMPILER); \
   fi
 
@@ -83,7 +82,7 @@ COMPILERLIB = /usr/lib64
 COMMENTMKL =
 CPPCOMP = g++
 COMPILE_FLAGS = -O2 -shared -fPIC
-SETUPOPTS = --compiler=gcc --fcompiler=gfortran
+SETUPOPTS = --compiler=unix --fcompiler=unix
 ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
   CPPCOMP = icpc
