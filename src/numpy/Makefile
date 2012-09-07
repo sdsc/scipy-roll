@@ -76,7 +76,7 @@ COMPILERSETUP = \
 
 COMPILERLIB = /usr/lib64
 COMMENTMKL =
-SETUPOPTS = --compiler=gcc --fcompiler=gfortran
+SETUPOPTS = --compiler=unix --fcompiler=unix
 ifeq ("$(ROLLCOMPILER)", "intel")
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
   SETUPOPTS = --compiler=intelem --fcompiler=intelem
