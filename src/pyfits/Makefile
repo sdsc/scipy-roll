@@ -88,8 +88,8 @@ install::
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  version=`python -c "import sys; print sys.version[:3]"`; \
-	  mkdir -p $(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages:$${PYTHONPATH}; \
+	  mkdir -p $(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages; \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages:$${PYTHONPATH}; \
 	  cd $(SOURCE); \
           python setup.py install --prefix $(ROOT)/$(PKGROOT) \
 	)
