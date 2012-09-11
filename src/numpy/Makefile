@@ -64,20 +64,20 @@ REDHAT.ROOT = $(PWD)/../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
+COMMENTMKL = \#
+COMPILERLIB = /usr/lib64
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module load intel; \
-    export MKL_HOME=$${MKL_ROOT}; \
-    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
     module load $(ROLLCOMPILER); \
   fi
-
-COMPILERLIB = /usr/lib64
-COMMENTMKL =
 SETUPOPTS = --compiler=unix --fcompiler=unix
 ifeq ("$(ROLLCOMPILER)", "intel")
+  COMMENTMKL = 
   COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
+  COMPILERSETUP += ;\
+    export MKL_HOME=$${MKL_ROOT}; \
+    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
   SETUPOPTS = --compiler=intelem --fcompiler=intelem
 endif
 
