@@ -64,9 +64,6 @@ endif
 ifndef ROLLPYTHONLIB
   ROLLPYTHONLIB = `find /usr/lib64 -name site-packages | tail -1`
 endif
-empty:=
-space:=$(empty) $(empty)
-ROLLSUFFIX = _$(subst $(space),+,$(ROLLCOMPILER))
 
 -include $(ROLLSROOT)/etc/Rolls.mk
 

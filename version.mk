@@ -1,4 +1,4 @@
-ROLLNAME = scipy$(ROLLSUFFIX)
+ROLLNAME = scipy
 RELEASE  = 0
 COLOR    = orange
 
