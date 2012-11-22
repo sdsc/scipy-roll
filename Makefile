@@ -72,7 +72,7 @@ default:
 	  done; \
 	  perl -pi -e '$$_ = "" if m/ROLLCOMPILER/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)"
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" roll
 
 clean::
 	rm -f _arch bootstrap.py

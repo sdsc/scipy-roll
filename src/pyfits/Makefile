@@ -78,20 +78,19 @@ build:
 install::
 	( \
 	  $(COMPILERSETUP); \
-	  if test -n "$(ROLLPYTHON)"; then \
-	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
-	  fi; \
-	  if test -n "$(ROLLPYTHONLIB)"; then \
-	    export PYTHONPATH=$(ROLLPYTHONLIB):$${PYTHONPATH}; \
-	  fi; \
+	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
+	  echo "Using python $$pypath"; \
+	  pylib=`echo 'import sys; print "\n".join(sys.path)' | $$pypath | grep -m 1 '/lib.*site-packages$$'`; \
+	  echo "Using python library $$pylib"; \
+	  export PYTHONPATH=`dirname $$pylib`:$${PYTHONPATH}; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
-	  version=`python -c "import sys; print sys.version[:3]"`; \
+	  version=`$$pypath -c "import sys; print sys.version[:3]"`; \
 	  mkdir -p $(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages; \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages:$${PYTHONPATH}; \
 	  cd $(SOURCE); \
-          python setup.py install --prefix $(ROOT)/$(PKGROOT) \
+          $$pypath setup.py install --prefix $(ROOT)/$(PKGROOT) --install-lib $(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages \
 	)
 
 clean::

@@ -33,10 +33,4 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>pytz</package>
 <package>scipy-roll-test</package>
 
-<post>
-for F in IPython matplotlib nose numpy pyfits pytz scipy; do
-  find /opt/scipy/lib*/python*/site-packages -type d -name $F -exec ln -s {} ROLLPYTHONLIB/site-packages/ \;
-done
-</post>
-
 </kickstart>

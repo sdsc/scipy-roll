@@ -66,14 +66,13 @@ build:
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  if test -n "$(ROLLPYTHON)"; then \
-	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
-	  fi; \
-	  version=`python -c "import sys; print sys.version[:3]"`; \
+	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
+	  echo "Using python $$pypath"; \
+	  version=`$$pypath -c "import sys; print sys.version[:3]"`; \
 	  mkdir -p $(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages:$${PYTHONPATH}; \
 	  cd $(SOURCE); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
 clean::

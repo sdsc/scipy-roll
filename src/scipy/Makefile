@@ -103,14 +103,13 @@ install::
 	( \
 	  $(COMPILERSETUP); \
           $(LIBSETUP); \
-	  if test -n "$(ROLLPYTHON)"; then \
-	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
-	  fi; \
+	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
+	  echo "Using python $$pypath"; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
-	  python setup.py config $(SETUPOPTS) \
+	  $$pypath setup.py config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \
 	  for x in csr csc coo bsr dia; do \
@@ -121,7 +120,7 @@ install::
 	  $(CPPCOMP) $(COMPILE_FLAGS) \
 	    build/temp.linux-x86_64-2.4/scipy/interpolate/src/_interpolate.o \
 	    -o build/lib.linux-x86_64-2.4/scipy/interpolate/_interpolate.so; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
 clean::

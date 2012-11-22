@@ -66,11 +66,10 @@ build:
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  if test -n "$(ROLLPYTHON)"; then \
-	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
-	  fi; \
+	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
+	  echo "Using python $$pypath"; \
 	  cd $(SOURCE); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
 clean::

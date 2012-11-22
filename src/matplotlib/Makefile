@@ -87,16 +87,15 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
-	  if test -n "$(ROLLPYTHON)"; then \
-	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
-	  fi; \
+	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
+	  echo "Using python $$pypath"; \
           export -n DISPLAY; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
-	  python setup.py $(SETUPOPTS) build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $$pypath setup.py $(SETUPOPTS) build; \
+	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
 clean::

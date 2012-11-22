@@ -90,9 +90,11 @@ build:
 	export PATH=/opt/python/bin:$${PATH}
 	( \
 	  $(COMPILERSETUP); \
+	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
+	  echo "Using python $$pypath"; \
 	  cd $(SOURCE); \
 	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKL_HOME}!" site.cfg; \
-	  python setup.py build_src \
+	  $$pypath setup.py build_src \
 	                  config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS) \
@@ -102,11 +104,10 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
-	  if test -n "$(ROLLPYTHON)"; then \
-	    export PATH=`echo $(ROLLPYTHON) | sed 's/.[^/]*$$//'`:$${PATH}; \
-	  fi; \
+	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
+	  echo "Using python $$pypath"; \
 	  cd $(SOURCE); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages` $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 
