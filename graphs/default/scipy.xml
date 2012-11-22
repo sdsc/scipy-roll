@@ -35,11 +35,4 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
   <tail>scipy-doc</tail>
 </order>
 
-<edge from="base">
-  <to>scipy-roll-test</to>
-</edge>
-<order head="base">
-  <tail>scipy-roll-test</tail>
-</order>
-
 </graph>

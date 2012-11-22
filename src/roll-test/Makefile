@@ -1,11 +1,11 @@
-#
+# --------------------------------------------------- -*- Makefile -*- --
 # $Id$
 #
 # @Copyright@
 # 
-# 				Rocks(tm)
+# 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		        version 4.3 (Mars Hill)
+# 		       version 5.2 (Chimichanga)
 # 
 # Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.	
@@ -25,7 +25,7 @@
 # 3. All advertising and press materials, printed or electronic, mentioning
 # features or use of this software must display the following acknowledgement: 
 # 
-# 	"This product includes software developed by the Rocks(tm)
+# 	"This product includes software developed by the Rocks(r)
 # 	Cluster Group at the San Diego Supercomputer Center at the
 # 	University of California, San Diego and its contributors."
 # 
@@ -53,40 +53,20 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # @Copyright@
-#
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-ifndef ROLLPYTHON
-  ROLLPYTHON = `which python`
-endif
-ifndef ROLLPYTHONLIB
-  ROLLPYTHONLIB = `find /usr/lib64 -name site-packages | tail -1`
-endif
+PKGROOT = /root/rolltests
+REDHAT.ROOT = $(CURDIR)/../../
 
--include $(ROLLSROOT)/etc/Rolls.mk
+-include $(ROCKSROOT)/etc/Rules.mk
+include Rules.mk
 
-default:
-# Copy and substitute lines of nodes/*.in that reference ROLLCOMPILER, making
-# one copy for each ROLLCOMPILER value
-	for i in `ls nodes/*.in`; do \
-	  export o=`echo $$i | sed 's/\.in//'`; \
-	  cp $$i $$o; \
-	  for c in $(ROLLCOMPILER); do \
-	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
-	  done; \
-	  perl -pi -e '$$_ = "" if m/ROLLCOMPILER/' $$o; \
-	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYTHON="$(ROLLPYTHON)" ROLLPYTHONLIB="$(ROLLPYTHONLIB)" roll
+build:
+
+install::
+	  mkdir -p $(ROOT)/$(PKGROOT)
+	  cp *.t $(ROOT)/$(PKGROOT)/
+	  perl -pi -e 's/ROLLCOMPILER/$(ROLLCOMPILER)/g' $(ROOT)/$(PKGROOT)/*.t
+	  perl -pi -e 's/ROLLMPI/$(ROLLMPI)/g' $(ROOT)/$(PKGROOT)/*.t
+	  perl -pi -e 's/ROLLNETWORK/$(ROLLNETWORK)/g' $(ROOT)/$(PKGROOT)/*.t
 
 clean::
-	rm -f _arch bootstrap.py
-
-cvsclean: clean
-	for i in `ls nodes/*.in`; do \
-	  export o=`echo $$i | sed 's/\.in//'`; \
-	  rm -f $$o; \
-	done
-	rm -fr RPMS SRPMS
-	rm -fr src/site-packages*

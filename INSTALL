@@ -1,0 +1,32 @@
+This roll bundles a collection of Python scientific computing modules: ipython,
+matplotlib, nose, numpy, pyfits, pytz, and scipy.  To install, execute these
+instructions on a Rocks development machine (e.g., a frontend), starting in
+this directory:
+
+% make
+% rocks add roll *.iso
+% rocks enable roll scipy
+% cd /export/rocks/install
+% rocks create distro
+% rocks run roll scipy | bash
+
+This roll source supports building with different compilers; by default, it
+builds using the gnu compilers.  To build for a different configuration, use
+the ROLLCOMPILER make variable, e.g.,
+
+% make ROLLCOMPILER=intel
+
+The build process currently supports one or more of the values "gnu", "intel",
+and "pgi" for the ROLLCOMPILER variable, defaulting to "gnu".
+
+NOTE: the BLAS and ATLAS dynamic libraries need to be installed in order to
+build this roll.  The intel compiler comes packaged with these.
+
+The roll also supports specifying building for a python version other than the
+one included with the o/s.  To use this feature, specify a ROLLOPTS make
+variable that includes the paths to the python executable and library, e.g.,
+
+% make ROLLOPTS='python=/opt/python/bin/python2.7 pythonlib=/opt/python/lib/python2.7'
+
+If ROLLOPTS specifies paths in this fashion, the roll installs its python
+modules in the site-packages subdir of the library.

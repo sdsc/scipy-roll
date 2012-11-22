@@ -31,6 +31,7 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>pyfits_ROLLCOMPILER</package>
 <package>matplotlib_ROLLCOMPILER</package>
 <package>pytz</package>
+<package>scipy-roll-test</package>
 
 <post>
 for F in IPython matplotlib nose numpy pyfits pytz scipy; do

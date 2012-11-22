@@ -1,25 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-
-<kickstart>
-
-<description>
-The scipy roll installation test.
-</description>
-
-<copyright>
-Copyright (c) 2000 - 2011 The Regents of the University of California.
-All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
-</copyright>
-
-<changelog>
-</changelog>
-
-<post>
-
-/bin/mkdir -m 0755 /root/rolltests
-
-<file name="/root/rolltests/scipy.t" perms="0755">
-<![CDATA[#!/usr/bin/perl -w
+#!/usr/bin/perl -w
 # scipy roll installation test.  Usage:
 # scipy.t [nodetype]
 #   where nodetype is one of "Compute", "Dbnode", "Frontend" or "Login"
@@ -79,10 +58,4 @@ SKIP: {
   ok(-d '/var/www/html/roll-documentation/scipy', 'doc installed');
 }
 
-`rm -f $TESTFILE*`;
-]]>
-</file>
-
-</post>
-
-</kickstart> 
+`rm -fr $TESTFILE*`;
