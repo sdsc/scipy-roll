@@ -58,12 +58,6 @@
 ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
-ifndef ROLLPYTHON
-  ROLLPYTHON = `which python`
-endif
-ifndef ROLLPYTHONLIB
-  ROLLPYTHONLIB = `find /usr/lib64 -name site-packages | tail -1`
-endif
 
 -include $(ROLLSROOT)/etc/Rolls.mk
 
@@ -78,7 +72,7 @@ default:
 	  done; \
 	  perl -pi -e '$$_ = "" if m/ROLLCOMPILER/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYTHON="$(ROLLPYTHON)" ROLLPYTHONLIB="$(ROLLPYTHONLIB)" roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)"
 
 clean::
 	rm -f _arch bootstrap.py
