@@ -1,0 +1,4 @@
+#%Module1.0
+foreach lib [glob -nocomplain /opt/scipy/lib*/python*] {
+  prepend-path PYTHONPATH $lib
+}

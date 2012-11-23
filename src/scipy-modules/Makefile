@@ -54,7 +54,7 @@
 # 
 # @Copyright@
 
-PKGROOT = /root/rolltests
+PKGROOT = /opt/modulefiles/applications/scipy
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
@@ -63,15 +63,11 @@ include Rules.mk
 build:
 
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	cp *.t $(ROOT)/$(PKGROOT)/
-	perl -pi -e 's/ROLLCOMPILER/$(ROLLCOMPILER)/g' $(ROOT)/$(PKGROOT)/*.t
-	perl -pi -e 's/ROLLMPI/$(ROLLMPI)/g' $(ROOT)/$(PKGROOT)/*.t
-	perl -pi -e 's/ROLLNETWORK/$(ROLLNETWORK)/g' $(ROOT)/$(PKGROOT)/*.t
-	( \
-	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
-	  perl -pi -e "s/ROLLPYTHON/$$pypath/g" $(ROOT)/$(PKGROOT)/*.t \
-	)
+	  mkdir -p $(ROOT)/$(PKGROOT)
+	  cp scipy.module $(ROOT)/$(PKGROOT)/$(VERSION)
+	  cp scipy.version $(ROOT)/$(PKGROOT)/.version.$(VERSION)
+	  perl -pi -e 's/VERSION/$(VERSION)/g' $(ROOT)/$(PKGROOT)/$(VERSION)
+	  perl -pi -e 's/VERSION/$(VERSION)/g' $(ROOT)/$(PKGROOT)/.version.$(VERSION)
+	  ln -s $(PKGROOT)/.version.$(VERSION) $(ROOT)/$(PKGROOT)/.version
 
 clean::

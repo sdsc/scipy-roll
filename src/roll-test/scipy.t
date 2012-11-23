@@ -23,13 +23,12 @@ print OUT <<END;
 #!/bin/bash
 if test -f /etc/profile.d/modules.sh; then
   . /etc/profile.d/modules.sh
-  module load ROLLCOMPILER
+  module load intel scipy
 fi
-export PYTHONPATH=ROLLPYTHONLIB:\${PYTHONPATH}
 ROLLPYTHON <<ENDPY
 import \$1
 help(\$1)
-print \$1.__version__
+print "\$1 version %s" % \$1.__version__
 ENDPY
 END
 close(OUT);
@@ -42,13 +41,19 @@ if($appliance =~ /$installedOnAppliancesPattern/) {
 }
 SKIP: {
 
-  skip 'scipy not installed', int(@MODULES) * 2 if ! $isInstalled;
+  skip 'scipy not installed', int(@MODULES) + 3 if ! $isInstalled;
   foreach my $module(@MODULES) {
-    my $link = "ROLLPYTHONLIB/site-packages/$module";
-    ok(-l $link, "$module linked");
-    `bash $TESTFILE.sh $module 2>&1`;
-    ok($? == 0, "$module module load works");
+    $output = `bash $TESTFILE.sh $module 2>&1`;
+    like($output, qr/$module version/, "$module module load works");
   }
+
+  skip 'modules not installed', 3 if ! -f '/etc/profile.d/modules.sh';
+  `/bin/ls /opt/modulefiles/applications/scipy/[0-9]* 2>&1`;
+  ok($? == 0, 'scipy module installed');
+  `/bin/ls /opt/modulefiles/applications/scipy/.version.[0-9]* 2>&1`;
+  ok($? == 0, 'scipy version module installed');
+  ok(-l '/opt/modulefiles/applications/scipy/.version',
+     'scipy version module link created');
 
 }
 
