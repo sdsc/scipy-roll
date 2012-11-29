@@ -61,7 +61,7 @@ REDHAT.ROOT = $(PWD)/../..
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
-	tar zxvf $(SOURCE).tgz
+	tar zxvf $(SOURCE).tar.gz
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)

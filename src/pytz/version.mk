@@ -1,3 +1,3 @@
 NAME    = pytz
-VERSION = 2012d
-RELEASE = 1
+VERSION = 2012h
+RELEASE = 0
