@@ -74,6 +74,7 @@ COMPILERSETUP = \
 
 build:
 	tar zxvf $(SOURCE).tar.gz
+	cp patch-files/distribute_setup.py $(SOURCE)
 
 install::
 	( \
