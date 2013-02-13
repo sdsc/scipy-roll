@@ -83,4 +83,4 @@ cvsclean: clean
 	  rm -f $$o; \
 	done
 	rm -fr RPMS SRPMS
-	rm -fr src/site-packages*
+	rm -fr src/site-packages* src/bin-*

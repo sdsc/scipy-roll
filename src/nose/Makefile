@@ -61,19 +61,31 @@ REDHAT.ROOT = $(PWD)/../..
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
-	tar zxvf $(SOURCE).tar.gz
 
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
+	mkdir -p $(ROOT)/$(PKGROOT)/bin
 	( \
 	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
 	  echo "Using python $$pypath"; \
 	  version=`$$pypath -c "import sys; print sys.version[:3]"`; \
-	  mkdir -p $(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages:$${PYTHONPATH}; \
-	  cd $(SOURCE); \
-	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+          sitepath=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
+	  mkdir -p  $${sitepath}; \
+          export PYTHONPATH=$${sitepath}:$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); \
+          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/setuptools.pth $${sitepath}; \
+          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/easy-install.pth $${sitepath}; \
+          cp -r $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/setuptools-0.6c11-py2.6.egg $${sitepath}; \
+          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/site.py $${sitepath}; \
+          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/site.pyc $${sitepath}; \
+          $(REDHAT.ROOT)/src/bin-$(ROLLCOMPILER)/easy_install --install-dir $${sitepath} $(SOURCE).tar.gz; \
+          /bin/cp -r $${sitepath}/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); \
+          /bin/mv $${sitepath}/nosetests $(ROOT)/$(PKGROOT)/bin; \
+          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/easy-install.pth $${sitepath}; \
+          rm -f $${sitepath}/site.py; \
+          rm -f $${sitepath}/site.pyc \
+          rm -f $${sitepath}/easy-install.pth \
 	)
+
+
 
 clean::
 	rm -rf $(SOURCE)

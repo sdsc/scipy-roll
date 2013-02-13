@@ -61,18 +61,26 @@ REDHAT.ROOT = $(PWD)/../..
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
-	tar zxvf $(SOURCE).tar.gz
+	tar xvzf $(SOURCE).tar.gz
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
+	mkdir $(REDHAT.ROOT)/src/bin-$(ROLLCOMPILER)
+	mkdir $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 	( \
-	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
-	  version=`$$pypath -c "import sys; print sys.version[:3]"`; \
-	  mkdir -p $(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages:$${PYTHONPATH}; \
-	  cd $(SOURCE); \
-	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+          pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
+          version=`$${pypath} -c "import sys; print sys.version[:3]"`; \
+          sitepath=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
+          echo "Using python $${pypath}"; \
+          mkdir -p $${sitepath}; \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages:$${PYTHONPATH}; \
+          cd $(SOURCE); \
+          $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          /bin/cp -r $${sitepath}/*  $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); \
+          /bin/cp $(ROOT)/$(PKGROOT)/bin/* $(REDHAT.ROOT)/src/bin-$(ROLLCOMPILER); \
+          rm -f $${sitepath}/easy-install.pth; \
+          rm -f $${sitepath}/site.py; \
+          rm -f $${sitepath}/site.pyc \
 	)
 
 clean::

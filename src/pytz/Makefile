@@ -77,8 +77,9 @@ install::
           cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/site.py $${sitepath}; \
           cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/site.pyc $${sitepath}; \
           $(REDHAT.ROOT)/src/bin-$(ROLLCOMPILER)/easy_install --install-dir $${sitepath} $(SOURCE).tar.gz; \
-          eggfile=`basename $${sitepath}/nose*.egg`; \
-          ex  $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/easy-install.pth <exscript; \
+          export eggfile=`basename $${sitepath}/pytz*.egg`; \
+          perl -ni -e 'use Env;print;print "./$$eggfile \n" if /nose/' $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/easy-install.pth; \
+          /bin/cp -r $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/easy-install.pth $${sitepath}; \
           /bin/cp -r $${sitepath}/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER) \
 	)
 
