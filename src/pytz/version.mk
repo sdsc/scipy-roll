@@ -1,3 +1,3 @@
-NAME    = pytz
+NAME    = pytz_$(ROLLCOMPILER)
 VERSION = 2012j
 RELEASE = 0
