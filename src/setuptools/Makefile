@@ -65,8 +65,8 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir $(REDHAT.ROOT)/src/bin-$(ROLLCOMPILER)
-	mkdir $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
+	mkdir $(REDHAT.ROOT)/src/bin
+	mkdir $(REDHAT.ROOT)/src/site-packages
 	( \
           pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
           version=`$${pypath} -c "import sys; print sys.version[:3]"`; \
@@ -76,8 +76,8 @@ install::
           export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages:$${PYTHONPATH}; \
           cd $(SOURCE); \
           $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          /bin/cp -r $${sitepath}/*  $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); \
-          /bin/cp $(ROOT)/$(PKGROOT)/bin/* $(REDHAT.ROOT)/src/bin-$(ROLLCOMPILER); \
+          /bin/cp -r $${sitepath}/*  $(REDHAT.ROOT)/src/site-packages; \
+          /bin/cp $(ROOT)/$(PKGROOT)/bin/* $(REDHAT.ROOT)/src/bin; \
           rm -f $${sitepath}/easy-install.pth; \
           rm -f $${sitepath}/site.py; \
           rm -f $${sitepath}/site.pyc \

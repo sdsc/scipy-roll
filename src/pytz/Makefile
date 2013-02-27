@@ -70,17 +70,17 @@ install::
 	  version=`$${pypath} -c "import sys; print sys.version[:3]"`; \
           sitepath=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
 	  mkdir -p  $${sitepath}; \
-          export PYTHONPATH=$${sitepath}:$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); \
-          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/setuptools.pth $${sitepath}; \
-          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/easy-install.pth $${sitepath}; \
-          cp -r $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/setuptools-0.6c11-py2.6.egg $${sitepath}; \
-          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/site.py $${sitepath}; \
-          cp $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/site.pyc $${sitepath}; \
-          $(REDHAT.ROOT)/src/bin-$(ROLLCOMPILER)/easy_install --install-dir $${sitepath} $(SOURCE).tar.gz; \
+          export PYTHONPATH=$${sitepath}:$(REDHAT.ROOT)/src/site-packages; \
+          cp $(REDHAT.ROOT)/src/site-packages/setuptools.pth $${sitepath}; \
+          cp $(REDHAT.ROOT)/src/site-packages/easy-install.pth $${sitepath}; \
+          cp -r $(REDHAT.ROOT)/src/site-packages/setuptools-0.6c11-py2.6.egg $${sitepath}; \
+          cp $(REDHAT.ROOT)/src/site-packages/site.py $${sitepath}; \
+          cp $(REDHAT.ROOT)/src/site-packages/site.pyc $${sitepath}; \
+          $(REDHAT.ROOT)/src/bin/easy_install --install-dir $${sitepath} $(SOURCE).tar.gz; \
           export eggfile=`basename $${sitepath}/pytz*.egg`; \
-          perl -ni -e 'use Env;print;print "./$$eggfile \n" if /nose/' $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/easy-install.pth; \
-          /bin/cp -r $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/easy-install.pth $${sitepath}; \
-          /bin/cp -r $${sitepath}/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER) \
+          perl -ni -e 'use Env;print;print "./$$eggfile \n" if /nose/' $(REDHAT.ROOT)/src/site-packages/easy-install.pth; \
+          /bin/cp -r $(REDHAT.ROOT)/src/site-packages/easy-install.pth $${sitepath}; \
+          /bin/cp -r $${sitepath}/* $(REDHAT.ROOT)/src/site-packages \
 	)
 
 clean::
