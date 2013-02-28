@@ -83,6 +83,7 @@ endif
 
 build:
 	tar zxvf $(SOURCE).tar.gz
+	mkdir $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 	cp patch-files/site.cfg $(SOURCE)
 	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
