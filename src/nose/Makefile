@@ -83,6 +83,7 @@ install::
           rm -f $${sitepath}/site.py; \
           rm -f $${sitepath}/site.pyc \
           rm -f $${sitepath}/easy-install.pth \
+          rm -f $${sitepath}/setuptools.pth; \
 	)
 
 
