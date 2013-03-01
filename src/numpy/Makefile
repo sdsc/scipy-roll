@@ -88,7 +88,6 @@ build:
 	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
 	cp patch-files/system_info.py $(SOURCE)/numpy/distutils
-	export PATH=/opt/python/bin:$${PATH}
 	( \
 	  $(COMPILERSETUP); \
 	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
