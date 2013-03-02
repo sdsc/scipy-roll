@@ -93,8 +93,8 @@ install::
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages:$${PYTHONPATH}; \
 	  cd $(SOURCE); \
           $$pypath setup.py install --prefix $(ROOT)/$(PKGROOT) --install-lib $(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages; \
-          rm -f $${sitepath}/easy_install-2.6 $${sitepath}/bin/easy_install-2.6; \
-          rm -rf $${sitepath}/easy_install $${sitepath}/bin/easy_install; \
+          rm -f $${sitepath}/easy_install-2.6 $(ROOT)/$(PKGROOT)/bin/easy_install-2.6; \
+          rm -f $${sitepath}/easy_install $(ROOT)/$(PKGROOT)/bin/easy_install; \
 	)
 
 clean::
