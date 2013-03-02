@@ -68,6 +68,7 @@ install::
 	( \
 	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
 	  echo "Using python $$pypath"; \
+          export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH} ; \
 	  cd $(SOURCE); \
 	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
