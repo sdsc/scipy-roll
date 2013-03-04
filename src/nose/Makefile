@@ -84,6 +84,7 @@ install::
           rm -f $${sitepath}/site.pyc \
           rm -f $${sitepath}/easy-install.pth \
           rm -f $${sitepath}/setuptools.pth; \
+          rm -f $${sitepath}/setuptools-0.6c11-py2.6.egg \
 	)
 
 
