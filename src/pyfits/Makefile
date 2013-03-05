@@ -88,13 +88,11 @@ install::
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  version=`$$pypath -c "import sys; print sys.version[:3]"`; \
-          sitepath=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
-	  mkdir -p $(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages; \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages:$${PYTHONPATH}; \
+          sitepath=$(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages; \
+	  mkdir -p $${sitepath}; \
+	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
 	  cd $(SOURCE); \
           $$pypath setup.py install --prefix $(ROOT)/$(PKGROOT) --install-lib $(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages; \
-          rm -f $${sitepath}/easy_install-2.6 $(ROOT)/$(PKGROOT)/bin/easy_install-2.6; \
-          rm -f $${sitepath}/easy_install $(ROOT)/$(PKGROOT)/bin/easy_install; \
 	)
 
 clean::

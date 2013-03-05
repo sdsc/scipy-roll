@@ -1,3 +1,0 @@
-NAME    = nose
-VERSION = 1.2.1
-RELEASE = 0
