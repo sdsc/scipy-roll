@@ -27,9 +27,9 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>numpy_ROLLCOMPILER</package>
 <package>scipy_ROLLCOMPILER</package>
 <package>ipython</package>
-<package>pyfits_ROLLCOMPILER</package>
+<package>libxml2_ROLLCOMPILER</package>
 <package>matplotlib_ROLLCOMPILER</package>
-<package>setuptools_nose_pytz</package>
+<package>setuptools_nose_pytz_pyfits_ROLLCOMPILER</package>
 <package>scipy-modules</package>
 <package>scipy-roll-test</package>
 

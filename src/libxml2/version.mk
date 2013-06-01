@@ -1,0 +1,3 @@
+NAME    = libxml2_$(ROLLCOMPILER)
+VERSION = 2.9.1
+RELEASE = 0

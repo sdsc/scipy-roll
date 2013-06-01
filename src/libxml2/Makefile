@@ -61,7 +61,7 @@ ifndef ROLLCOMPILER
 endif
 
 PKGROOT = /opt/scipy
-SOURCE = pyfits-$(VERSION)
+SOURCE = libxml2-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
@@ -72,15 +72,25 @@ COMPILERSETUP = \
     module load $(ROLLCOMPILER); \
   fi
 
+CC=gcc
+ifeq ("$(ROLLCOMPILER)", "intel")
+  CC=icc
+endif
+ifeq ("$(ROLLCOMPILER)", "pgi")
+  CC=pgcc
+endif
+
 build:
 	tar zxvf $(SOURCE).tar.gz
-	cp patch-files/distribute_setup.py $(SOURCE)
+	cp patch-files/configure $(SOURCE)
 
 install::
+	mkdir -p $(ROOT)/$(PKGROOT)
+	mkdir -p $(PKGROOT)
+	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
 	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
 	  pylib=`echo 'import sys; print "\n".join(sys.path)' | $$pypath | grep -m 1 '/lib.*site-packages$$'`; \
 	  echo "Using python library $$pylib"; \
 	  export PYTHONPATH=`dirname $$pylib`:$${PYTHONPATH}; \
@@ -88,12 +98,16 @@ install::
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  version=`$$pypath -c "import sys; print sys.version[:3]"`; \
-          sitepath=$(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages; \
+          sitepath=$(PKGROOT)/lib64/python$${version}/site-packages; \
 	  mkdir -p $${sitepath}; \
 	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
 	  cd $(SOURCE); \
-          $$pypath setup.py install --prefix $(ROOT)/$(PKGROOT) --install-lib $(ROOT)/$(PKGROOT)/lib64/python$${version}/site-packages; \
+          perl -pi -e "s!ROLLPATH!$${sitepath}/libxml2!" configure; \
+          ./configure --with-python -prefix=$${sitepath}/libxml2; \
+          make; \
+          make install \
 	)
+	umount $(PKGROOT)
 
 clean::
 	rm -rf $(SOURCE)
