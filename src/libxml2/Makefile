@@ -94,6 +94,7 @@ install::
 	  pylib=`echo 'import sys; print "\n".join(sys.path)' | $$pypath | grep -m 1 '/lib.*site-packages$$'`; \
 	  echo "Using python library $$pylib"; \
 	  export PYTHONPATH=`dirname $$pylib`:$${PYTHONPATH}; \
+          export LD_LIBRARY_PATH=/opt/python/lib:$${LD_LIBRARY_PATH}; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
