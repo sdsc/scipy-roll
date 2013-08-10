@@ -96,7 +96,7 @@ install::
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
-	  $$pypath setup.py config cc=$(CCOMP) \
+	  $$pypath setup.py config -cc $(CCOMP); \
 	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
