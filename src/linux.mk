@@ -62,6 +62,7 @@ SRCDIRS = `find . -type d -maxdepth 1 \
 	-not -name scipy \
 	-not -name ipython \
 	-not -name numpy \
+	-not -name scientificpython \
 	-not -name libxml2 \
 	-not -name setuptools_nose_pytz_pyfits \
-	-not -name .` numpy setuptools_nose_pytz_pyfits ipython scipy matplotlib libxml2
+	-not -name .` numpy setuptools_nose_pytz_pyfits ipython scipy scientificpython matplotlib libxml2
