@@ -13,7 +13,7 @@ my $isInstalled = -d '/opt/scipy';
 my $output;
 
 my @MODULES = (
-  'IPython', 'matplotlib', 'nose', 'numpy', 'pyfits', 'pytz', 'scipy'
+  'IPython', 'matplotlib', 'nose', 'numpy', 'pyfits', 'pytz', 'scipy','Scientific'
 );
 
 my $TESTFILE = 'tmpscipy';
