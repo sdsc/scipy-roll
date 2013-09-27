@@ -1,3 +1,5 @@
-NAME    = scipy_$(ROLLCOMPILER)
-VERSION = 0.11.0rc1
-RELEASE = 1
+NAME    = scipy_$(ROLLCOMPILER)_python$(PYVERSION)
+VERSION = 0.12.0
+RELEASE = 0
+
+RPM.EXTRAS = "AutoReq: no"

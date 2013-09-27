@@ -1,3 +1,5 @@
-NAME    = libxml2_$(ROLLCOMPILER)
+NAME    = libxml2_$(ROLLCOMPILER)_python$(PYVERSION)
 VERSION = 2.9.1
 RELEASE = 0
+
+RPM.EXTRAS = "AutoReq: no"

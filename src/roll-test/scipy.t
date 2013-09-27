@@ -25,7 +25,7 @@ if test -f /etc/profile.d/modules.sh; then
   . /etc/profile.d/modules.sh
   module load intel scipy
 fi
-ROLLPYTHON <<ENDPY
+PYPATH <<ENDPY
 import \$1
 help(\$1)
 print "\$1 version %s" % \$1.__version__

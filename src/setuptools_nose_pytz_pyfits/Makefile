@@ -67,6 +67,13 @@ COMPILERSETUP = \
     module load $(ROLLCOMPILER); \
   fi
 
+ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+  PYPATH = python
+else
+  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
@@ -79,14 +86,12 @@ install::
 	mkdir -p $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 	( \
 	  $(COMPILERSETUP); \
-          pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-          version=`$${pypath} -c "import sys; print sys.version[:3]"`; \
-          sitepath=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages; \
-          echo "Using python $${pypath}"; \
+	  echo Using python $(PYPATH) version $(PYVERSION); \
+          sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
           mkdir -p $${sitepath}; \
-          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$${version}/site-packages:$${PYTHONPATH}:$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}:$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); \
           cd $(SOURCE); \
-          $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} nose-$(NOSEVERSION).tar.gz; \
           $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} pytz-$(PYTZVERSION).tar.gz; \

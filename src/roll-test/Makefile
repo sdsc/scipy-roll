@@ -57,6 +57,13 @@
 PKGROOT = /root/rolltests
 REDHAT.ROOT = $(CURDIR)/../../
 
+ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+  PYPATH = python
+else
+  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
@@ -69,9 +76,8 @@ install::
 	perl -pi -e 's/ROLLMPI/$(ROLLMPI)/g' $(ROOT)/$(PKGROOT)/*.t
 	perl -pi -e 's/ROLLNETWORK/$(ROLLNETWORK)/g' $(ROOT)/$(PKGROOT)/*.t
 	( \
-	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
-	  perl -pi -e "s/ROLLPYTHON/$$pypath/g" $(ROOT)/$(PKGROOT)/*.t \
+	  echo Using python $(PYPATH) version $(PYVERSION); \
+	  perl -pi -e "s#PYPATH#$(PYPATH)#g" $(ROOT)/$(PKGROOT)/*.t \
 	)
 
 clean::

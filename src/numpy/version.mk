@@ -1,3 +1,5 @@
-NAME    = numpy_$(ROLLCOMPILER)
-VERSION = 1.6.2
-RELEASE = 1
+NAME    = numpy_$(ROLLCOMPILER)_python$(PYVERSION)
+VERSION = 1.7.0
+RELEASE = 0
+
+RPM.EXTRAS = "AutoReq: no"

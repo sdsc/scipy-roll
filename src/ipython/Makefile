@@ -58,6 +58,13 @@ PKGROOT = /opt/scipy
 SOURCE = ipython-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
+ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+  PYPATH = python
+else
+  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
@@ -66,11 +73,10 @@ build:
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
+	  echo Using python $(PYPATH) version $(PYVERSION); \
           export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages:$${PYTHONPATH} ; \
 	  cd $(SOURCE); \
-	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
 clean::

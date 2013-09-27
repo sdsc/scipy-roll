@@ -62,6 +62,13 @@ PKGROOT = /opt/scipy
 SOURCE = scipy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
+ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+  PYPATH = python
+else
+  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 -include $(ROCKSROOT)/etc/Rules.mk
 
 COMPILERSETUP = \
@@ -103,13 +110,12 @@ install::
 	( \
 	  $(COMPILERSETUP); \
           $(LIBSETUP); \
-	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
+	  echo Using python $(PYPATH) version $(PYVERSION); \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
-	  $$pypath setup.py config $(SETUPOPTS) \
+	  $(PYPATH) setup.py config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \
 	  for x in csr csc coo bsr dia; do \
@@ -120,7 +126,7 @@ install::
 	  $(CPPCOMP) $(COMPILE_FLAGS) \
 	    build/temp.linux-x86_64-2.4/scipy/interpolate/src/_interpolate.o \
 	    -o build/lib.linux-x86_64-2.4/scipy/interpolate/_interpolate.so; \
-	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
 clean::

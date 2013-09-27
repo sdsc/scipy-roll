@@ -1,6 +1,3 @@
-# -*- encoding: iso-8859-1 -*-
-# above encoding b/c there's a non-ASCII character in the sample output
-# of intele
 # http://developer.intel.com/software/products/compilers/flin/
 
 import sys
@@ -11,7 +8,7 @@ from numpy.distutils.fcompiler import FCompiler, dummy_fortran_file
 
 compilers = ['IntelFCompiler', 'IntelVisualFCompiler',
              'IntelItaniumFCompiler', 'IntelItaniumVisualFCompiler',
-             'IntelEM64TFCompiler']
+             'IntelEM64VisualFCompiler', 'IntelEM64TFCompiler']
 
 def intel_version_match(type):
     # Match against the important stuff in the version string
@@ -46,61 +43,18 @@ class IntelFCompiler(BaseIntelFCompiler):
     module_dir_switch = '-module ' # Don't remove ending space!
     module_include_switch = '-I'
 
-    def get_flags(self):
-        v = self.get_version()
-        if v >= '10.0':
-            # Use -fPIC instead of -KPIC.
-            pic_flags = ['-fPIC']
-        else:
-            pic_flags = ['-KPIC']
-        opt = pic_flags + ["-cm"]
-        return opt
-
     def get_flags_free(self):
         return ["-FR"]
 
+    def get_flags(self):
+        return ['-fPIC']
+
     def get_flags_opt(self):
-        return ['-O3','-unroll']
+        #return ['-i8 -xhost -openmp -fp-model strict']
+        return ['-xhost -openmp -fp-model strict']
 
     def get_flags_arch(self):
-        v = self.get_version()
-        opt = []
-        if cpu.has_fdiv_bug():
-            opt.append('-fdiv_check')
-        if cpu.has_f00f_bug():
-            opt.append('-0f_check')
-        if cpu.is_PentiumPro() or cpu.is_PentiumII() or cpu.is_PentiumIII():
-            opt.extend(['-tpp6'])
-        elif cpu.is_PentiumM():
-            opt.extend(['-tpp7','-xB'])
-        elif cpu.is_Pentium():
-            opt.append('-tpp5')
-        elif cpu.is_PentiumIV() or cpu.is_Xeon():
-            opt.extend(['-tpp7','-xW'])
-        if v and v <= '7.1':
-            if cpu.has_mmx() and (cpu.is_PentiumII() or cpu.is_PentiumIII()):
-                opt.append('-xM')
-        elif v and v >= '8.0':
-            if cpu.is_PentiumIII():
-                opt.append('-xK')
-                if cpu.has_sse3():
-                    opt.extend(['-xP'])
-            elif cpu.is_PentiumIV():
-                opt.append('-xW')
-                if cpu.has_sse2():
-                    opt.append('-xN')
-            elif cpu.is_PentiumM():
-                opt.extend(['-xB'])
-            if (cpu.is_Xeon() or cpu.is_Core2() or cpu.is_Core2Extreme()) and cpu.getNCPUs()==2:
-                opt.extend(['-xT'])
-            if cpu.has_sse3() and (cpu.is_PentiumIV() or cpu.is_CoreDuo() or cpu.is_CoreSolo()):
-                opt.extend(['-xP'])
-
-        if cpu.has_sse2():
-            opt.append('-arch SSE2')
-        elif cpu.has_sse():
-            opt.append('-arch SSE')
-        return opt
+        return []
 
     def get_flags_linker_so(self):
         opt = FCompiler.get_flags_linker_so(self)
@@ -124,11 +78,6 @@ class IntelItaniumFCompiler(IntelFCompiler):
 
     version_match = intel_version_match('Itanium|IA-64')
 
-#Intel(R) Fortran Itanium(R) Compiler for Itanium(R)-based applications
-#Version 9.1    Build 20060928 Package ID: l_fc_c_9.1.039
-#Copyright (C) 1985-2006 Intel Corporation.  All rights reserved.
-#30 DAY EVALUATION LICENSE
-
     possible_executables = ['ifort', 'efort', 'efc']
 
     executables = {
@@ -146,13 +95,13 @@ class IntelEM64TFCompiler(IntelFCompiler):
     compiler_aliases = ()
     description = 'Intel Fortran Compiler for EM64T-based apps'
 
-    version_match = intel_version_match('EM64T-based|Intel\\(R\\) 64')
+    version_match = intel_version_match('EM64T-based|Intel\\(R\\) 64|64|IA-64|64-bit')
 
     possible_executables = ['ifort', 'efort', 'efc']
 
     executables = {
         'version_cmd'  : None,
-        'compiler_f77' : [None, "-FI", "-w90", "-w95"],
+        'compiler_f77' : [None, "-FI"],
         'compiler_fix' : [None, "-FI"],
         'compiler_f90' : [None],
         'linker_so'    : ['<F90>', "-shared"],
@@ -160,12 +109,15 @@ class IntelEM64TFCompiler(IntelFCompiler):
         'ranlib'       : ["ranlib"]
         }
 
+    def get_flags(self):
+        return ['-fPIC']
+
+    def get_flags_opt(self):
+        #return ['-i8 -xhost -openmp -fp-model strict']
+        return ['-xhost -openmp -fp-model strict']
+
     def get_flags_arch(self):
         return['-fPIC','-openmp']
-        opt = []
-        if cpu.is_PentiumIV() or cpu.is_Xeon():
-            opt.extend(['-tpp7', '-xW'])
-        return opt
 
 # Is there no difference in the version string between the above compilers
 # and the Visual compilers?
@@ -174,6 +126,11 @@ class IntelVisualFCompiler(BaseIntelFCompiler):
     compiler_type = 'intelv'
     description = 'Intel Visual Fortran Compiler for 32-bit apps'
     version_match = intel_version_match('32-bit|IA-32')
+
+    def update_executables(self):
+        f = dummy_fortran_file()
+        self.executables['version_cmd'] = ['<F77>', '/FI', '/c',
+                                           f + '.f', '/o', f + '.o']
 
     ar_exe = 'lib.exe'
     possible_executables = ['ifl']
@@ -205,7 +162,7 @@ class IntelVisualFCompiler(BaseIntelFCompiler):
         return ['/4Yb','/d2']
 
     def get_flags_opt(self):
-        return ['/O3','/Qip','/Qipo','/Qipo_obj']
+        return ['/O1']
 
     def get_flags_arch(self):
         opt = []
@@ -239,6 +196,13 @@ class IntelItaniumVisualFCompiler(IntelVisualFCompiler):
         'archiver'     : [ar_exe, "/verbose", "/OUT:"],
         'ranlib'       : None
         }
+
+class IntelEM64VisualFCompiler(IntelVisualFCompiler):
+    compiler_type = 'intelvem'
+    description = 'Intel Visual Fortran Compiler for 64-bit apps'
+
+    version_match = simple_version_match(start='Intel\(R\).*?64,')
+
 
 if __name__ == '__main__':
     from distutils import log

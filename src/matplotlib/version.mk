@@ -1,3 +1,5 @@
-NAME    = matplotlib_$(ROLLCOMPILER)
-VERSION = 1.1.1
-RELEASE = 1
+NAME    = matplotlib_$(ROLLCOMPILER)_python$(PYVERSION)
+VERSION = 1.2.0
+RELEASE = 0
+
+RPM.EXTRAS = "AutoReq: no"

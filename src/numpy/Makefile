@@ -62,6 +62,13 @@ PKGROOT = /opt/scipy
 SOURCE = numpy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
+ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+  PYPATH = python
+else
+  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 -include $(ROCKSROOT)/etc/Rules.mk
 
 COMMENTMKL = \#
@@ -82,7 +89,7 @@ ifeq ("$(ROLLCOMPILER)", "intel")
 endif
 
 build:
-	tar zxvf $(SOURCE).tar.gz
+	unzip $(SOURCE).zip
 	mkdir $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 	cp patch-files/site.cfg $(SOURCE)
 	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
@@ -90,11 +97,10 @@ build:
 	cp patch-files/system_info.py $(SOURCE)/numpy/distutils
 	( \
 	  $(COMPILERSETUP); \
-	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
+	  echo Using python $(PYPATH) version $(PYVERSION); \
 	  cd $(SOURCE); \
 	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKL_HOME}!" site.cfg; \
-	  $$pypath setup.py build_src \
+	  $(PYPATH) setup.py build_src \
 	                  config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS) \
@@ -104,10 +110,8 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
-	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
 	  cd $(SOURCE); \
-	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages`/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 

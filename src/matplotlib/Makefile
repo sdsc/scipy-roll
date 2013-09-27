@@ -64,6 +64,13 @@ PKGROOT = /opt/scipy
 SOURCE = matplotlib-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
+ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+  PYPATH = python
+else
+  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 -include $(ROCKSROOT)/etc/Rules.mk
 
 COMPILERSETUP = \
@@ -87,15 +94,14 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
-	  pypath=`echo python=python $(ROLLOPTS) | grep -o 'python=[^ ]*' | tail -1 | sed 's/.*=//'`; \
-	  echo "Using python $$pypath"; \
+	  echo Using python $(PYPATH) version $(PYVERSION); \
           export -n DISPLAY; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
-	  $$pypath setup.py $(SETUPOPTS) build; \
-	  $$pypath setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  $(PYPATH) setup.py $(SETUPOPTS) build; \
+	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
 clean::
