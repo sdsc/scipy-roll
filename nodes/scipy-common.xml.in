@@ -11,6 +11,7 @@ numpy http://numpy.scipy.org
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 pytz http://pytz.sourceforge.net
 scipy http://www.scipy.org
+sympy http://www.sympy.org
 </description>
 
 <copyright>
@@ -24,13 +25,14 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>tix</package>
 <package>tkinter</package>
 <package>tk-devel</package>
-<package>numpy_ROLLCOMPILER</package>
-<package>scipy_ROLLCOMPILER</package>
-<package>ipython</package>
-<package>libxml2_ROLLCOMPILER</package>
-<package>matplotlib_ROLLCOMPILER</package>
-<package>setuptools_nose_pytz_pyfits_ROLLCOMPILER</package>
+<package>numpy_ROLLCOMPILER_pyPYVERSION</package>
+<package>scipy_ROLLCOMPILER_pyPYVERSION</package>
+<package>ipython_pyPYVERSION</package>
+<package>libxml2_ROLLCOMPILER_pyPYVERSION</package>
+<package>matplotlib_ROLLCOMPILER_pyPYVERSION</package>
+<package>setuptools_nose_pytz_pyfits_ROLLCOMPILER_pyPYVERSION</package>
 <package>scipy-modules</package>
 <package>scipy-roll-test</package>
+<package>sympy_pyPYVERSION</package>
 
 </kickstart>

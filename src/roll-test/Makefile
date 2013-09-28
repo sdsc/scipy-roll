@@ -54,15 +54,13 @@
 # 
 # @Copyright@
 
-PKGROOT = /root/rolltests
-REDHAT.ROOT = $(CURDIR)/../../
-
-ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+ifndef PYPATH
   PYPATH = python
-else
-  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
 endif
 PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
+PKGROOT = /root/rolltests
+REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk

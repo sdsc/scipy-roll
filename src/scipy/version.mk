@@ -1,4 +1,4 @@
-NAME    = scipy_$(ROLLCOMPILER)_python$(PYVERSION)
+NAME    = scipy_$(ROLLCOMPILER)_py$(PYVERSION)
 VERSION = 0.12.0
 RELEASE = 0
 

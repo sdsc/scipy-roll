@@ -1,4 +1,4 @@
-NAME    = scientificpython_$(ROLLCOMPILER)_python$(PYVERSION)
+NAME    = scientificpython_$(ROLLCOMPILER)_py$(PYVERSION)
 VERSION = 2.9.2
 RELEASE = 1
 

@@ -64,13 +64,21 @@ default:
 
 copyright rpm pkg clean::
 	for i in $(SRCDIRS) ; do \
-	  grep -q ROLLCOMPILER $$i/version.mk; \
+	  grep -q PYVERSION $$i/version.mk; \
 	  if test $$? -eq 0; then \
-	    for c in $(ROLLCOMPILER); do \
-	      echo make $@ in $$i with ROLLCOMPILER=$$c; \
-	      (cd $$i; $(MAKE) ROLLCOMPILER=$$c ROLLPYTHON=$(ROLLPYTHON) ROLLPYTHONLIB=$(ROLLPYTHONLIB) $@); \
+	    for p in $(PYPATH); do \
+	      grep -q ROLLCOMPILER $$i/version.mk; \
+	      if test $$? -eq 0; then \
+	        for c in $(ROLLCOMPILER); do \
+	          echo make $@ in $$i with ROLLCOMPILER=$$c PYPATH=$$p; \
+	          (cd $$i; $(MAKE) ROLLCOMPILER=$$c PYPATH=$$p $@); \
+	        done; \
+	      else \
+	        echo make $@ in $$i with PYPATH=$$p; \
+	        (cd $$i; $(MAKE) PYPATH=$$p $@) ; \
+	      fi; \
 	    done; \
 	  else \
-	    (cd $$i; $(MAKE) ROLLPYTHON=$(ROLLPYTHON) ROLLPYTHONLIB=$(ROLLPYTHONLIB) $@) ; \
+	    (cd $$i; $(MAKE) $@) ; \
 	  fi; \
 	done

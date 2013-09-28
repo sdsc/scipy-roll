@@ -54,6 +54,15 @@
 #
 # @Copyright@
 
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+
+ifndef PYPATH
+  PYPATH = python
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 PKGROOT = /opt/scipy
 SOURCE = setuptools-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
@@ -67,13 +76,6 @@ COMPILERSETUP = \
     module load $(ROLLCOMPILER); \
   fi
 
-ifeq ("$(findstring python=,$(ROLLOPTS))", "")
-  PYPATH = python
-else
-  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
-endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
-
 -include $(ROCKSROOT)/etc/Rules.mk
 
 build:
@@ -81,15 +83,14 @@ build:
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir $(REDHAT.ROOT)/src/bin
-	mkdir $(REDHAT.ROOT)/src/site-packages
-	mkdir -p $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
+	-mkdir $(REDHAT.ROOT)/src/bin
+	-mkdir -p $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION)
 	( \
 	  $(COMPILERSETUP); \
 	  echo Using python $(PYPATH) version $(PYVERSION); \
           sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
           mkdir -p $${sitepath}; \
-          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}:$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}:$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); \
           cd $(SOURCE); \
           $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \

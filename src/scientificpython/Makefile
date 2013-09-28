@@ -58,16 +58,14 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
+ifndef PYPATH
+  PYPATH = python
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 PKGROOT = /opt/scipy
 SOURCE = scientificpython-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
-
-ifeq ("$(findstring python=,$(ROLLOPTS))", "")
-  PYPATH = python
-else
-  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
-endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
@@ -98,8 +96,8 @@ install::
 	( \
 	  $(COMPILERSETUP); \
 	  echo Using python $(PYPATH) version $(PYVERSION); \
-	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
-	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
+	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); then \
+	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE); \
 	  $(PYPATH) setup.py config -cc $(CCOMP); \

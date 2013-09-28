@@ -60,16 +60,14 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
+ifndef PYPATH
+  PYPATH = python
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 PKGROOT = /opt/scipy
 SOURCE = libxml2-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
-
-ifeq ("$(findstring python=,$(ROLLOPTS))", "")
-  PYPATH = python
-else
-  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
-endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
@@ -101,8 +99,8 @@ install::
 	  pylib=`echo 'import sys; print "\n".join(sys.path)' | $(PYPATH) | grep -m 1 '/lib.*site-packages$$'`; \
 	  export PYTHONPATH=`dirname $$pylib`:$${PYTHONPATH}; \
           export LDFLAGS=-L/opt/python/lib; \
-	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER); then \
-	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER):$${PYTHONPATH}; \
+	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); then \
+	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION):$${PYTHONPATH}; \
 	  fi; \
           sitepath=$(PKGROOT)/lib64/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \

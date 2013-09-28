@@ -59,6 +59,13 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
+ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+  PYPATH = python
+else
+  comma := ,
+  PYPATH = $(subst $(comma), ,$(subst python=,,$(filter python=%,$(ROLLOPTS))))
+endif
+
 -include $(ROLLSROOT)/etc/Rolls.mk
 
 default:
@@ -70,9 +77,13 @@ default:
 	  for c in $(ROLLCOMPILER); do \
 	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
 	  done; \
-	  perl -pi -e '$$_ = "" if m/ROLLCOMPILER/' $$o; \
+	  for p in $(PYPATH); do \
+	    version=`$$p -c "import sys; print sys.version[:3]"`; \
+	    perl -pi -e 'print and s/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
+	  done; \
+	  perl -pi -e '$$_ = "" if m/(ROLLCOMPILER|PYVERSION)/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" PYPATH="$(PYPATH)" roll
 
 clean::
 	rm -f _arch bootstrap.py

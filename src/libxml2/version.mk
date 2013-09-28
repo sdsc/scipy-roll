@@ -1,4 +1,4 @@
-NAME    = libxml2_$(ROLLCOMPILER)_python$(PYVERSION)
+NAME    = libxml2_$(ROLLCOMPILER)_py$(PYVERSION)
 VERSION = 2.9.1
 RELEASE = 0
 

@@ -60,7 +60,7 @@ endif
 PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
 
 PKGROOT = /opt/scipy
-SOURCE = ipython-$(VERSION)
+SOURCE = sympy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 
 -include $(ROCKSROOT)/etc/Rules.mk
@@ -71,11 +71,10 @@ build:
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  echo Using python $(PYPATH) version $(PYVERSION); \
-          export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages/$(PYVERSION):$${PYTHONPATH} ; \
 	  cd $(SOURCE); \
 	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 
 clean::
 	rm -rf $(SOURCE)
+

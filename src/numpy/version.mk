@@ -1,4 +1,4 @@
-NAME    = numpy_$(ROLLCOMPILER)_python$(PYVERSION)
+NAME    = numpy_$(ROLLCOMPILER)_py$(PYVERSION)
 VERSION = 1.7.0
 RELEASE = 0
 

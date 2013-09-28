@@ -58,16 +58,14 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
+ifndef PYPATH
+  PYPATH = python
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 PKGROOT = /opt/scipy
 SOURCE = numpy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
-
-ifeq ("$(findstring python=,$(ROLLOPTS))", "")
-  PYPATH = python
-else
-  PYPATH = $(subst python=,,$(filter python=%,$(ROLLOPTS)))
-endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
 
 -include $(ROCKSROOT)/etc/Rules.mk
 
@@ -90,7 +88,6 @@ endif
 
 build:
 	unzip $(SOURCE).zip
-	mkdir $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
 	cp patch-files/site.cfg $(SOURCE)
 	cp patch-files/intelccompiler.py $(SOURCE)/numpy/distutils
 	cp patch-files/intel.py $(SOURCE)/numpy/distutils/fcompiler
@@ -113,7 +110,8 @@ install::
 	  cd $(SOURCE); \
 	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
-	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages`/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)
+	-mkdir -p $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION)
+	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages`/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION)
 
 clean::
 	rm -rf $(SOURCE)
