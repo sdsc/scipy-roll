@@ -1,5 +1,5 @@
-NAME    = scipy-modules
-VERSION = 1
-RELEASE = 1
+NAME    = scipy-modules_py$(PYVERSION)
+VERSION = $(PYVERSION)
+RELEASE = 0
 
 RPM.EXTRAS = "AutoReq: no"

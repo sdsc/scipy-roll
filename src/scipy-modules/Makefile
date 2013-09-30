@@ -57,6 +57,11 @@
 PKGROOT = /opt/modulefiles/applications/scipy
 REDHAT.ROOT = $(CURDIR)/../../
 
+ifndef PYPATH
+  PYPATH = python
+endif
+PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
@@ -68,6 +73,8 @@ install::
 	  cp scipy.version $(ROOT)/$(PKGROOT)/.version.$(VERSION)
 	  perl -pi -e 's/VERSION/$(VERSION)/g' $(ROOT)/$(PKGROOT)/$(VERSION)
 	  perl -pi -e 's/VERSION/$(VERSION)/g' $(ROOT)/$(PKGROOT)/.version.$(VERSION)
-	  ln -s $(PKGROOT)/.version.$(VERSION) $(ROOT)/$(PKGROOT)/.version
+	  if test -z "$(PYDEFAULT)" -o "$(PYPATH)" = "$(PYDEFAULT)"; then; \
+	    ln -s $(PKGROOT)/.version.$(VERSION) $(ROOT)/$(PKGROOT)/.version; \
+	  fi
 
 clean::

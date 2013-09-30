@@ -1,5 +1,5 @@
 #%Module1.0
 prepend-path PATH /opt/scipy/bin
-foreach lib [glob -nocomplain /opt/scipy/lib*/python*/site-packages] {
+foreach lib [glob -nocomplain /opt/scipy/lib*/python$(PYVERSION)/site-packages] {
   prepend-path PYTHONPATH $lib
 }
