@@ -66,7 +66,7 @@ copyright rpm pkg clean::
 	for i in $(SRCDIRS) ; do \
 	  grep -q PYVERSION $$i/version.mk; \
 	  if test $$? -eq 0; then \
-	    PYDEFAULT=`echo $PYPATH | sed 's/ .*//'`; \
+	    PYDEFAULT=`echo $(PYPATH) | sed 's/ .*//'`; \
 	    for p in $(PYPATH); do \
 	      grep -q ROLLCOMPILER $$i/version.mk; \
 	      if test $$? -eq 0; then \

@@ -59,7 +59,7 @@ ifndef PYPATH
 endif
 PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
 
-PKGROOT = /opt/scipy
+PKGROOT = /opt/scipy/$(PYVERSION)
 SOURCE = sympy-$(VERSION)
 REDHAT.ROOT = $(PWD)/../..
 

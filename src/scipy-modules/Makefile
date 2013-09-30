@@ -71,9 +71,11 @@ install::
 	  mkdir -p $(ROOT)/$(PKGROOT)
 	  cp scipy.module $(ROOT)/$(PKGROOT)/$(VERSION)
 	  cp scipy.version $(ROOT)/$(PKGROOT)/.version.$(VERSION)
+	  perl -pi -e 's/PYVERSION/$(PYVERSION)/g' $(ROOT)/$(PKGROOT)/$(VERSION)
+	  perl -pi -e 's/PYVERSION/$(PYVERSION)/g' $(ROOT)/$(PKGROOT)/.version.$(VERSION)
 	  perl -pi -e 's/VERSION/$(VERSION)/g' $(ROOT)/$(PKGROOT)/$(VERSION)
 	  perl -pi -e 's/VERSION/$(VERSION)/g' $(ROOT)/$(PKGROOT)/.version.$(VERSION)
-	  if test -z "$(PYDEFAULT)" -o "$(PYPATH)" = "$(PYDEFAULT)"; then; \
+	  if test -z "$(PYDEFAULT)" -o "$(PYPATH)" = "$(PYDEFAULT)"; then \
 	    ln -s $(PKGROOT)/.version.$(VERSION) $(ROOT)/$(PKGROOT)/.version; \
 	  fi
 

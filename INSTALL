@@ -22,8 +22,9 @@ and "pgi" for the ROLLCOMPILER variable, defaulting to "gnu".
 NOTE: the BLAS and ATLAS dynamic libraries need to be installed in order to
 build this roll.  The intel compiler comes packaged with these.
 
-The roll also supports specifying building with/for a python version other than
+The roll also supports specifying building with/for python versions other than
 the one included with the o/s.  To use this feature, specify a ROLLOPTS make
-variable that includes the path to the python executable, e.g.,
+variable that includes a comma-delimited list of paths to python executables,
+e.g.,
 
-% make ROLLOPTS='python=/opt/python/bin/python2.7'
+% make ROLLOPTS='python=/usr/bin/python,/opt/python/bin/python2.7'

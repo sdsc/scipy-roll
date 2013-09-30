@@ -31,7 +31,7 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>libxml2_ROLLCOMPILER_pyPYVERSION</package>
 <package>matplotlib_ROLLCOMPILER_pyPYVERSION</package>
 <package>setuptools_nose_pytz_pyfits_ROLLCOMPILER_pyPYVERSION</package>
-<package>scipy-modules</package>
+<package>scipy-modules_pyPYVERSION</package>
 <package>scipy-roll-test</package>
 <package>sympy_pyPYVERSION</package>
 
