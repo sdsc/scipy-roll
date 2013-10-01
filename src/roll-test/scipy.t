@@ -13,7 +13,8 @@ my $isInstalled = -d '/opt/scipy';
 my $output;
 
 my @MODULES = (
-  'IPython', 'matplotlib', 'nose', 'numpy', 'pyfits', 'pytz', 'scipy','Scientific'
+  'IPython', 'libxml2', 'matplotlib', 'nose', 'numpy', 'pyfits', 'pytz',
+  'scipy','Scientific', 'sympy'
 );
 
 my $TESTFILE = 'tmpscipy';
@@ -28,7 +29,7 @@ fi
 PYPATH <<ENDPY
 import \$1
 help(\$1)
-print "\$1 version %s" % \$1.__version__
+print "\$1 name %s" % \$1.__name__
 ENDPY
 END
 close(OUT);
@@ -44,7 +45,7 @@ SKIP: {
   skip 'scipy not installed', int(@MODULES) + 3 if ! $isInstalled;
   foreach my $module(@MODULES) {
     $output = `bash $TESTFILE.sh $module 2>&1`;
-    like($output, qr/$module version/, "$module module load works");
+    like($output, qr/$module name/, "$module module load works");
   }
 
   skip 'modules not installed', 3 if ! -f '/etc/profile.d/modules.sh';
