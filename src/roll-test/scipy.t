@@ -16,6 +16,7 @@ my @MODULES = (
   'IPython', 'libxml2', 'matplotlib', 'nose', 'numpy', 'pyfits', 'pytz',
   'scipy','Scientific', 'sympy'
 );
+my @PYTHONS = split(/\s+/, "PYPATH");
 
 my $TESTFILE = 'tmpscipy';
 
@@ -24,12 +25,12 @@ print OUT <<END;
 #!/bin/bash
 if test -f /etc/profile.d/modules.sh; then
   . /etc/profile.d/modules.sh
-  module load intel scipy
+  module load intel scipy/\$2
 fi
-PYPATH <<ENDPY
-import \$1
-help(\$1)
-print "\$1 name %s" % \$1.__name__
+\$1 <<ENDPY
+import \$3
+help(\$3)
+print "\$3 name %s" % \$3.__name__
 ENDPY
 END
 close(OUT);
@@ -42,10 +43,15 @@ if($appliance =~ /$installedOnAppliancesPattern/) {
 }
 SKIP: {
 
-  skip 'scipy not installed', int(@MODULES) + 3 if ! $isInstalled;
-  foreach my $module(@MODULES) {
-    $output = `bash $TESTFILE.sh $module 2>&1`;
-    like($output, qr/$module name/, "$module module load works");
+  skip 'scipy not installed', int(@PYTHONS) * int(@MODULES) + 3
+    if ! $isInstalled;
+  foreach my $python(@PYTHONS) {
+    my $version = `$python -c "import sys; print sys.version[:3]"`;
+    chomp($version);
+    foreach my $module(@MODULES) {
+      $output = `bash $TESTFILE.sh $python $version $module 2>&1`;
+      like($output, qr/$module name/, "$module/$version module load works");
+    }
   }
 
   skip 'modules not installed', 3 if ! -f '/etc/profile.d/modules.sh';

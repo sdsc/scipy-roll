@@ -73,6 +73,7 @@ install::
 	perl -pi -e 's/ROLLCOMPILER/$(ROLLCOMPILER)/g' $(ROOT)/$(PKGROOT)/*.t
 	perl -pi -e 's/ROLLMPI/$(ROLLMPI)/g' $(ROOT)/$(PKGROOT)/*.t
 	perl -pi -e 's/ROLLNETWORK/$(ROLLNETWORK)/g' $(ROOT)/$(PKGROOT)/*.t
+	perl -pi -e 's#PYPATH#$(PYPATH)#g' $(ROOT)/$(PKGROOT)/*.t
 	( \
 	  echo Using python $(PYPATH) version $(PYVERSION); \
 	  perl -pi -e "s#PYPATH#$(PYPATH)#g" $(ROOT)/$(PKGROOT)/*.t \
