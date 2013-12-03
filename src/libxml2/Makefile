@@ -108,7 +108,7 @@ install::
 	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
 	  cd $(SOURCE_DIR); \
 	  perl -pi -e "s!ROLLPATH!$${sitepath}!" configure; \
-	  ./configure --with-python -prefix=$${sitepath}; \
+	  ./configure --with-python=$(PYPATH) -prefix=$${sitepath}; \
 	  $(MAKE) ; \
 	  $(MAKE) install; \
 	)
