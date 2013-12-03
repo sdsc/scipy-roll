@@ -104,10 +104,11 @@ install::
 	  fi; \
 	  sitepath=$(PKGROOT)/lib64/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
+	  export CC=$(CC); \
 	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
 	  cd $(SOURCE_DIR); \
-	  perl -pi -e "s!ROLLPATH!$${sitepath}/libxml2!" configure; \
-	  ./configure --with-python -prefix=$${sitepath}/libxml2; \
+	  perl -pi -e "s!ROLLPATH!$${sitepath}!" configure; \
+	  ./configure --with-python -prefix=$${sitepath}; \
 	  $(MAKE) ; \
 	  $(MAKE) install; \
 	)
