@@ -58,16 +58,45 @@
 # $Log$
 #
 
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+
+ifeq ("$(findstring python=,$(ROLLOPTS))", "")
+  PYPATH = python
+else
+  comma := ,
+  PYPATH = $(subst $(comma), ,$(subst python=,,$(filter python=%,$(ROLLOPTS))))
+endif
+
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
-default: roll
+default:
+	for i in `ls nodes/*.in`; do \
+	  export o=`echo $$i | sed 's/\.in//'`; \
+	  cp $$i $$o; \
+	  for c in $(ROLLCOMPILER); do \
+	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
+	  done; \
+	  for p in $(PYPATH); do \
+	    version=`$$p -c "import sys; print sys.version[:3]"`; \
+	    perl -pi -e 'print and s/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
+	  done; \
+	  perl -pi -e '$$_ = "" if m/(ROLLCOMPILER|PYVERSION)/' $$o; \
+	done
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" PYPATH="$(PYPATH)" roll
 
 clean::
 	rm -f _arch bootstrap.py
 
 cvsclean: clean
-	rm -fr RPMS SRPMS src/build-*
+	for i in `ls nodes/*.in`; do \
+	  export o=`echo $$i | sed 's/\.in//'`; \
+	  rm -f $$o; \
+	done
+	rm -fr RPMS SRPMS
+	rm -fr src/site-packages* src/bin*
 
-distclean:: clean
+distclean:: cvsclean
 	-rm -f build.log
