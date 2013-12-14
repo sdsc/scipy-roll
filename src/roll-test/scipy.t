@@ -14,7 +14,7 @@ my $output;
 
 my @MODULES = (
   'IPython', 'libxml2', 'matplotlib', 'nose', 'numpy', 'pyfits', 'pytz',
-  'scipy','Scientific', 'sympy'
+  'scipy','Scientific', 'sympy','cython'
 );
 my @PYTHONS = split(/\s+/, "PYPATH");
 
