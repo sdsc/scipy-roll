@@ -80,7 +80,7 @@ default:
 	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
 	  done; \
 	  for p in $(PYPATH); do \
-	    version=`$$p -c "import sys; print sys.version[:3]"`; \
+            version=`$$p -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
 	    perl -pi -e 'print and s/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
 	  done; \
 	  perl -pi -e '$$_ = "" if m/(ROLLCOMPILER|PYVERSION)/' $$o; \

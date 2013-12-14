@@ -1,6 +1,6 @@
 NAME               = scientificpython_$(ROLLCOMPILER)_py$(PYVERSION)
 VERSION            = 2.9.2
-RELEASE            = 1
+RELEASE            = 0
 RPM.EXTRAS         = "AutoReq: no"
 PKGROOT            = /opt/scipy/$(PYVERSION)
 

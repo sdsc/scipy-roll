@@ -63,7 +63,7 @@ endif
 ifndef PYPATH
   PYPATH = python
 endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
 
 REDHAT.ROOT = $(CURDIR)/../../
 
@@ -113,7 +113,7 @@ install::
 	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	)
 	-mkdir -p $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION)
-	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages`/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION
+	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages`/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::

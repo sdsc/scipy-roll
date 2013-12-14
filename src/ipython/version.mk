@@ -6,7 +6,7 @@ PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = ipython
 
-SOURCE_NAME        = ipython 
+SOURCE_NAME        = ipython
 SOURCE_VERSION     = $(VERSION)
 SOURCE_SUFFIX      = tar.gz
 SOURCE_PKG         = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)

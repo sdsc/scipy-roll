@@ -63,7 +63,7 @@ endif
 ifndef PYPATH
   PYPATH = python
 endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
 
 REDHAT.ROOT = $(CURDIR)/../../
 
@@ -90,7 +90,7 @@ install::
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}:$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); \
-	  cd $(SOURCE_DIR); \
+          cd $(SETUPTOOLS_NAME)-$(SETUPTOOLS_VERSION); \
 	   $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ..; \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} nose-$(NOSE_VERSION).tar.gz; \

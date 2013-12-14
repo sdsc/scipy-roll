@@ -63,7 +63,7 @@ endif
 ifndef PYPATH
   PYPATH = python
 endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
 
 REDHAT.ROOT = $(CURDIR)/../../
 
@@ -91,7 +91,7 @@ CPPCOMP = g++
 COMPILE_FLAGS = -O2 -shared -fPIC
 SETUPOPTS = --compiler=unix --fcompiler=unix
 ifeq ("$(ROLLCOMPILER)", "intel")
-  COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
+  COMPILERLIB = `which icc | sed 's/.icc//'`/../../compiler/lib/intel64
   CPPCOMP = icpc
   COMPILE_FLAGS = -xHost -O3 -shared -fPIC -openmp
   SETUPOPTS = --compiler=intel --fcompiler=intelem
@@ -114,7 +114,7 @@ install::
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION):$${PYTHONPATH}; \
 	  fi; \
-	  cd $(SOURCE_DIR); 
+	  cd $(SOURCE_DIR); \
 	  $(PYPATH) setup.py config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \

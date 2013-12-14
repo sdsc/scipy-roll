@@ -65,7 +65,7 @@ endif
 ifndef PYPATH
   PYPATH = python
 endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
@@ -103,7 +103,7 @@ install::
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION):$${PYTHONPATH}; \
 	  fi; \
 	  cd $(SOURCE_DIR); \
-	  (PYPATH) setup.py $(SETUPOPTS) build; \
+	  $(PYPATH) setup.py $(SETUPOPTS) build; \
           $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	)
 	@echo "::: Package $(NAME) install complete :::"

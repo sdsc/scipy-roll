@@ -61,7 +61,7 @@
 ifndef PYPATH
   PYPATH = python
 endif
-PYVERSION = $(shell $(PYPATH) -c "import sys; print sys.version[:3]")
+PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
 
 PKGROOT = /root/rolltests
 REDHAT.ROOT = $(CURDIR)/../../

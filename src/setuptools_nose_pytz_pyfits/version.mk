@@ -6,7 +6,7 @@ PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = setuptools_nose_pytz_pyfits
 
-SOURCE_SUFFIX      = tgz
+SOURCE_SUFFIX      = tar.gz
 
 NOSE_NAME          = nose
 NOSE_VERSION       = 1.2.1
