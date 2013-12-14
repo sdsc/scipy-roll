@@ -11,6 +11,7 @@ numpy http://numpy.scipy.org
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 pytz http://pytz.sourceforge.net
 scipy http://www.scipy.org
+cython http://cython.org
 </description>
 
 <copyright>

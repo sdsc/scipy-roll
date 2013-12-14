@@ -12,6 +12,8 @@ pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 pytz http://pytz.sourceforge.net
 scipy http://www.scipy.org
 sympy http://www.sympy.org
+cython http://cython.org
+scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
 </description>
 
 <copyright>
@@ -34,7 +36,7 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>scipy_ROLLCOMPILER_pyPYVERSION</package>
 <package>setuptools_nose_pytz_pyfits_ROLLCOMPILER_pyPYVERSION</package>
 <package>sympy_pyPYVERSION</package>
-
+<package>cython_pyPYVERSION</package>
 <package>scipy-modules_pyPYVERSION</package>
 <package>scipy-roll-test</package>
 
