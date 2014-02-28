@@ -1,5 +1,5 @@
 NAME               = sympy_py$(PYVERSION)
-VERSION            = 0.7.3
+VERSION            = 0.7.5
 RELEASE            = 0
 RPM.EXTRAS         = "AutoReq: no"
 PKGROOT            = /opt/scipy/$(PYVERSION)
