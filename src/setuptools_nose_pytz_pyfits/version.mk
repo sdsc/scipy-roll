@@ -9,17 +9,17 @@ SRC_SUBDIR         = setuptools_nose_pytz_pyfits
 SOURCE_SUFFIX      = tar.gz
 
 NOSE_NAME          = nose
-NOSE_VERSION       = 1.2.1
+NOSE_VERSION       = 1.3.0
 NOSE_PKG           = $(NOSE_NAME)-$(NOSE_VERSION).$(SOURCE_SUFFIX)
 NOSE_DIR           = $(NOSE_PKG:%.$(SOURCE_SUFFIX)=%)
 
 PYFITS_NAME        = pyfits
-PYFITS_VERSION     = 3.1.1
+PYFITS_VERSION     = 3.2
 PYFITS_PKG         = $(PYFITS_NAME)-$(PYFITS_VERSION).$(SOURCE_SUFFIX)
 PYFITS_DIR         = $(PYFITS_PKG:%.$(SOURCE_SUFFIX)=%)
 
 PYTZ_NAME          = pytz
-PYTZ_VERSION       = 2012j
+PYTZ_VERSION       = 2013.9
 PYTZ_PKG           = $(PYTZ_NAME)-$(PYTZ_VERSION).$(SOURCE_SUFFIX)
 PYTZ_DIR           = $(PYTZ_PKG:%.$(SOURCE_SUFFIX)=%)
 
