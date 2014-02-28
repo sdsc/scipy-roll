@@ -1,8 +1,8 @@
 # http://developer.intel.com/software/products/compilers/flin/
+from __future__ import division, absolute_import, print_function
 
 import sys
 
-from numpy.distutils.cpuinfo import cpu
 from numpy.distutils.ccompiler import simple_version_match
 from numpy.distutils.fcompiler import FCompiler, dummy_fortran_file
 
@@ -93,7 +93,7 @@ class IntelItaniumFCompiler(IntelFCompiler):
 class IntelEM64TFCompiler(IntelFCompiler):
     compiler_type = 'intelem'
     compiler_aliases = ()
-    description = 'Intel Fortran Compiler for EM64T-based apps'
+    description = 'Intel Fortran Compiler for 64-bit apps'
 
     version_match = intel_version_match('EM64T-based|Intel\\(R\\) 64|64|IA-64|64-bit')
 
@@ -117,7 +117,7 @@ class IntelEM64TFCompiler(IntelFCompiler):
         return ['-xhost -openmp -fp-model strict']
 
     def get_flags_arch(self):
-        return['-fPIC','-openmp']
+        return['-fPIC', '-openmp']
 
 # Is there no difference in the version string between the above compilers
 # and the Visual compilers?
@@ -133,12 +133,12 @@ class IntelVisualFCompiler(BaseIntelFCompiler):
                                            f + '.f', '/o', f + '.o']
 
     ar_exe = 'lib.exe'
-    possible_executables = ['ifl']
+    possible_executables = ['ifort', 'ifl']
 
     executables = {
         'version_cmd'  : None,
-        'compiler_f77' : [None,"-FI","-w90","-w95"],
-        'compiler_fix' : [None,"-FI","-4L72","-w"],
+        'compiler_f77' : [None, "-FI", "-w90", "-w95"],
+        'compiler_fix' : [None, "-FI", "-4L72", "-w"],
         'compiler_f90' : [None],
         'linker_so'    : ['<F90>', "-shared"],
         'archiver'     : [ar_exe, "/verbose", "/OUT:"],
@@ -152,31 +152,20 @@ class IntelVisualFCompiler(BaseIntelFCompiler):
     module_include_switch = '/I'
 
     def get_flags(self):
-        opt = ['/nologo','/MD','/nbs','/Qlowercase','/us']
+        opt = ['/nologo', '/MD', '/nbs', '/Qlowercase', '/us']
         return opt
 
     def get_flags_free(self):
         return ["-FR"]
 
     def get_flags_debug(self):
-        return ['/4Yb','/d2']
+        return ['/4Yb', '/d2']
 
     def get_flags_opt(self):
-        return ['/O1']
+        return ['/O2']
 
     def get_flags_arch(self):
-        opt = []
-        if cpu.is_PentiumPro() or cpu.is_PentiumII():
-            opt.extend(['/G6','/Qaxi'])
-        elif cpu.is_PentiumIII():
-            opt.extend(['/G6','/QaxK'])
-        elif cpu.is_Pentium():
-            opt.append('/G5')
-        elif cpu.is_PentiumIV():
-            opt.extend(['/G7','/QaxW'])
-        if cpu.has_mmx():
-            opt.append('/QaxM')
-        return opt
+        return ["/arch:IA-32", "/QaxSSE3"]
 
 class IntelItaniumVisualFCompiler(IntelVisualFCompiler):
     compiler_type = 'intelev'
@@ -189,10 +178,10 @@ class IntelItaniumVisualFCompiler(IntelVisualFCompiler):
 
     executables = {
         'version_cmd'  : None,
-        'compiler_f77' : [None,"-FI","-w90","-w95"],
-        'compiler_fix' : [None,"-FI","-4L72","-w"],
+        'compiler_f77' : [None, "-FI", "-w90", "-w95"],
+        'compiler_fix' : [None, "-FI", "-4L72", "-w"],
         'compiler_f90' : [None],
-        'linker_so'    : ['<F90>',"-shared"],
+        'linker_so'    : ['<F90>', "-shared"],
         'archiver'     : [ar_exe, "/verbose", "/OUT:"],
         'ranlib'       : None
         }
@@ -203,6 +192,9 @@ class IntelEM64VisualFCompiler(IntelVisualFCompiler):
 
     version_match = simple_version_match(start='Intel\(R\).*?64,')
 
+    def get_flags_arch(self):
+        return ["/arch:SSE2"]
+
 
 if __name__ == '__main__':
     from distutils import log
@@ -210,4 +202,4 @@ if __name__ == '__main__':
     from numpy.distutils.fcompiler import new_fcompiler
     compiler = new_fcompiler(compiler='intel')
     compiler.customize()
-    print compiler.get_version()
+    print(compiler.get_version())

@@ -12,6 +12,7 @@ classes are available:
   lapack_atlas_info
   blas_info
   lapack_info
+  openblas_info
   blas_opt_info       # usage recommended
   lapack_opt_info     # usage recommended
   fftw_info,dfftw_info,sfftw_info
@@ -108,7 +109,9 @@ terms of the NumPy (BSD style) license.  See LICENSE.txt that came with
 this distribution for specifics.
 
 NO WARRANTY IS EXPRESSED OR IMPLIED.  USE AT YOUR OWN RISK.
+
 """
+from __future__ import division, absolute_import, print_function
 
 import sys
 import os
@@ -116,6 +119,7 @@ import re
 import copy
 import warnings
 from glob import glob
+from functools import reduce
 if sys.version_info[0] < 3:
     from ConfigParser import NoOptionError, ConfigParser
 else:
@@ -134,8 +138,6 @@ from numpy.distutils.misc_util import is_sequence, is_string, \
 from numpy.distutils.command.config import config as cmd_config
 from numpy.distutils.compat import get_exception
 
-if sys.version_info[0] >= 3:
-    from functools import reduce
 
 # Determine number of bits
 import platform
@@ -215,26 +217,35 @@ else:
     #                                          '/usr/include/X11'])
 
     import subprocess as sp
+    tmp = None
     try:
+        # Explicitly open/close file to avoid ResourceWarning when
+        # tests are run in debug mode Python 3.
+        tmp = open(os.devnull, 'w')
         p = sp.Popen(["gcc", "-print-multiarch"], stdout=sp.PIPE,
-                stderr=open(os.devnull, 'w'))
-    except OSError:
-        pass # gcc is not installed
+                stderr=tmp)
+    except (OSError, DistutilsError):
+        # OSError if gcc is not installed, or SandboxViolation (DistutilsError
+        # subclass) if an old setuptools bug is triggered (see gh-3160).
+        pass
     else:
         triplet = str(p.communicate()[0].decode().strip())
         if p.returncode == 0:
             # gcc supports the "-print-multiarch" option
             default_x11_lib_dirs += [os.path.join("/usr/lib/", triplet)]
             default_lib_dirs += [os.path.join("/usr/lib/", triplet)]
+    finally:
+        if tmp is not None:
+            tmp.close()
 
 if os.path.join(sys.prefix, 'lib') not in default_lib_dirs:
     default_lib_dirs.insert(0, os.path.join(sys.prefix, 'lib'))
     default_include_dirs.append(os.path.join(sys.prefix, 'include'))
     default_src_dirs.append(os.path.join(sys.prefix, 'src'))
 
-default_lib_dirs = filter(os.path.isdir, default_lib_dirs)
-default_include_dirs = filter(os.path.isdir, default_include_dirs)
-default_src_dirs = filter(os.path.isdir, default_src_dirs)
+default_lib_dirs = [_m for _m in default_lib_dirs if os.path.isdir(_m)]
+default_include_dirs = [_m for _m in default_include_dirs if os.path.isdir(_m)]
+default_src_dirs = [_m for _m in default_src_dirs if os.path.isdir(_m)]
 
 # so_ext = get_shared_lib_extension()
 so_ext = distutils.sysconfig.get_config_vars('SO')[0] or ''
@@ -293,6 +304,7 @@ def get_info(name, notfound_action=0):
           'lapack_atlas': lapack_atlas_info,  # use lapack_opt instead
           'lapack_atlas_threads': lapack_atlas_threads_info,  # ditto
           'mkl': mkl_info,
+          'openblas': openblas_info,          # use blas_opt instead
           'lapack_mkl': lapack_mkl_info,      # use lapack_opt instead
           'blas_mkl': blas_mkl_info,          # use blas_opt instead
           'x11': x11_info,
@@ -901,7 +913,7 @@ class mkl_info(system_info):
         paths = os.environ.get('LD_LIBRARY_PATH', '').split(os.pathsep)
         ld_so_conf = '/etc/ld.so.conf'
         if os.path.isfile(ld_so_conf):
-            for d in open(ld_so_conf, 'r').readlines():
+            for d in open(ld_so_conf, 'r'):
                 d = d.strip()
                 if d:
                     paths.append(d)
@@ -926,7 +938,7 @@ class mkl_info(system_info):
         if mklroot is None:
             system_info.__init__(self)
         else:
-            from cpuinfo import cpu
+            from .cpuinfo import cpu
             l = 'mkl'  # use shared library
             if cpu.is_Itanium():
                 plt = '64'
@@ -1362,10 +1374,26 @@ class lapack_opt_info(system_info):
 
     def calc_info(self):
 
-        if sys.platform == 'darwin' and not os.environ.get('ATLAS', None):
+        openblas_info = get_info('openblas')
+        if openblas_info:
+            self.set_info(**openblas_info)
+            return
+
+        lapack_mkl_info = get_info('lapack_mkl')
+        if lapack_mkl_info:
+            self.set_info(**lapack_mkl_info)
+            return
+
+        atlas_info = get_info('atlas_threads')
+        if not atlas_info:
+            atlas_info = get_info('atlas')
+
+        if sys.platform == 'darwin' and not atlas_info:
+            # Use the system lapack from Accelerate or vecLib under OSX
             args = []
             link_args = []
             # if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
+            #    'x86_64' in get_platform() or \
             #    'i386' in platform.platform():
             if get_platform()[-4:] == 'i386':
                 intel = 1
@@ -1391,14 +1419,6 @@ class lapack_opt_info(system_info):
                               define_macros=[('NO_ATLAS_INFO', 3)])
                 return
 
-        lapack_mkl_info = get_info('lapack_mkl')
-        if lapack_mkl_info:
-            self.set_info(**lapack_mkl_info)
-            return
-
-        atlas_info = get_info('atlas_threads')
-        if not atlas_info:
-            atlas_info = get_info('atlas')
         #atlas_info = {} ## uncomment for testing
         need_lapack = 0
         need_blas = 0
@@ -1452,10 +1472,26 @@ class blas_opt_info(system_info):
 
     def calc_info(self):
 
-        if sys.platform == 'darwin' and not os.environ.get('ATLAS', None):
+        blas_mkl_info = get_info('blas_mkl')
+        if blas_mkl_info:
+            self.set_info(**blas_mkl_info)
+            return
+
+        openblas_info = get_info('openblas')
+        if openblas_info:
+            self.set_info(**openblas_info)
+            return
+
+        atlas_info = get_info('atlas_blas_threads')
+        if not atlas_info:
+            atlas_info = get_info('atlas_blas')
+
+        if sys.platform == 'darwin'and not atlas_info:
+            # Use the system BLAS from Accelerate or vecLib under OSX
             args = []
             link_args = []
             # if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
+            #    'x86_64' in get_platform() or \
             #    'i386' in platform.platform():
             if get_platform()[-4:] == 'i386':
                 intel = 1
@@ -1485,14 +1521,6 @@ class blas_opt_info(system_info):
                               define_macros=[('NO_ATLAS_INFO', 3)])
                 return
 
-        blas_mkl_info = get_info('blas_mkl')
-        if blas_mkl_info:
-            self.set_info(**blas_mkl_info)
-            return
-
-        atlas_info = get_info('atlas_blas_threads')
-        if not atlas_info:
-            atlas_info = get_info('atlas_blas')
         need_blas = 0
         info = {}
         if atlas_info:
@@ -1529,6 +1557,23 @@ class blas_info(system_info):
 
         blas_libs = self.get_libs('blas_libs', self._lib_names)
         info = self.check_libs(lib_dirs, blas_libs, [])
+        if info is None:
+            return
+        info['language'] = 'f77'  # XXX: is it generally true?
+        self.set_info(**info)
+
+
+class openblas_info(blas_info):
+    section = 'openblas'
+    dir_env_var = 'OPENBLAS'
+    _lib_names = ['openblas']
+    notfounderror = BlasNotFoundError
+
+    def calc_info(self):
+        lib_dirs = self.get_lib_dirs()
+
+        openblas_libs = self.get_libs('openblas_libs', self._lib_names)
+        info = self.check_libs(lib_dirs, openblas_libs, [])
         if info is None:
             return
         info['language'] = 'f77'  # XXX: is it generally true?
@@ -1643,6 +1688,9 @@ class _numpy_info(system_info):
             pass
         py_incl_dir = distutils.sysconfig.get_python_inc()
         include_dirs.append(py_incl_dir)
+        py_pincl_dir = distutils.sysconfig.get_python_inc(plat_specific=True)
+        if py_pincl_dir not in include_dirs:
+            include_dirs.append(py_pincl_dir)
         for d in default_include_dirs:
             d = os.path.join(d, os.path.basename(py_incl_dir))
             if d not in include_dirs:
@@ -1671,7 +1719,7 @@ class _numpy_info(system_info):
 ##                 (self.modulename.upper()+'_VERSION_HEX',
 ##                  hex(vstr2hex(module.__version__))),
 ##                 )
-##         except Exception,msg:
+##         except Exception as msg:
 ##             print msg
         dict_append(info, define_macros=macros)
         include_dirs = self.get_include_dirs()
@@ -1774,12 +1822,15 @@ class boost_python_info(system_info):
                 break
         if not src_dir:
             return
-        py_incl_dir = distutils.sysconfig.get_python_inc()
+        py_incl_dirs = [distutils.sysconfig.get_python_inc()]
+        py_pincl_dir = distutils.sysconfig.get_python_inc(plat_specific=True)
+        if py_pincl_dir not in py_incl_dirs:
+            py_incl_dirs.append(py_pincl_dir)
         srcs_dir = os.path.join(src_dir, 'libs', 'python', 'src')
         bpl_srcs = glob(os.path.join(srcs_dir, '*.cpp'))
         bpl_srcs += glob(os.path.join(srcs_dir, '*', '*.cpp'))
         info = {'libraries': [('boost_python_src',
-                               {'include_dirs': [src_dir, py_incl_dir],
+                               {'include_dirs': [src_dir] + py_incl_dirs,
                                 'sources':bpl_srcs}
                               )],
                 'include_dirs': [src_dir],
@@ -1821,7 +1872,7 @@ class agg2_info(system_info):
         info = {'libraries':
                 [('agg2_src',
                   {'sources': agg2_srcs,
-                   'include_dirs':[os.path.join(src_dir, 'include')],
+                   'include_dirs': [os.path.join(src_dir, 'include')],
                   }
                  )],
                 'include_dirs': [os.path.join(src_dir, 'include')],
@@ -2133,7 +2184,7 @@ def show_all(argv=None):
         show_only.append(n)
     show_all = not show_only
     _gdict_ = globals().copy()
-    for name, c in _gdict_.iteritems():
+    for name, c in _gdict_.items():
         if not inspect.isclass(c):
             continue
         if not issubclass(c, system_info) or c is system_info:

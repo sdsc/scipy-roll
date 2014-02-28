@@ -1,3 +1,5 @@
+from __future__ import division, absolute_import, print_function
+
 from distutils.unixccompiler import UnixCCompiler
 from numpy.distutils.exec_command import find_executable
 
@@ -8,7 +10,7 @@ class IntelCCompiler(UnixCCompiler):
     cc_args = 'fPIC'
 
     def __init__ (self, verbose=0, dry_run=0, force=0):
-        UnixCCompiler.__init__ (self, verbose,dry_run, force)
+        UnixCCompiler.__init__ (self, verbose, dry_run, force)
         self.cc_exe = 'icc -fPIC'
         compiler = self.cc_exe
         self.set_executables(compiler=compiler,
@@ -22,7 +24,7 @@ class IntelItaniumCCompiler(IntelCCompiler):
 
     # On Itanium, the Intel Compiler used to be called ecc, let's search for
     # it (now it's also icc, so ecc is last in the search).
-    for cc_exe in map(find_executable,['icc','ecc']):
+    for cc_exe in map(find_executable, ['icc', 'ecc']):
         if cc_exe:
             break
 
@@ -33,7 +35,7 @@ class IntelEM64TCCompiler(UnixCCompiler):
     cc_exe = 'icc -O3 -fPIC -openmp'
     cc_args = "-fPIC"
     def __init__ (self, verbose=0, dry_run=0, force=0):
-        UnixCCompiler.__init__ (self, verbose,dry_run, force)
+        UnixCCompiler.__init__ (self, verbose, dry_run, force)
         self.cc_exe = 'icc -fPIC -openmp'
         compiler = self.cc_exe
         self.set_executables(compiler=compiler,
