@@ -1,5 +1,5 @@
 NAME               = cython_py$(PYVERSION)
-VERSION            = 0.19.2
+VERSION            = 0.20.1
 RELEASE            = 0
 RPM.EXTRAS         = "AutoReq: no"
 PKGROOT            = /opt/scipy/$(PYVERSION)
