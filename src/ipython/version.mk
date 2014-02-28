@@ -1,5 +1,5 @@
 NAME               = ipython_py$(PYVERSION)
-VERSION            = 1.1.0
+VERSION            = 1.2.1
 RELEASE            = 0
 RPM.EXTRAS         = "AutoReq: no"
 PKGROOT            = /opt/scipy/$(PYVERSION)
