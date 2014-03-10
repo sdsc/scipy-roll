@@ -55,14 +55,7 @@
 #
 
 # Note: it's important that matplotlib, scipy be built after numpy
-SRCDIRS = `find . -type d -maxdepth 1 \
+SRCDIRS = numpy `find . -type d -maxdepth 1 \
 	-not -name CVS \
-	-not -name matplotlib \
-	-not -name pyfits \
-	-not -name scipy \
-	-not -name ipython \
 	-not -name numpy \
-	-not -name scientificpython \
-	-not -name libxml2 \
-	-not -name setuptools_nose_pytz_pyfits \
-	-not -name .` numpy setuptools_nose_pytz_pyfits ipython scipy scientificpython matplotlib libxml2
+	-not -name .`
