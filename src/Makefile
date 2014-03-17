@@ -70,6 +70,12 @@ copyright rpm pkg clean::
 	  if test $$? -eq 0; then \
 	    PYDEFAULT=`echo $(PYPATH) | sed 's/ .*//'`; \
 	    for p in $(PYPATH); do \
+	      PYHOME=`dirname $${p}`; \
+	      while test ! -d $${PYHOME}/lib -a ! -d $${PYHOME}/lib64; do \
+	        PYHOME=`dirname $${PYHOME}`; \
+	      done; \
+	      export LD_LIBRARY_PATH=$${PYHOME}/lib:$${PYHOME}/lib64:$${LD_LIBRARY_PATH}; \
+	      export PYTHONPATH=$${PYHOME}/lib:$${PYHOME}/lib64:$${PYTHONPATH}; \
 	      grep -q ROLLCOMPILER $$i/version.mk; \
 	      if test $$? -eq 0; then \
 	        for c in $(ROLLCOMPILER); do \

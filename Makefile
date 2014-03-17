@@ -63,7 +63,7 @@ ifndef ROLLCOMPILER
 endif
 
 ifeq ("$(findstring python=,$(ROLLOPTS))", "")
-  PYPATH = python
+  PYPATH = /usr/bin/python
 else
   comma := ,
   PYPATH = $(subst $(comma), ,$(subst python=,,$(filter python=%,$(ROLLOPTS))))
@@ -80,7 +80,13 @@ default:
 	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
 	  done; \
 	  for p in $(PYPATH); do \
-            version=`$$p -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
+	    PYHOME=`dirname $${p}`; \
+	    while test ! -d $${PYHOME}/lib -a ! -d $${PYHOME}/lib64; do \
+	      PYHOME=`dirname $${PYHOME}`; \
+	    done; \
+	    export LD_LIBRARY_PATH=$${PYHOME}/lib:$${PYHOME}/lib64:$${LD_LIBRARY_PATH}; \
+	    export PYTHONPATH=$${PYHOME}/lib:$${PYHOME}/lib64:$${PYTHONPATH}; \
+	    version=`$$p -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
 	    perl -pi -e 'print and s/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
 	  done; \
 	  perl -pi -e '$$_ = "" if m/(ROLLCOMPILER|PYVERSION)/' $$o; \
