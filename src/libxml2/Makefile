@@ -86,7 +86,6 @@ ifeq ("$(ROLLCOMPILER)", "pgi")
 endif
 
 build: $(SRC_DIRS)
-	cp patch-files/configure $(SOURCE_DIR)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
@@ -98,7 +97,9 @@ install::
 	  echo Using python $(PYPATH) version $(PYVERSION); \
 	  pylib=`echo 'import sys; print "\n".join(sys.path)' | $(PYPATH) | grep -m 1 '/lib.*site-packages$$'`; \
 	  export PYTHONPATH=`dirname $$pylib`:$${PYTHONPATH}; \
-	  export LDFLAGS=-L/opt/python/lib; \
+          if test `echo "$(PYVERSION) > 2.6"| bc` -eq 0 ; then \
+	     export LDFLAGS=-L/opt/python/lib; \
+          fi; \
 	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); then \
 	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION):$${PYTHONPATH}; \
 	  fi; \
@@ -107,8 +108,7 @@ install::
 	  export CC=$(CC); \
 	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
 	  cd $(SOURCE_DIR); \
-	  perl -pi -e "s!ROLLPATH!$${sitepath}!" configure; \
-	  ./configure --with-python=$(PYPATH) -prefix=$${sitepath}; \
+	  ./configure PYTHON_SITE_PACKAGES=$${sitepath} --with-python=$(PYPATH) -prefix=$${sitepath}; \
 	  $(MAKE) ; \
 	  $(MAKE) install; \
 	)

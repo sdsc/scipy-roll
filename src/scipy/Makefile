@@ -99,10 +99,10 @@ endif
 
 build: $(SRC_DIRS)
 	cp patch-files/site.cfg $(SOURCE_DIR)
-	cp patch-files/libblas.a $(SOURCE_DIR); \
-	cp patch-files/liblapack.a $(SOURCE_DIR); \
+	cp libblas.a $(SOURCE_DIR); \
+	cp liblapack.a $(SOURCE_DIR); \
 	$(COMPILERSETUP); \
-	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!" $(SOURCE_DIR)/site.cfg
+	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_COMPILERLIB!$(COMPILERLIB)!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
@@ -131,5 +131,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
 

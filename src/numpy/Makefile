@@ -89,10 +89,10 @@ ifeq ("$(ROLLCOMPILER)", "intel")
 endif
 
 build: $(SRC_DIRS)
-	cp patch-files/site.cfg $(SOURCE_DIR)
-	cp patch-files/intelccompiler.py $(SOURCE_DIR)/numpy/distutils
-	cp patch-files/intel.py $(SOURCE_DIR)/numpy/distutils/fcompiler
-	cp patch-files/system_info.py $(SOURCE_DIR)/numpy/distutils
+	patch -o $(SOURCE_DIR)/site.cfg $(SOURCE_DIR)/site.cfg.example patch-files/site.cfg.example.patch 
+	patch $(SOURCE_DIR)/numpy/distutils/intelccompiler.py patch-files/intelccompiler.py.patch 
+	patch $(SOURCE_DIR)/numpy/distutils/fcompiler/intel.py patch-files/intel.py.patch
+	patch $(SOURCE_DIR)/numpy/distutils/system_info.py patch-files/system_info.py.patch
 	( \
 	  $(COMPILERSETUP); \
 	  echo Using python $(PYPATH) version $(PYVERSION); \
