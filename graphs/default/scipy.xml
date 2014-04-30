@@ -4,14 +4,18 @@
 
 <description>
 Python scientific libraries
+cython http://cython.org
 iPython http://ipython.org
+libxml2 http://xmlsoft.org
 matplotlib http://matplotlib.sourceforge.net
 nose http://pypi.python.org/pypi/nose
 numpy http://numpy.scipy.org
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 pytz http://pytz.sourceforge.net
+scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
 scipy http://www.scipy.org
-cython http://cython.org
+setuptools https://pypi.python.org/pypi/setuptools
+sympy http://sympy.org
 </description>
 
 <copyright>

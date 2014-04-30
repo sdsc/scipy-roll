@@ -2,13 +2,17 @@
 
 ## Overview
 
-This roll bundles a collection of Python scientific computing modules: ipython,
-matplotlib, nose, numpy, pyfits, pytz, and scipy.  
+This roll bundles a collection of Python scientific computing modules: cython,ipython,
+matplotlib, nose, numpy, pyfits, pytz, scientificpython and scipy.  
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
+- <a href="http://cython.org" target="_blank">cython</a> is an optimising static compiler
+for both the Python programming language and the extended Cython programming language
 - <a href="http://ipython.org" target="_blank">iPython</a> provides a rich
 architecture for interactive computing using the Python programming language.
+- <a href="http://xmlsoft.org" target="_blank">libxml2</a> Libxml2 is the XML C parser
+and toolkit developed for the Gnome project 
 - <a href="http://matplotlib.org" target="_blank">matplotlib</a> is a python 2D
 plotting library which produces publication quality figures in a variety of
 hardcopy formats and interactive environments across platforms.
@@ -21,8 +25,26 @@ target="_blank">PyFITS</a> provides an interface to FITS formatted files in the
 Python scripting language and PyRAF, the Python-based interface to IRAF.
 - <a href="http://pytz.sourceforge.net" target="_blank">pytz</a> brings the
 Olson tz database into Python.
+- <a href="http://http://dirac.cnrs-orleans.fr/plone/software/scientificpython" target="_blank"></a> is 
 - <a href="http://www.scipy.org" target="_blank"></a> is a Python-based
-ecosystem of open-source software for mathematics, science, and engineering.
+a Python library for common tasks in scientific computing.
+
+
+<copyright>
+Copyright (c) 2000 - 2011 The Regents of the University of California.
+All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
+</copyright>
+
+<changelog>
+</changelog>
+
+<package>roll-scipy-usersguide</package>
+
+<post>
+</post>
+
+</kickstart>
+
 
 
 ## Requirements
@@ -38,7 +60,7 @@ Rocks development machine.
 
 ## Dependencies
 
-Unknown at this time.
+compiler rolls
 
 
 ## Building
