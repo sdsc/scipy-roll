@@ -80,14 +80,14 @@ copyright rpm pkg clean::
 	      if test $$? -eq 0; then \
 	        for c in $(ROLLCOMPILER); do \
 	          echo make $@ in $$i with ROLLCOMPILER=$$c PYPATH=$$p; \
-	          (cd $$i; $(MAKE) ROLLCOMPILER=$$c PYPATH=$$p PYDEFAULT=$${PYDEFAULT} $@); \
+	          (cd $$i && $(MAKE) ROLLCOMPILER=$$c PYPATH=$$p PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
 	        done; \
 	      else \
 	        echo make $@ in $$i with PYPATH=$$p; \
-	        (cd $$i; $(MAKE) PYPATH=$$p PYDEFAULT=$${PYDEFAULT} $@) ; \
+	        (cd $$i && $(MAKE) PYPATH=$$p PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
 	      fi; \
 	    done; \
 	  else \
-	    (cd $$i; $(MAKE) $@) ; \
+	    (cd $$i && $(MAKE) $@) || exit 2; \
 	  fi; \
 	done
