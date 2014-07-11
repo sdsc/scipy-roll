@@ -19,26 +19,23 @@ sympy http://sympy.org
 </description>
 
 <copyright>
-Copyright (c) 2000 - 2011 The Regents of the University of California.
+Copyright (c) 2000 - 2014 The Regents of the University of California.
 All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 </copyright>
-
-<changelog>
-</changelog>
 
 <package>tix</package>
 <package>tkinter</package>
 <package>tk-devel</package>
 
-<package>ipython_pyPYVERSION</package>
-<package>libxml2_ROLLCOMPILER_pyPYVERSION</package>
-<package>matplotlib_ROLLCOMPILER_pyPYVERSION</package>
-<package>numpy_ROLLCOMPILER_pyPYVERSION</package>
-<package>scientificpython_ROLLCOMPILER_pyPYVERSION</package>
-<package>scipy_ROLLCOMPILER_pyPYVERSION</package>
-<package>setuptools_nose_pytz_pyfits_ROLLCOMPILER_pyPYVERSION</package>
-<package>sympy_pyPYVERSION</package>
 <package>cython_pyPYVERSION</package>
+<package>ipython_pyPYVERSION</package>
+<package>libxml2_COMPILERNAME_pyPYVERSION</package>
+<package>matplotlib_COMPILERNAME_pyPYVERSION</package>
+<package>numpy_COMPILERNAME_pyPYVERSION</package>
+<package>scientificpython_COMPILERNAME_pyPYVERSION</package>
+<package>scipy_COMPILERNAME_pyPYVERSION</package>
+<package>setuptools_nose_pytz_pyfits_COMPILERNAME_pyPYVERSION</package>
+<package>sympy_pyPYVERSION</package>
 <package>scipy-modules_pyPYVERSION</package>
 <package>scipy-roll-test</package>
 
