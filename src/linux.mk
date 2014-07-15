@@ -57,5 +57,6 @@
 # Note: it's important that matplotlib, scipy be built after numpy
 SRCDIRS = numpy `find . -maxdepth 1 -type d \
 	-not -name CVS \
+	-not -name site-packages\* \
 	-not -name numpy \
 	-not -name .`
