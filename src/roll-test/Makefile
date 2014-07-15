@@ -58,11 +58,6 @@
 # $Log$
 #
 
-ifndef PYPATH
-  PYPATH = python
-endif
-PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
-
 PKGROOT = /root/rolltests
 REDHAT.ROOT = $(CURDIR)/../../
 
@@ -74,13 +69,9 @@ build:
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	cp *.t $(ROOT)/$(PKGROOT)/
-	perl -pi -e 's/ROLLCOMPILER/$(ROLLCOMPILER)/g' $(ROOT)/$(PKGROOT)/*.t
-	perl -pi -e 's/ROLLMPI/$(ROLLMPI)/g' $(ROOT)/$(PKGROOT)/*.t
-	perl -pi -e 's/ROLLNETWORK/$(ROLLNETWORK)/g' $(ROOT)/$(PKGROOT)/*.t
-	perl -pi -e 's#PYPATH#$(PYPATH)#g' $(ROOT)/$(PKGROOT)/*.t
-	( \
-	  echo Using python $(PYPATH) version $(PYVERSION); \
-	  perl -pi -e "s#PYPATH#$(PYPATH)#g" $(ROOT)/$(PKGROOT)/*.t \
-	)
+	perl -pi -e 's#ROLLCOMPILER#$(ROLLCOMPILER)#g' $(ROOT)/$(PKGROOT)/*.t
+	perl -pi -e 's#ROLLMPI#$(ROLLMPI)#g' $(ROOT)/$(PKGROOT)/*.t
+	perl -pi -e 's#ROLLNETWORK#$(ROLLNETWORK)#g' $(ROOT)/$(PKGROOT)/*.t
+	perl -pi -e 's#ROLLPY#$(ROLLPY)#g' $(ROOT)/$(PKGROOT)/*.t
 
 clean::

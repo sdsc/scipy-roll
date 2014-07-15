@@ -1,3 +1,11 @@
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
+ifndef PYVERSION
+  PYVERSION = 2.6
+endif
+
 NAME               = sympy_py$(PYVERSION)
 VERSION            = 0.7.5
 RELEASE            = 0

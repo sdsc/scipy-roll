@@ -56,25 +56,33 @@
 #
 # $Log$
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-
-ifndef PYPATH
-  PYPATH = python
-endif
-PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
-
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
 
+PKGROOT = /opt/scipy/$(PYVERSION)
+
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLCOMPILER)\>"`; \
+    if test "$${module}" != "$(ROLLCOMPILER)"; then \
+      echo *** ERROR: Compiler $(ROLLCOMPILER) not found; \
+      exit 2; \
+    fi; \
     module load $(ROLLCOMPILER); \
+  fi
+PYSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
+    if test "$${module}" != "$(ROLLPY)"; then \
+      echo *** ERROR: Python $(ROLLPY) not found; \
+      exit 2; \
+    fi; \
+    module load $(ROLLPY); \
   fi
 
 build: $(SRC_DIRS)
@@ -82,16 +90,15 @@ build: $(SRC_DIRS)
 	
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	-mkdir -p $(REDHAT.ROOT)/src/bin
-	-mkdir -p $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION)
+	-mkdir -p $(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION)
 	( \
 	  $(COMPILERSETUP); \
-	  echo Using python $(PYPATH) version $(PYVERSION); \
+	  $(PYSETUP); \
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}:$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}:$(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION); \
           cd $(SETUPTOOLS_NAME)-$(SETUPTOOLS_VERSION); \
-	   $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ..; \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} nose-$(NOSE_VERSION).tar.gz; \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} pytz-$(PYTZ_VERSION).tar.gz; \

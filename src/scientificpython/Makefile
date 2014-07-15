@@ -56,15 +56,6 @@
 #
 # $Log$
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-
-ifndef PYPATH
-  PYPATH = python
-endif
-PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
-
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
@@ -74,36 +65,53 @@ include pull.mk
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module load intel; \
-    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
-    module unload intel; \
-    export LD_LIBRARY_PATH=$${MKLLIB}:$${LD_LIBRARY_PATH}; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLCOMPILER)\>"`; \
+    if test "$${module}" != "$(ROLLCOMPILER)"; then \
+      echo *** ERROR: Compiler $(ROLLCOMPILER) not found; \
+      exit 2; \
+    fi; \
     module load $(ROLLCOMPILER); \
+  fi; \
+  if test -n "$${MKL_ROOT}"; then \
+    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+    export LD_LIBRARY_PATH=$${MKLLIB}:$${LD_LIBRARY_PATH}; \
+  fi
+PYSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
+    if test "$${module}" != "$(ROLLPY)"; then \
+      echo *** ERROR: Python $(ROLLPY) not found; \
+      exit 2; \
+    fi; \
+    module load $(ROLLPY); \
   fi
 
-COMMENTMKL =
 CCOMP = gcc
 COMPILE_FLAGS = -O2 -fPIC
-ifeq ("$(ROLLCOMPILER)", "intel")
+ifeq ("$(COMPILERNAME)", "intel")
   CCOMP = icc
-else ifeq ("$(ROLLCOMPILER)", "pgi")
+else ifeq ("$(COMPILERNAME)", "pgi")
   CCOMP = pgcc
 endif
 
 build: $(SRC_DIRS)
+	( \
+	  $(COMPILERSETUP); \
+	  $(PYSETUP); \
+	  cd $(SOURCE_DIR); \
+	  python setup.py config --cc $(CCOMP) \
+	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
-	  echo Using python $(PYPATH) version $(PYVERSION); \
-	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); then \
-	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION):$${PYTHONPATH}; \
-	  fi; \
+	  $(PYSETUP); \
+	  export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION):$${PYTHONPATH}; \
 	  cd $(SOURCE_DIR); \
-	  $(PYPATH) setup.py config -cc $(CCOMP); \
-          $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	@echo "::: Package $(NAME) install complete :::"
 

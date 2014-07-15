@@ -1,6 +1,14 @@
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
+ifndef PYVERSION
+  PYVERSION = 2.6
+endif
+
 NAME               = ipython_py$(PYVERSION)
 VERSION            = 1.2.1
-RELEASE            = 0
+RELEASE            = 1
 RPM.EXTRAS         = "AutoReq: no"
 PKGROOT            = /opt/scipy/$(PYVERSION)
 

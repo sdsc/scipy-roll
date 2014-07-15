@@ -56,37 +56,41 @@
 #
 # $Log$
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-
-ifndef PYPATH
-  PYPATH = python
-endif
-PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
-
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
 
-COMMENTMKL = \#
-COMPILERLIB = /usr/lib64
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLCOMPILER)\>"`; \
+    if test "$${module}" != "$(ROLLCOMPILER)"; then \
+      echo *** ERROR: Compiler $(ROLLCOMPILER) not found; \
+      exit 2; \
+    fi; \
     module load $(ROLLCOMPILER); \
+  fi; \
+  export COMMENTMKL='\#'; \
+  export SETUPOPTS=''; \
+  if test -n "$${MKL_ROOT}"; then \
+    export COMMENTMKL=''; \
+    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+  fi; \
+  if test "$(COMPILERNAME)" = "intel"; then \
+    export SETUPOPTS="--compiler=intelem --fcompiler=intelem"; \
   fi
-SETUPOPTS = --compiler=unix --fcompiler=unix
-ifeq ("$(ROLLCOMPILER)", "intel")
-  COMMENTMKL =
-  COMPILERLIB = `which icc | sed 's/.icc//'`/../../lib/intel64
-  COMPILERSETUP += ;\
-    export MKL_HOME=$${MKL_ROOT}; \
-    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
-  SETUPOPTS = --compiler=intelem --fcompiler=intelem
-endif
+PYSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
+    if test "$${module}" != "$(ROLLPY)"; then \
+      echo *** ERROR: Python $(ROLLPY) not found; \
+      exit 2; \
+    fi; \
+    module load $(ROLLPY); \
+  fi
 
 build: $(SRC_DIRS)
 	patch -o $(SOURCE_DIR)/site.cfg $(SOURCE_DIR)/site.cfg.example patch-files/site.cfg.example.patch 
@@ -95,13 +99,13 @@ build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/numpy/distutils/system_info.py patch-files/system_info.py.patch
 	( \
 	  $(COMPILERSETUP); \
-	  echo Using python $(PYPATH) version $(PYVERSION); \
+	  $(PYSETUP); \
 	  cd $(SOURCE_DIR); \
-	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_COMPILERLIB!$(COMPILERLIB)!; s!ROLL_MKLROOT!$${MKL_HOME}!" site.cfg; \
-	  $(PYPATH) setup.py build_src \
-			  config $(SETUPOPTS) \
-			  build_clib $(SETUPOPTS) \
-			  build_ext $(SETUPOPTS) \
+	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!; s!ROLL_MKLLIB!$${MKLLIB}!; s!ROLL_MKLROOT!$${MKL_ROOT}!" site.cfg; \
+	  python setup.py build_src \
+			  config $${SETUPOPTS} \
+			  build_clib $${SETUPOPTS} \
+			  build_ext $${SETUPOPTS} \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -109,11 +113,12 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
+	  $(PYSETUP); \
 	  cd $(SOURCE_DIR); \
-	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	)
-	-mkdir -p $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION)
-	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages`/* $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION)
+	-mkdir -p $(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION)
+	/bin/cp -r `find $(ROOT)/$(PKGROOT) -name site-packages`/* $(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::

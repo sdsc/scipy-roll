@@ -62,11 +62,8 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
-ifeq ("$(findstring python=,$(ROLLOPTS))", "")
-  PYPATH = /usr/bin/python
-else
-  comma := ,
-  PYPATH = $(subst $(comma), ,$(subst python=,,$(filter python=%,$(ROLLOPTS))))
+ifndef ROLLPY
+  ROLLPY = python
 endif
 
 -include $(ROLLSROOT)/etc/Rolls.mk
@@ -77,21 +74,17 @@ default:
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
 	  for c in $(ROLLCOMPILER); do \
-	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
+	    COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
+	    perl -pi -e 'print and s/COMPILERNAME/'$${COMPILERNAME}'/g if m/COMPILERNAME/' $$o; \
 	  done; \
-	  for p in $(PYPATH); do \
-	    PYHOME=`dirname $${p}`; \
-	    while test ! -d $${PYHOME}/lib -a ! -d $${PYHOME}/lib64; do \
-	      PYHOME=`dirname $${PYHOME}`; \
-	    done; \
-	    export LD_LIBRARY_PATH=$${PYHOME}/lib:$${PYHOME}/lib64:$${LD_LIBRARY_PATH}; \
-	    export PYTHONPATH=$${PYHOME}/lib:$${PYHOME}/lib64:$${PYTHONPATH}; \
-	    version=`$$p -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
+	  for p in $(ROLLPY); do \
+	    module load $${p}; \
+	    version=`python -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
 	    perl -pi -e 'print and s/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
 	  done; \
-	  perl -pi -e '$$_ = "" if m/(ROLLCOMPILER|PYVERSION)/' $$o; \
+	  perl -pi -e '$$_ = "" if m/COMPILERNAME|PYVERSION/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" PYPATH="$(PYPATH)" roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" roll
 
 clean::
 	rm -f _arch bootstrap.py
@@ -102,5 +95,5 @@ distclean: clean
 	  rm -f $$o; \
 	done
 	rm -fr RPMS SRPMS
-	rm -fr src/site-packages* src/bin*
+	rm -fr src/site-packages*
 	-rm -f build.log

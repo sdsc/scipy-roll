@@ -1,4 +1,17 @@
-NAME               = numpy_$(ROLLCOMPILER)_py$(PYVERSION)
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
+ifndef PYVERSION
+  PYVERSION = 2.6
+endif
+
+NAME               = numpy_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 1.8.0
 RELEASE            = 0
 RPM.EXTRAS         = "AutoReq: no"

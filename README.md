@@ -30,23 +30,6 @@ Olson tz database into Python.
 a Python library for common tasks in scientific computing.
 
 
-<copyright>
-Copyright (c) 2000 - 2011 The Regents of the University of California.
-All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
-</copyright>
-
-<changelog>
-</changelog>
-
-<package>roll-scipy-usersguide</package>
-
-<post>
-</post>
-
-</kickstart>
-
-
-
 ## Requirements
 
 To build/install this roll you must have root access to a Rocks development
@@ -69,7 +52,7 @@ To build the scipy-roll, execute these instructions on a Rocks development
 machine (e.g., a frontend or development appliance):
 
 ```shell
-% make default 2>&1 | tee build.log
+% make 2>&1 | tee build.log
 % grep "RPM build error" build.log
 ```
 
@@ -88,18 +71,24 @@ the `ROLLCOMPILER` make variable, e.g.,
 ```
 
 The build process currently supports one or more of the values "gnu", "intel",
-and "pgi" for the `ROLLCOMPILER` variable, defaulting to "gnu".
+and "gnu" for the `ROLLCOMPILER` variable, defaulting to "gnu".  The build
+process uses the ROLLCOMPILER value to load an environment module, so you can
+also use it to specify a particular compiler version, e.g.,
+
+```shell
+% make ROLLCOMPILER=gnu/4.8.1
+```
 
 NOTE: the BLAS and ATLAS dynamic libraries need to be installed in order to
 build this roll.  The intel compiler comes packaged with these.
 
 The roll also supports specifying building with/for python versions other than
-the one included with the o/s.  To use this feature, specify a `ROLLOPTS` make
-variable that includes a comma-delimited list of paths to python executables,
+the one included with the o/s.  To use this feature, specify a `ROLLPY` make
+variable that includes a space-delimited list of python modulefiles,
 e.g.,
 
 ```shell
-% make ROLLOPTS='python=/usr/bin/python,/opt/python/bin/python2.7'
+% make ROLLPY=opt-python
 ```
 
 ## Installation
@@ -130,11 +119,5 @@ run the test scripts execute the following command(s):
 
 ```shell
 % /root/rolltests/scipy.t 
-ok 1 - scipy is installed
-ok 2 - scipy test run
-ok 3 - scipy module installed
-ok 4 - scipy version module installed
-ok 5 - scipy version module link created
-1..5
 ```
 

@@ -1,8 +1,20 @@
-NAME               = setuptools_nose_pytz_pyfits_$(ROLLCOMPILER)_py$(PYVERSION)
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
+ifndef PYVERSION
+  PYVERSION = 2.6
+endif
+
+NAME               = setuptools_nose_pytz_pyfits_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 0.6c11
-RELEASE            = 0
+RELEASE            = 1
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = setuptools_nose_pytz_pyfits
 

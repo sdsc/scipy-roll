@@ -1,6 +1,10 @@
+ifndef PYVERSION
+  PYVERSION = 2.6
+endif
+
 NAME               = cython_py$(PYVERSION)
 VERSION            = 0.20.1
-RELEASE            = 0
+RELEASE            = 1
 RPM.EXTRAS         = "AutoReq: no"
 PKGROOT            = /opt/scipy/$(PYVERSION)
 

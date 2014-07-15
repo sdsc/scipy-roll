@@ -68,23 +68,19 @@ copyright rpm pkg clean::
 	for i in $(SRCDIRS) ; do \
 	  grep -q PYVERSION $$i/version.mk; \
 	  if test $$? -eq 0; then \
-	    PYDEFAULT=`echo $(PYPATH) | sed 's/ .*//'`; \
-	    for p in $(PYPATH); do \
-	      PYHOME=`dirname $${p}`; \
-	      while test ! -d $${PYHOME}/lib -a ! -d $${PYHOME}/lib64; do \
-	        PYHOME=`dirname $${PYHOME}`; \
-	      done; \
-	      export LD_LIBRARY_PATH=$${PYHOME}/lib:$${PYHOME}/lib64:$${LD_LIBRARY_PATH}; \
-	      export PYTHONPATH=$${PYHOME}/lib:$${PYHOME}/lib64:$${PYTHONPATH}; \
+	    PYDEFAULT=`echo $(ROLLPY) | sed 's/ .*//'`; \
+	    for p in $(ROLLPY); do \
+	      module load $$p; \
+	      export PYVERSION=`python -c "from __future__ import print_function;import sys;print(sys.version[:3])"`; \
 	      grep -q ROLLCOMPILER $$i/version.mk; \
 	      if test $$? -eq 0; then \
 	        for c in $(ROLLCOMPILER); do \
-	          echo make $@ in $$i with ROLLCOMPILER=$$c PYPATH=$$p; \
-	          (cd $$i && $(MAKE) ROLLCOMPILER=$$c PYPATH=$$p PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
+	          echo make $@ in $$i with ROLLCOMPILER=$$c ROLLPY=$$p PYVERSION=$${PYVERSION}; \
+	          (cd $$i && $(MAKE) ROLLCOMPILER=$$c ROLLPY=$$p PYVERSION=$${PYVERSION} PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
 	        done; \
 	      else \
-	        echo make $@ in $$i with PYPATH=$$p; \
-	        (cd $$i && $(MAKE) PYPATH=$$p PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
+	        echo make $@ in $$i with ROLLPY=$$p PYVERSION=$${PYVERSION}; \
+	        (cd $$i && $(MAKE) ROLLPY=$$p PYVERSION=$${PYVERSION} PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
 	      fi; \
 	    done; \
 	  else \

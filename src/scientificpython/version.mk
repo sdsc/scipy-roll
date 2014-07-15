@@ -1,6 +1,19 @@
-NAME               = scientificpython_$(ROLLCOMPILER)_py$(PYVERSION)
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
+ifndef PYVERSION
+  PYVERSION = 2.6
+endif
+
+NAME               = scientificpython_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 2.9.3
-RELEASE            = 0
+RELEASE            = 1
 RPM.EXTRAS         = "AutoReq: no"
 PKGROOT            = /opt/scipy/$(PYVERSION)
 

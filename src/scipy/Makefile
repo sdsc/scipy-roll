@@ -56,15 +56,6 @@
 #
 # $Log$
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-
-ifndef PYPATH
-  PYPATH = python
-endif
-PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
-
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
@@ -74,59 +65,73 @@ include pull.mk
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module load intel; \
-    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLCOMPILER)\>"`; \
+    if test "$${module}" != "$(ROLLCOMPILER)"; then \
+      echo *** ERROR: Compiler $(ROLLCOMPILER) not found; \
+      exit 2; \
+    fi; \
     module load $(ROLLCOMPILER); \
+  fi; \
+  export SETUPOPTS="--compiler=unix --fcompiler=unix"; \
+  if test "$(COMPILERNAME)" = "intel"; then \
+    export SETUPOPTS="--compiler=intel --fcompiler=intelem"; \
+  fi; \
+  export COMMENTMKL='\#'; \
+  if test -n "$${MKL_ROOT}"; then \
+    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+    export MKLLINK="-L$${MKLLIB} -lmkl_rt"; \
+    export COMMENTMKL=''; \
+  else \
+    export BLAS=$(PWD)/$(SOURCE_DIR)/libblas.a; \
+    export LAPACK=$(PWD)/$(SOURCE_DIR)/liblapack.a; \
+  fi
+PYSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
+    if test "$${module}" != "$(ROLLPY)"; then \
+      echo *** ERROR: Python $(ROLLPY) not found; \
+      exit 2; \
+    fi; \
+    module load $(ROLLPY); \
   fi
 
-LIBSETUP = \
-   if test "$(ROLLCOMPILER)" = "gnu"; then  \
-        export BLAS=$(PWD)/$(SOURCE_DIR)/libblas.a; \
-        export LAPACK=$(PWD)/$(SOURCE_DIR)/liblapack.a; \
-   fi
-
-COMPILERLIB = /usr/lib64
-COMMENTMKL =
 CPPCOMP = g++
 COMPILE_FLAGS = -O2 -shared -fPIC
-SETUPOPTS = --compiler=unix --fcompiler=unix
-ifeq ("$(ROLLCOMPILER)", "intel")
-  COMPILERLIB = `which icc | sed 's/.icc//'`/../../compiler/lib/intel64
+ifeq ("$(COMPILERNAME)", "intel")
   CPPCOMP = icpc
   COMPILE_FLAGS = -xHost -O3 -shared -fPIC -openmp
-  SETUPOPTS = --compiler=intel --fcompiler=intelem
 endif
 
 build: $(SRC_DIRS)
 	cp patch-files/site.cfg $(SOURCE_DIR)
 	cp libblas.a $(SOURCE_DIR); \
 	cp liblapack.a $(SOURCE_DIR); \
-	$(COMPILERSETUP); \
-	perl -pi -e "s!ROLL_COMMENTMKL\\s*!$(COMMENTMKL)!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_COMPILERLIB!$(COMPILERLIB)!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg
+	( \
+	  $(COMPILERSETUP); \
+	  $(PYSETUP); \
+	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg; \
+	  cd $(SOURCE_DIR); \
+	  python setup.py config $${SETUPOPTS} \
+	                  build_clib $${SETUPOPTS} \
+	                  build_ext $${SETUPOPTS}; \
+	  for x in csr csc coo bsr dia; do \
+	    $(CPPCOMP) $(COMPILE_FLAGS) \
+	      build/temp.linux-x86_64-*/scipy/sparse/sparsetools/$${x}_wrap.o\
+	      -o build/lib.linux-x86_64-*/scipy/sparse/sparsetools/_$${x}.so;\
+	  done; \
+	  $(CPPCOMP) $(COMPILE_FLAGS) \
+	    build/temp.linux-x86_64-*/scipy/interpolate/src/_interpolate.o \
+	    -o build/lib.linux-x86_64-*/scipy/interpolate/_interpolate.so; \
+	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  $(COMPILERSETUP); \
-	  $(LIBSETUP); \
-	  echo Using python $(PYPATH) version $(PYVERSION); \
-	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); then \
-	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION):$${PYTHONPATH}; \
-	  fi; \
+	  $(PYSETUP); \
 	  cd $(SOURCE_DIR); \
-	  $(PYPATH) setup.py config $(SETUPOPTS) \
-	                  build_clib $(SETUPOPTS) \
-	                  build_ext $(SETUPOPTS); \
-	  for x in csr csc coo bsr dia; do \
-	    $(CPPCOMP) $(COMPILE_FLAGS) \
-	      build/temp.linux-x86_64-2.4/scipy/sparse/sparsetools/$${x}_wrap.o\
-	      -o build/lib.linux-x86_64-2.4/scipy/sparse/sparsetools/_$${x}.so;\
-	  done; \
-	  $(CPPCOMP) $(COMPILE_FLAGS) \
-	    build/temp.linux-x86_64-2.4/scipy/interpolate/src/_interpolate.o \
-	    -o build/lib.linux-x86_64-2.4/scipy/interpolate/_interpolate.so; \
-	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	)
 	@echo "::: Package $(NAME) install complete :::"
 

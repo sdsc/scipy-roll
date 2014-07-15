@@ -7,7 +7,7 @@
 -#[DEFAULT]
 -#library_dirs = /usr/local/lib
 +[DEFAULT]
-+library_dirs = ROLL_COMPILERLIB
++library_dirs = /usr/lib64
  #include_dirs = /usr/local/include
  
  # Atlas

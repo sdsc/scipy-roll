@@ -56,15 +56,6 @@
 #
 # $Log$
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-
-ifndef PYPATH
-  PYPATH = python
-endif
-PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
-
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
@@ -74,45 +65,54 @@ include pull.mk
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLCOMPILER)\>"`; \
+    if test "$${module}" != "$(ROLLCOMPILER)"; then \
+      echo *** ERROR: Compiler $(ROLLCOMPILER) not found; \
+      exit 2; \
+    fi; \
     module load $(ROLLCOMPILER); \
+  fi
+PYSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
+    if test "$${module}" != "$(ROLLPY)"; then \
+      echo *** ERROR: Python $(ROLLPY) not found; \
+      exit 2; \
+    fi; \
+    module load $(ROLLPY); \
   fi
 
 CC=gcc
-ifeq ("$(ROLLCOMPILER)", "intel")
+ifeq ("$(COMPILERNAME)", "intel")
   CC=icc
-endif
-ifeq ("$(ROLLCOMPILER)", "pgi")
+else ifeq ("$(COMPILERNAME)", "pgi")
   CC=pgcc
 endif
 
-build: $(SRC_DIRS)
-	@echo "::: Package $(NAME) build complete :::"
-	
-install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(PKGROOT)
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
+build:: $(SRC_DIRS)
 	( \
 	  $(COMPILERSETUP); \
-	  echo Using python $(PYPATH) version $(PYVERSION); \
-	  pylib=`echo 'import sys; print "\n".join(sys.path)' | $(PYPATH) | grep -m 1 '/lib.*site-packages$$'`; \
-	  export PYTHONPATH=`dirname $$pylib`:$${PYTHONPATH}; \
-          if test `echo "$(PYVERSION) > 2.6"| bc` -eq 0 ; then \
-	     export LDFLAGS=-L/opt/python/lib; \
-          fi; \
-	  if test -d $(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION); then \
-	    export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(ROLLCOMPILER)/$(PYVERSION):$${PYTHONPATH}; \
-	  fi; \
-	  sitepath=$(PKGROOT)/lib64/python$(PYVERSION)/site-packages; \
-	  mkdir -p $${sitepath}; \
+	  $(PYSETUP); \
+	  export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION):$${PYTHONPATH}; \
 	  export CC=$(CC); \
-	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
+	  if test -n "$${LIBPATH}"; then \
+	    export LDFLAGS=-L$${LIBPATH}; \
+	  fi; \
 	  cd $(SOURCE_DIR); \
-	  ./configure PYTHON_SITE_PACKAGES=$${sitepath} --with-python=$(PYPATH) -prefix=$${sitepath}; \
-	  $(MAKE) ; \
-	  $(MAKE) install; \
+	  ./configure --prefix=$(PKGROOT) PYTHON_SITE_PACKAGES=$(PKGROOT); \
+	  $(MAKE) \
 	)
-	umount $(PKGROOT)
+	@echo "::: Package $(NAME) build complete :::"
+
+install::
+	mkdir -p $(ROOT)/$(PKGROOT)
+	( \
+	  $(COMPILERSETUP); \
+	  $(PYSETUP); \
+	  cd $(SOURCE_DIR); \
+	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
+	)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::

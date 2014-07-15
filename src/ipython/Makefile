@@ -58,15 +58,20 @@
 
 REDHAT.ROOT = $(CURDIR)/../../
 
-ifndef PYPATH
-  PYPATH = python
-endif
-PYVERSION = $(shell $(PYPATH) -c "from __future__ import print_function;import sys;print(sys.version[:3])")
-
-
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
+
+PYSETUP = \
+  if test -e /etc/profile.d/modules.sh; then \
+    . /etc/profile.d/modules.sh; \
+    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
+    if test "$${module}" != "$(ROLLPY)"; then \
+      echo *** ERROR: Python $(ROLLPY) not found; \
+      exit 2; \
+    fi; \
+    module load $(ROLLPY); \
+  fi
 
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
@@ -74,10 +79,9 @@ build: $(SRC_DIRS)
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  echo Using python $(PYPATH) version $(PYVERSION); \
-	  export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages/$(PYVERSION):$${PYTHONPATH} ; \
+	  $(PYSETUP); \
 	  cd $(SOURCE_DIR); \
-	  $(PYPATH) setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	@echo "::: Package $(NAME) install complete :::"
 

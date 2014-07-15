@@ -1,8 +1,21 @@
-NAME               = libxml2_$(ROLLCOMPILER)_py$(PYVERSION)
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
+ifndef PYVERSION
+  PYVERSION = 2.6
+endif
+
+NAME               = libxml2_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 2.9.1
 RELEASE            = 0
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)
+PKGROOT            = /opt/scipy/$(PYVERSION)/lib64/python$(PYVERSION)/site-packages
 
 SRC_SUBDIR         = libxml2
 

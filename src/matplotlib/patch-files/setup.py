@@ -139,7 +139,7 @@ if not check_for_numpy(__version__numpy__):
     sys.exit(1)
 
 # JJH: added to support intel
-from numpy.distutils import intelcompiler
+from numpy.distutils import intelccompiler
 
 if not check_for_freetype():
     sys.exit(1)

@@ -1,4 +1,17 @@
-NAME               = scipy_$(ROLLCOMPILER)_py$(PYVERSION)
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
+ifndef PYVERSION
+  PYVERSION = 2.6
+endif
+
+NAME               = scipy_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 0.13.3
 RELEASE            = 0
 RPM.EXTRAS         = "AutoReq: no"
