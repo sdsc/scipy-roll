@@ -83,7 +83,7 @@ PYSETUP = \
     module load $(ROLLPY); \
   fi
 
-SETUPOPTS=""
+SETUPOPTS =
 ifeq ("$(COMPILERNAME)", "intel")
   SETUPOPTS = "--compiler=intel"
 else ifeq ("$(COMPILERNAME)", "pgi")
