@@ -43,7 +43,9 @@ Rocks development machine.
 
 ## Dependencies
 
-compiler rolls
+BLAS/ATLAS libraries.  If the MKL_ROOT environment variable is set either
+before the build starts or by the compiler modulefiles, the build process will
+use the libraries from that location.
 
 
 ## Building
@@ -78,9 +80,6 @@ also use it to specify a particular compiler version, e.g.,
 ```shell
 % make ROLLCOMPILER=gnu/4.8.1
 ```
-
-NOTE: the BLAS and ATLAS dynamic libraries need to be installed in order to
-build this roll.  The intel compiler comes packaged with these.
 
 The roll also supports specifying building with/for python versions other than
 the one included with the o/s.  To use this feature, specify a `ROLLPY` make
