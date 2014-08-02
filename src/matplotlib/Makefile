@@ -96,7 +96,6 @@ build: $(SRC_DIRS)
 	  $(COMPILERSETUP); \
 	  $(PYSETUP); \
 	  export -n DISPLAY; \
-	  export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION):$${PYTHONPATH}; \
 	  cd $(SOURCE_DIR); \
 	  python setup.py build $(SETUPOPTS) \
 	)

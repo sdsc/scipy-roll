@@ -4,8 +4,8 @@
 
 <para>
 
-The scipy Roll provides the scipy python module, along with the numpy array
-manipulation module and the nose testing harness, for a Rocks cluster.
+The scipy Roll provides the scipy python module and the nose testing harness,
+for a Rocks cluster.
 It installs the modules in the /usr/{lib,lib64}/python2.4/site-packages
 directories on both server and client hosts.
 

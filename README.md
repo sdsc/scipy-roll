@@ -3,7 +3,7 @@
 ## Overview
 
 This roll bundles a collection of Python scientific computing modules: cython,ipython,
-matplotlib, nose, numpy, pyfits, pytz, scientificpython and scipy.  
+matplotlib, nose, pyfits, pytz, scientificpython and scipy.  
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
@@ -18,7 +18,6 @@ plotting library which produces publication quality figures in a variety of
 hardcopy formats and interactive environments across platforms.
 - <a href="http://nose.readthedocs.org/en/latest/" target="_blank">nose</a> is
 nicer testing for python.
-- <a href="http://www.numpy.org" target="_blank">numpy</a> is the fundamental
 package for scientific computing with Python.
 - <a href="http://www.stsci.edu/institute/software_hardware/pyfits"
 target="_blank">PyFITS</a> provides an interface to FITS formatted files in the

@@ -13,7 +13,7 @@ my $isInstalled = -d '/opt/scipy';
 my $output;
 
 my @MODULES = (
-  'IPython', 'libxml2', 'matplotlib', 'nose', 'numpy', 'pyfits', 'pytz',
+  'IPython', 'libxml2', 'matplotlib', 'nose','pyfits', 'pytz',
   'scipy','Scientific', 'sympy','cython'
 );
 my @PYTHONS = split(/\s+/, "ROLLPY");

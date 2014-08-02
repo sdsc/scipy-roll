@@ -5,11 +5,10 @@
 <description>
 Python scientific libraries
 cython http://cython.org
-iPython http://ipython.org
+Python http://ipython.org
 libxml2 http://xmlsoft.org
 matplotlib http://matplotlib.sourceforge.net
 nose http://pypi.python.org/pypi/nose
-numpy http://numpy.scipy.org
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 pytz http://pytz.sourceforge.net
 scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/

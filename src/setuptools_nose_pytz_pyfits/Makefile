@@ -90,13 +90,12 @@ build: $(SRC_DIRS)
 	
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
-	-mkdir -p $(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION)
 	( \
 	  $(COMPILERSETUP); \
 	  $(PYSETUP); \
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}:$(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION); \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
           cd $(SETUPTOOLS_NAME)-$(SETUPTOOLS_VERSION); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ..; \

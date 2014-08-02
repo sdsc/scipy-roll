@@ -109,7 +109,6 @@ install::
 	( \
 	  $(COMPILERSETUP); \
 	  $(PYSETUP); \
-	  export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION):$${PYTHONPATH}; \
 	  cd $(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)

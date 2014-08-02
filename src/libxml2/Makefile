@@ -94,7 +94,6 @@ build:: $(SRC_DIRS)
 	( \
 	  $(COMPILERSETUP); \
 	  $(PYSETUP); \
-	  export PYTHONPATH=$(REDHAT.ROOT)/src/site-packages-$(COMPILERNAME)/$(PYVERSION):$${PYTHONPATH}; \
 	  export CC=$(CC); \
 	  if test -n "$${LIBPATH}"; then \
 	    export LDFLAGS=-L$${LIBPATH}; \

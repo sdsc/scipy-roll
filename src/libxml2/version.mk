@@ -15,7 +15,7 @@ NAME               = libxml2_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 2.9.1
 RELEASE            = 0
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)/lib64/python$(PYVERSION)/site-packages
+PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = libxml2
 

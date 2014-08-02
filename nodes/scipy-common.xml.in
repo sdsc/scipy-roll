@@ -9,7 +9,6 @@ iPython http://ipython.org
 libxml2 http://xmlsoft.org
 matplotlib http://matplotlib.sourceforge.net
 nose http://pypi.python.org/pypi/nose
-numpy http://numpy.scipy.org
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 pytz http://pytz.sourceforge.net
 scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
@@ -31,7 +30,6 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>ipython_pyPYVERSION</package>
 <package>libxml2_COMPILERNAME_pyPYVERSION</package>
 <package>matplotlib_COMPILERNAME_pyPYVERSION</package>
-<package>numpy_COMPILERNAME_pyPYVERSION</package>
 <package>scientificpython_COMPILERNAME_pyPYVERSION</package>
 <package>scipy_COMPILERNAME_pyPYVERSION</package>
 <package>setuptools_nose_pytz_pyfits_COMPILERNAME_pyPYVERSION</package>
