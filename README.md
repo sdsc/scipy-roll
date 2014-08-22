@@ -42,10 +42,10 @@ Rocks development machine.
 
 ## Dependencies
 
-BLAS/ATLAS libraries.  If the MKL_ROOT environment variable is set either
-before the build starts or by the compiler modulefiles, the build process will
-use the libraries from that location.
-
+Intel MKL libraries.  If you're building with the Intel compiler or there is
+an mkl modulefile present (the mkl-roll provides this), then the build process
+will pick these up automatically.  Otherwise, you'll need to set the MKL_ROOT
+environment variable to the library location.
 
 ## Building
 
