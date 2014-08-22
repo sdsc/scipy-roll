@@ -48,7 +48,6 @@ SKIP: {
   skip 'scipy not installed', int(@PYTHONS) * int(@MODULES) + 3
     if ! $isInstalled;
   foreach my $python(@PYTHONS) {
-    chomp($version);
     foreach my $module(@MODULES) {
       $output = `bash $TESTFILE.sh $python $module 2>&1`;
       like($output, qr/$module name/, "$module/$python module load works");
