@@ -13,9 +13,8 @@ endif
 
 NAME               = matplotlib_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 1.2.0
-RELEASE            = 0
+RELEASE            = 1
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = matplotlib
 

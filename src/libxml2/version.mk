@@ -13,9 +13,8 @@ endif
 
 NAME               = libxml2_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 2.9.1
-RELEASE            = 0
+RELEASE            = 1
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = libxml2
 

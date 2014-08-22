@@ -13,9 +13,8 @@ endif
 
 NAME               = scientificpython_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 2.9.3
-RELEASE            = 1
+RELEASE            = 2
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = scientificpython
 

@@ -8,9 +8,8 @@ endif
 
 NAME               = ipython_py$(PYVERSION)
 VERSION            = 1.2.1
-RELEASE            = 1
+RELEASE            = 2
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = ipython
 

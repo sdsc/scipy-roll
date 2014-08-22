@@ -57,33 +57,34 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/scipy/$(PYVERSION)
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
 
-PKGROOT = /opt/scipy/$(PYVERSION)
+CC = gcc
+ifeq ("$(COMPILERNAME)", "intel")
+  CC = icc
+else ifeq ("$(COMPILERNAME)", "pgi")
+  CC = pgcc
+endif
 
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLCOMPILER)\>"`; \
-    if test "$${module}" != "$(ROLLCOMPILER)"; then \
-      echo *** ERROR: Compiler module $(ROLLCOMPILER) not found; \
-      exit 2; \
-    fi; \
-    module load $(ROLLCOMPILER); \
-  fi
+    module load $(ROLLCOMPILER) || true; \
+  fi; \
+  echo === Compiler and version ===; \
+  $(CC) --version
+
 PYSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
-    if test "$${module}" != "$(ROLLPY)"; then \
-      echo *** ERROR: Python $(ROLLPY) not found; \
-      exit 2; \
-    fi; \
-    module load $(ROLLPY); \
-  fi
+    module load $(ROLLPY) || true; \
+  fi; \
+  echo === Python and version ===; \
+  echo `which python; python --version`
 
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
@@ -96,7 +97,7 @@ install::
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
-          cd $(SETUPTOOLS_NAME)-$(SETUPTOOLS_VERSION); \
+	  cd $(SETUPTOOLS_NAME)-$(SETUPTOOLS_VERSION); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ..; \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} nose-$(NOSE_VERSION).tar.gz; \

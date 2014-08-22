@@ -57,50 +57,48 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/scipy/$(PYVERSION)
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
 
+CC = gcc
+ifeq ("$(COMPILERNAME)", "intel")
+  CC = icc
+else ifeq ("$(COMPILERNAME)", "pgi")
+  CC = pgcc
+endif
+
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLCOMPILER)\>"`; \
-    if test "$${module}" != "$(ROLLCOMPILER)"; then \
-      echo *** ERROR: Compiler module $(ROLLCOMPILER) not found; \
-      exit 2; \
-    fi; \
-    module load $(ROLLCOMPILER); \
+    module load $(ROLLCOMPILER) || true; \
+    module load mkl || true; \
   fi; \
+  echo === Compiler and version ===; \
+  $(CC) --version; \
   if test -n "$${MKL_ROOT}"; then \
     export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
     export LD_LIBRARY_PATH=$${MKLLIB}:$${LD_LIBRARY_PATH}; \
-  fi
+  fi; \
+  echo === MKL_ROOT ===; \
+  echo $${MKL_ROOT}
+
 PYSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
-    if test "$${module}" != "$(ROLLPY)"; then \
-      echo *** ERROR: Python $(ROLLPY) not found; \
-      exit 2; \
-    fi; \
-    module load $(ROLLPY); \
-  fi
-
-CCOMP = gcc
-COMPILE_FLAGS = -O2 -fPIC
-ifeq ("$(COMPILERNAME)", "intel")
-  CCOMP = icc
-else ifeq ("$(COMPILERNAME)", "pgi")
-  CCOMP = pgcc
-endif
+    module load $(ROLLPY) || true; \
+  fi; \
+  echo === Python and version ===; \
+  echo `which python; python --version`
 
 build: $(SRC_DIRS)
 	( \
 	  $(COMPILERSETUP); \
 	  $(PYSETUP); \
 	  cd $(SOURCE_DIR); \
-	  python setup.py config --cc $(CCOMP) \
+	  python setup.py config --cc $(CC) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	

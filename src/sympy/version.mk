@@ -8,9 +8,8 @@ endif
 
 NAME               = sympy_py$(PYVERSION)
 VERSION            = 0.7.5
-RELEASE            = 0
+RELEASE            = 1
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = sympy
 

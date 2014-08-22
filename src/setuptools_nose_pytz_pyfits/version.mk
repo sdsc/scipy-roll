@@ -13,7 +13,7 @@ endif
 
 NAME               = setuptools_nose_pytz_pyfits_$(COMPILERNAME)_py$(PYVERSION)
 VERSION            = 0.6c11
-RELEASE            = 1
+RELEASE            = 2
 RPM.EXTRAS         = "AutoReq: no"
 
 SRC_SUBDIR         = setuptools_nose_pytz_pyfits

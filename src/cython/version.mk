@@ -1,12 +1,15 @@
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
 ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
 NAME               = cython_py$(PYVERSION)
 VERSION            = 0.20.1
-RELEASE            = 1
+RELEASE            = 2
 RPM.EXTRAS         = "AutoReq: no"
-PKGROOT            = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR         = cython
 

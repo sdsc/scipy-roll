@@ -57,6 +57,7 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/scipy/$(PYVERSION)
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
@@ -65,13 +66,10 @@ include pull.mk
 PYSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
-    if test "$${module}" != "$(ROLLPY)"; then \
-      echo *** ERROR: Python $(ROLLPY) not found; \
-      exit 2; \
-    fi; \
-    module load $(ROLLPY); \
-  fi
+    module load $(ROLLPY) || true; \
+  fi; \
+  echo === Python and version ===; \
+  echo `which python; python --version`
 
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"

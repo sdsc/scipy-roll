@@ -57,21 +57,27 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/scipy/$(PYVERSION)
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include pull.mk
 
+CXX = g++
+COMPILE_FLAGS = -O2 -shared -fPIC
+ifeq ("$(COMPILERNAME)", "intel")
+  CXX = icpc
+  COMPILE_FLAGS = -xHost -O3 -shared -fPIC -openmp
+endif
+
 COMPILERSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLCOMPILER)\>"`; \
-    if test "$${module}" != "$(ROLLCOMPILER)"; then \
-      echo *** ERROR: Compiler module $(ROLLCOMPILER) not found; \
-      exit 2; \
-    fi; \
-    module load $(ROLLCOMPILER); \
+    module load $(ROLLCOMPILER) || true; \
+    module load mkl || true; \
   fi; \
+  echo === Compiler and version ===; \
+  $(CXX) --version; \
   export SETUPOPTS="--compiler=unix --fcompiler=gnu95"; \
   if test "$(COMPILERNAME)" = "intel"; then \
     export SETUPOPTS="--compiler=intel --fcompiler=intelem"; \
@@ -84,24 +90,17 @@ COMPILERSETUP = \
   else \
     export BLAS=$(PWD)/$(SOURCE_DIR)/libblas.a; \
     export LAPACK=$(PWD)/$(SOURCE_DIR)/liblapack.a; \
-  fi
+  fi; \
+  echo === MKL_ROOT ===; \
+  echo $${MKL_ROOT}
+
 PYSETUP = \
   if test -e /etc/profile.d/modules.sh; then \
     . /etc/profile.d/modules.sh; \
-    module=`module avail 2>&1 | grep -o -m1 "\<$(ROLLPY)\>"`; \
-    if test "$${module}" != "$(ROLLPY)"; then \
-      echo *** ERROR: Python $(ROLLPY) not found; \
-      exit 2; \
-    fi; \
-    module load $(ROLLPY); \
-  fi
-
-CPPCOMP = g++
-COMPILE_FLAGS = -O2 -shared -fPIC
-ifeq ("$(COMPILERNAME)", "intel")
-  CPPCOMP = icpc
-  COMPILE_FLAGS = -xHost -O3 -shared -fPIC -openmp
-endif
+    module load $(ROLLPY) || true; \
+  fi; \
+  echo === Python and version ===; \
+  echo `which python; python --version`
 
 build: $(SRC_DIRS)
 	cp patch-files/site.cfg $(SOURCE_DIR)
@@ -116,11 +115,11 @@ build: $(SRC_DIRS)
 	                  build_clib $${SETUPOPTS} \
 	                  build_ext $${SETUPOPTS}; \
 	  for x in csr csc coo bsr dia; do \
-	    $(CPPCOMP) $(COMPILE_FLAGS) \
+	    $(CXX) $(COMPILE_FLAGS) \
 	      build/temp.linux-x86_64-*/scipy/sparse/sparsetools/$${x}_wrap.o\
 	      -o build/lib.linux-x86_64-*/scipy/sparse/sparsetools/_$${x}.so;\
 	  done; \
-	  $(CPPCOMP) $(COMPILE_FLAGS) \
+	  $(CXX) $(COMPILE_FLAGS) \
 	    build/temp.linux-x86_64-*/scipy/interpolate/src/_interpolate.o \
 	    -o build/lib.linux-x86_64-*/scipy/interpolate/_interpolate.so; \
 	)
