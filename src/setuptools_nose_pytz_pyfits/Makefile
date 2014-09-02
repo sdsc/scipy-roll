@@ -57,7 +57,6 @@
 # $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
-PKGROOT = /opt/scipy/$(PYVERSION)
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
@@ -97,7 +96,7 @@ install::
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
-	  cd $(SETUPTOOLS_NAME)-$(SETUPTOOLS_VERSION); \
+	  cd $(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ..; \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} nose-$(NOSE_VERSION).tar.gz; \

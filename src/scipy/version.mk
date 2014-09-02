@@ -11,18 +11,19 @@ ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
-NAME               = scipy_$(COMPILERNAME)_py$(PYVERSION)
-VERSION            = 0.13.3
-RELEASE            = 1
-RPM.EXTRAS         = "AutoReq: no"
+NAME           = scipy_$(COMPILERNAME)_py$(PYVERSION)
+VERSION        = 0.13.3
+RELEASE        = 1
+PKGROOT        = /opt/scipy/$(PYVERSION)
 
-SRC_SUBDIR         = scipy
+SRC_SUBDIR     = scipy
 
-SOURCE_NAME        = scipy
-SOURCE_VERSION     = $(VERSION)
-SOURCE_SUFFIX      = tar.gz
-SOURCE_PKG         = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
-SOURCE_DIR         = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
+SOURCE_NAME    = scipy
+SOURCE_SUFFIX  = tar.gz
+SOURCE_VERSION = $(VERSION)
+SOURCE_PKG     = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
+SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
-TAR_GZ_PKGS        = $(SOURCE_PKG)
+TAR_GZ_PKGS    = $(SOURCE_PKG)
 
+RPM.EXTRAS     = AutoReq:No
