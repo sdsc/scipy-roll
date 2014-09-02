@@ -27,7 +27,7 @@ if test -f /etc/profile.d/modules.sh; then
   . /etc/profile.d/modules.sh
   module load \$1
   export version=`python -c "import sys; print sys.version[:3]"`
-  module load ROLLCOMPILER scipy/\${version}
+  module load scipy/\${version}
 fi
 python <<ENDPY
 import \$2
