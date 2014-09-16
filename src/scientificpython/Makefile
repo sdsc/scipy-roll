@@ -70,31 +70,25 @@ else ifeq ("$(COMPILERNAME)", "pgi")
 endif
 
 COMPILERSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load $(ROLLCOMPILER) || true; \
-    module load mkl || true; \
-  fi; \
+  module load $(ROLLCOMPILER) || true; \
   echo === Compiler and version ===; \
-  $(CC) --version; \
-  if test -n "$${MKL_ROOT}"; then \
-    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
-    export LD_LIBRARY_PATH=$${MKLLIB}:$${LD_LIBRARY_PATH}; \
-  fi; \
+  $(CC) --version
+
+MKLSETUP = \
+  module load mkl || true; \
   echo === MKL_ROOT ===; \
-  echo $${MKL_ROOT}
+  echo $${MKL_ROOT}; \
+  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
 
 PYSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load $(ROLLPY) || true; \
-  fi; \
+  module load $(ROLLPY) || true; \
   echo === Python and version ===; \
   echo `which python; python --version`
 
 build: $(SRC_DIRS)
 	( \
 	  $(COMPILERSETUP); \
+	  $(MKLSETUP); \
 	  $(PYSETUP); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py config --cc $(CC) \
@@ -105,6 +99,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(COMPILERSETUP); \
+	  $(MKLSETUP); \
 	  $(PYSETUP); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \

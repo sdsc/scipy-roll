@@ -13,7 +13,7 @@ endif
 
 NAME           = matplotlib_$(COMPILERNAME)_py$(PYVERSION)
 VERSION        = 1.2.0
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = matplotlib

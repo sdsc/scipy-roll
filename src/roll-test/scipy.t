@@ -23,12 +23,9 @@ my $TESTFILE = 'tmpscipy';
 open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
 #!/bin/bash
-if test -f /etc/profile.d/modules.sh; then
-  . /etc/profile.d/modules.sh
-  module load \$1
-  export version=`python -c "import sys; print sys.version[:3]"`
-  module load scipy/\${version}
-fi
+module load \$1
+export version=`python -c "import sys; print sys.version[:3]"`
+module load scipy/\${version}
 python <<ENDPY
 import \$2
 help(\$2)
@@ -54,7 +51,6 @@ SKIP: {
     }
   }
 
-  skip 'modules not installed', 3 if ! -f '/etc/profile.d/modules.sh';
   `/bin/ls /opt/modulefiles/applications/scipy/[0-9]* 2>&1`;
   ok($? == 0, 'scipy module installed');
   `/bin/ls /opt/modulefiles/applications/scipy/.version.[0-9]* 2>&1`;
@@ -62,12 +58,6 @@ SKIP: {
   ok(-l '/opt/modulefiles/applications/scipy/.version',
      'scipy version module link created');
 
-}
-
-# scipy-doc.xml
-SKIP: {
-  skip 'not server', 1 if $appliance ne 'Frontend';
-  ok(-d '/var/www/html/roll-documentation/scipy', 'doc installed');
 }
 
 `rm -fr $TESTFILE*`;

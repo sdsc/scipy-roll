@@ -63,10 +63,7 @@ include Rules.mk
 include pull.mk
 
 PYSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load $(ROLLPY) || true; \
-  fi; \
+  module load $(ROLLPY) || true; \
   echo === Python and version ===; \
   echo `which python; python --version`
 

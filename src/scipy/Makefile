@@ -70,36 +70,25 @@ ifeq ("$(COMPILERNAME)", "intel")
 endif
 
 COMPILERSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load $(ROLLCOMPILER) || true; \
-    module load mkl || true; \
-  fi; \
+  module load $(ROLLCOMPILER) || true; \
   echo === Compiler and version ===; \
-  $(CXX) --version; \
-  export SETUPOPTS="--compiler=unix --fcompiler=gnu95"; \
-  if test "$(COMPILERNAME)" = "intel"; then \
-    export SETUPOPTS="--compiler=intel --fcompiler=intelem"; \
-  fi; \
-  export COMMENTMKL='\#'; \
-  if test -n "$${MKL_ROOT}"; then \
-    export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
-    export MKLLINK="-L$${MKLLIB} -lmkl_rt"; \
-    export COMMENTMKL=''; \
-  else \
-    export BLAS=$(PWD)/$(SOURCE_DIR)/libblas.a; \
-    export LAPACK=$(PWD)/$(SOURCE_DIR)/liblapack.a; \
-  fi; \
+  $(CXX) --version
+
+MKLSETUP = \
+  module load mkl || true; \
   echo === MKL_ROOT ===; \
-  echo $${MKL_ROOT}
+  echo $${MKL_ROOT}; \
+  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
 
 PYSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    module load $(ROLLPY) || true; \
-  fi; \
+  module load $(ROLLPY) || true; \
   echo === Python and version ===; \
   echo `which python; python --version`
+
+SETUPOPTS = --compiler=unix --fcompiler=gnu95
+ifeq ("$(COMPILERNAME)", "intel")
+  SETUPOPTS = --compiler=intel --fcompiler=intelem
+endif
 
 build: $(SRC_DIRS)
 	cp patch-files/site.cfg $(SOURCE_DIR)
@@ -107,12 +96,21 @@ build: $(SRC_DIRS)
 	cp liblapack.a $(SOURCE_DIR); \
 	( \
 	  $(COMPILERSETUP); \
+	  $(MKLSETUP); \
 	  $(PYSETUP); \
+	  export COMMENTMKL='\#'; \
+	  if test -n "$${MKL_ROOT}"; then \
+	    export MKLLINK="-L$${MKLLIB} -lmkl_rt"; \
+	    export COMMENTMKL=''; \
+	  else \
+	    export BLAS=$(PWD)/$(SOURCE_DIR)/libblas.a; \
+	    export LAPACK=$(PWD)/$(SOURCE_DIR)/liblapack.a; \
+	  fi; \
 	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg; \
 	  cd $(SOURCE_DIR); \
-	  python setup.py config $${SETUPOPTS} \
-	                  build_clib $${SETUPOPTS} \
-	                  build_ext $${SETUPOPTS}; \
+	  python setup.py config $(SETUPOPTS) \
+	                  build_clib $(SETUPOPTS) \
+	                  build_ext $(SETUPOPTS); \
 	  for x in csr csc coo bsr dia; do \
 	    $(CXX) $(COMPILE_FLAGS) \
 	      build/temp.linux-x86_64-*/scipy/sparse/sparsetools/$${x}_wrap.o\

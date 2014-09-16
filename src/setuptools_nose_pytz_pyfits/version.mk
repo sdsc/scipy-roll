@@ -13,7 +13,7 @@ endif
 
 NAME           = setuptools_nose_pytz_pyfits_$(COMPILERNAME)_py$(PYVERSION)
 VERSION        = 0.6c11
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = setuptools_nose_pytz_pyfits

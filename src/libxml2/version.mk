@@ -13,7 +13,7 @@ endif
 
 NAME           = libxml2_$(COMPILERNAME)_py$(PYVERSION)
 VERSION        = 2.9.1
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = libxml2

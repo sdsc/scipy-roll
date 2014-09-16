@@ -13,7 +13,7 @@ endif
 
 NAME           = scipy_$(COMPILERNAME)_py$(PYVERSION)
 VERSION        = 0.13.3
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = scipy
