@@ -1,0 +1,11 @@
+--- setupext.py	2014-10-13 14:42:22.004461503 -0700
++++ patch-files/setupext.py	2014-10-13 14:42:49.534460060 -0700
+@@ -285,7 +285,7 @@
+             except subprocess.CalledProcessError:
+                 pass
+             else:
+-                output = output.decode(sys.getfilesystemencoding())
++                #output = output.decode(sys.getfilesystemencoding())
+                 use_defaults = False
+                 for token in output.split():
+                     attr = flag_map.get(token[:2])

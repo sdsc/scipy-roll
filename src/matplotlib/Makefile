@@ -87,7 +87,9 @@ else ifeq ("$(COMPILERNAME)", "pgi")
 endif
 
 build: $(SRC_DIRS)
-	cp patch-files/setup.py $(SOURCE_DIR)/
+	patch $(SOURCE_DIR)/setup.py patch-files/setup.py.patch
+	patch $(SOURCE_DIR)/setupext.py patch-files/setupext.py.patch
+	patch $(SOURCE_DIR)/extern/qhull/qhull_a.h patch-files/qhull_a.h.patch
 	( \
 	  $(COMPILERSETUP); \
 	  $(PYSETUP); \
@@ -98,16 +100,15 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	( \
 	  $(COMPILERSETUP); \
 	  $(PYSETUP); \
 	  cd $(SOURCE_DIR); \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT):$${PYTHONPATH}; \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
 	rm -rf $(SOURCE_DIR)
-

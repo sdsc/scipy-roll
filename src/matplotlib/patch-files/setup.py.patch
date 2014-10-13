@@ -1,0 +1,11 @@
+--- matplotlib-1.4.0/setup.py	2014-07-30 20:17:39.000000000 -0700
++++ patch-files/setup.py	2014-10-13 09:40:48.609008009 -0700
+@@ -47,6 +47,8 @@
+     del sdist.sdist.make_release_tree
+ 
+ from distutils.dist import Distribution
++# JJH: added to support intel
++from numpy.distutils import intelccompiler
+ 
+ import setupext
+ from setupext import print_line, print_raw, print_message, print_status

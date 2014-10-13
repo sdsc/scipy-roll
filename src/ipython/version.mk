@@ -7,8 +7,8 @@ ifndef PYVERSION
 endif
 
 NAME           = ipython_py$(PYVERSION)
-VERSION        = 1.2.1
-RELEASE        = 3
+VERSION        = 2.3.0
+RELEASE        = 0
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = ipython

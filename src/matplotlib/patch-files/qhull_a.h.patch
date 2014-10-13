@@ -1,0 +1,17 @@
+--- qhull_a.h	2014-10-13 14:16:16.663516603 -0700
++++ patch-files/qhull_a.h	2014-10-13 14:18:11.451513153 -0700
+@@ -103,10 +103,14 @@
+ #   define QHULL_OS_WIN
+ #endif
+ #if defined(__INTEL_COMPILER) && !defined(QHULL_OS_WIN)
++#if 0
+ template <typename T>
+ inline void qhullUnused(T &x) { (void)x; }
+ #  define QHULL_UNUSED(x) qhullUnused(x);
+ #else
++#  define QHULL_UNUSED(x) (x);
++#endif
++#else
+ #  define QHULL_UNUSED(x) (void)x;
+ #endif
+ 

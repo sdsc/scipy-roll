@@ -7,8 +7,8 @@ ifndef PYVERSION
 endif
 
 NAME           = cython_py$(PYVERSION)
-VERSION        = 0.20.1
-RELEASE        = 3
+VERSION        = 0.21
+RELEASE        = 0
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = cython
