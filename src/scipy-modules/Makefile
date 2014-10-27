@@ -13,6 +13,7 @@ install::
 	cp *.module $(ROOT)/$(PKGROOT)/$(VERSION)
 	cp *.version $(ROOT)/$(PKGROOT)/.version.$(VERSION)
 	perl -pi -e 's#COMPILERNAME#$(COMPILERNAME)#g;' \
+	         -e 's#PYVERSION#$(PYVERSION)#g;' \
 	         -e 's#ROLLCOMPILER#$(ROLLCOMPILER)#g;' \
 	         -e 's#ROLLMPI#$(ROLLMPI)#g;' \
 	         -e 's#ROLLNETWORK#$(ROLLNETWORK)#g;' \
