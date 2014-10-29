@@ -94,10 +94,10 @@ install::
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ..; \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(NOSE_NAME)-$(NOSE_VERSION).$(NOSE_SUFFIX); \
-	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYTZ_NAME)-$(PYTZ_VERSION).$(PYTZ_SUFFIX); \
-	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(STSCI_NAME)-$(STSCI_VERSION).$(STSCI_SUFFIX); \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(D2TO1_NAME)-$(D2TO1_VERSION).$(D2TO1_SUFFIX); \
-	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYFITS)-$(PYFITS_VERSION).i$(PYFITS_SUFFIX); \
+	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(STSCI_NAME)-$(STSCI_VERSION).$(STSCI_SUFFIX); \
+	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYTZ_NAME)-$(PYTZ_VERSION).$(PYTZ_SUFFIX); \
+	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYFITS_NAME)-$(PYFITS_VERSION).$(PYFITS_SUFFIX); \
 	)
 	@echo "::: Package $(NAME) install complete :::"
 
