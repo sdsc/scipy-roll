@@ -60,36 +60,35 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
-CC = gcc
-ifeq ("$(COMPILERNAME)", "intel")
-  CC = icc
-else ifeq ("$(COMPILERNAME)", "pgi")
-  CC = pgcc
-endif
+LICENSE_FILES = $(SOURCE_DIR)/LICENSE
 
-COMPILERSETUP = \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CC) --version
+$(NAME).spec: DESCRIPTION LICENSE
 
-MKLSETUP = \
-  module load mkl || true; \
-  echo === MKL_ROOT ===; \
-  echo $${MKL_ROOT}; \
-  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	$(MODULE_LOAD_PYTHON); \
+	( \
+	  $(DESCRIBE_PKG) \
+	  $(DESCRIBE_CC) \
+	  $(DESCRIBE_MKL) \
+	  $(DESCRIBE_PYTHON) \
+	) > $@
 
-PYSETUP = \
-  module load $(ROLLPY) || true; \
-  echo === Python and version ===; \
-  echo `which python; python --version`
+LICENSE: $(SRC_DIRS)
+	if ! grep -q "CeCILL-C" $(LICENSE_FILES); then \
+	  exit 2; \
+	fi
+	echo CeCILL > $@
 
 build: $(SRC_DIRS)
 	( \
-	  $(COMPILERSETUP); \
-	  $(MKLSETUP); \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_MKL); \
+	  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py config --cc $(CC) \
 	)
@@ -98,14 +97,16 @@ build: $(SRC_DIRS)
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  $(COMPILERSETUP); \
-	  $(MKLSETUP); \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_MKL); \
+	  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
 

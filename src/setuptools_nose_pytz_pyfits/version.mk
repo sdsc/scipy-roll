@@ -11,9 +11,9 @@ ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
-NAME           = setuptools_nose_pytz_pyfits_$(COMPILERNAME)_py$(PYVERSION)
+NAME           = sdsc-setuptools_nose_pytz_pyfits_py$(PYVERSION)
 VERSION        = 0.6c11
-RELEASE        = 3
+RELEASE        = 4
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = setuptools_nose_pytz_pyfits

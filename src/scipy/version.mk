@@ -11,9 +11,9 @@ ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
-NAME           = scipy_$(COMPILERNAME)_py$(PYVERSION)
+NAME           = sdsc-scipy_py$(PYVERSION)
 VERSION        = 0.14.0
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = scipy

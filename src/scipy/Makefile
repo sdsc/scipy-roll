@@ -60,44 +60,45 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
-CXX = g++
 COMPILE_FLAGS = -O2 -shared -fPIC
-ifeq ("$(COMPILERNAME)", "intel")
-  CXX = icpc
-  COMPILE_FLAGS = -xHost -O3 -shared -fPIC -openmp
-endif
-
-COMPILERSETUP = \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CXX) --version
-
-MKLSETUP = \
-  module load mkl || true; \
-  echo === MKL_ROOT ===; \
-  echo $${MKL_ROOT}; \
-  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`
-
-PYSETUP = \
-  module load $(ROLLPY) || true; \
-  echo === Python and version ===; \
-  echo `which python; python --version`
-
 SETUPOPTS = --compiler=unix --fcompiler=gnu95
 ifeq ("$(COMPILERNAME)", "intel")
+  COMPILE_FLAGS = -xHost -O3 -shared -fPIC -openmp
   SETUPOPTS = --compiler=intel --fcompiler=intelem
 endif
+
+LICENSE_FILES = $(SOURCE_DIR)/LICENSE.txt
+
+$(NAME).spec: DESCRIPTION LICENSE
+
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	$(MODULE_LOAD_PYTHON); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	  $(DESCRIBE_MKL); \
+	  $(DESCRIBE_PYTHON) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	if ! grep -q "2012 SciPy Developers" $(LICENSE_FILES); then \
+	  exit 2; \
+	fi
+	echo BSD > $@
 
 build: $(SRC_DIRS)
 	cp patch-files/site.cfg $(SOURCE_DIR)
 	cp libblas.a $(SOURCE_DIR); \
 	cp liblapack.a $(SOURCE_DIR); \
 	( \
-	  $(COMPILERSETUP); \
-	  $(MKLSETUP); \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_MKL); \
+	  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+	  $(MODULE_LOAD_PYTHON); \
 	  export COMMENTMKL='\#'; \
 	  if test -n "$${MKL_ROOT}"; then \
 	    export MKLLINK="-L$${MKLLIB} -lmkl_rt"; \
@@ -125,11 +126,13 @@ build: $(SRC_DIRS)
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
 

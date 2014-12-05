@@ -60,24 +60,27 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
-CC = gcc
-ifeq ("$(COMPILERNAME)", "intel")
-  CC = icc
-else ifeq ("$(COMPILERNAME)", "pgi")
-  CC = pgcc
-endif
+LICENSE_FILES = */PKG-INFO
 
-COMPILERSETUP = \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CC) --version
+$(NAME).spec: DESCRIPTION LICENSE
 
-PYSETUP = \
-  module load $(ROLLPY) || true; \
-  echo === Python and version ===; \
-  echo `which python; python --version`
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	$(MODULE_LOAD_PYTHON); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	  $(DESCRIBE_PYTHON) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	if ! grep -q "^License:" $(LICENSE_FILES); then \
+	  exit 2; \
+	fi
+	echo BSD and LPGL and MIT > $@
 
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
@@ -85,8 +88,8 @@ build: $(SRC_DIRS)
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  $(COMPILERSETUP); \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_PYTHON); \
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
@@ -99,8 +102,13 @@ install::
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYTZ_NAME)-$(PYTZ_VERSION).$(PYTZ_SUFFIX); \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYFITS_NAME)-$(PYFITS_VERSION).$(PYFITS_SUFFIX); \
 	)
+	# Special license install to avoid collisions
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/license-info/$(NAME)
+	for F in $(LICENSE_FILES); do \
+	  cp $$F $(ROOT)/$(PKGROOT)/license-info/$(NAME)/`echo $$F | sed 's/\//-/g'`; \
+	done
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
 

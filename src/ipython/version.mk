@@ -6,9 +6,9 @@ ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
-NAME           = ipython_py$(PYVERSION)
+NAME           = sdsc-ipython_py$(PYVERSION)
 VERSION        = 2.3.0
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = ipython

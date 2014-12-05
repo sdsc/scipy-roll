@@ -6,9 +6,9 @@ ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
-NAME           = cython_py$(PYVERSION)
+NAME           = sdsc-cython_py$(PYVERSION)
 VERSION        = 0.21
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = cython

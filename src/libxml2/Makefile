@@ -60,29 +60,32 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
-CC=gcc
-ifeq ("$(COMPILERNAME)", "intel")
-  CC=icc
-else ifeq ("$(COMPILERNAME)", "pgi")
-  CC=pgcc
-endif
+LICENSE_FILES = $(SOURCE_DIR)/COPYING
 
-COMPILERSETUP = \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CC) --version
+$(NAME).spec: DESCRIPTION LICENSE
 
-PYSETUP = \
-  module load $(ROLLPY) || true; \
-  echo === Python and version ===; \
-  echo `which python; python --version`
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	$(MODULE_LOAD_PYTHON); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	  $(DESCRIBE_PYTHON) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	if ! grep -q "Software without restriction" $(LICENSE_FILES); then \
+	  exit 2; \
+	fi
+	echo BSD > $@
 
 build:: $(SRC_DIRS)
 	( \
-	  $(COMPILERSETUP); \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_PYTHON); \
 	  export CC=$(CC); \
 	  if test -n "$${LIBPATH}"; then \
 	    export LDFLAGS=-L$${LIBPATH}; \
@@ -96,13 +99,14 @@ build:: $(SRC_DIRS)
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-	  $(COMPILERSETUP); \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
 	)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
 

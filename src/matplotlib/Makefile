@@ -60,24 +60,8 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
-
-CC = gcc
-ifeq ("$(COMPILERNAME)", "intel")
-  CC = icc
-else ifeq ("$(COMPILERNAME)", "pgi")
-  CC = pgcc
-endif
-
-COMPILERSETUP = \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CC) --version
-
-PYSETUP = \
-  module load $(ROLLPY) || true; \
-  echo === Python and version ===; \
-  echo `which python; python --version`
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
 SETUPOPTS =
 ifeq ("$(COMPILERNAME)", "intel")
@@ -86,13 +70,32 @@ else ifeq ("$(COMPILERNAME)", "pgi")
   SETUPOPTS = "--compiler=pgcc"
 endif
 
+LICENSE_FILES = $(SOURCE_DIR)/LICENSE/*
+
+$(NAME).spec: DESCRIPTION LICENSE
+
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	$(MODULE_LOAD_PYTHON); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	  $(DESCRIBE_PYTHON) \
+	) > $@
+
+LICENSE: $(SRC_DIRS)
+	if ! grep -q "JDH" $(SOURCE_DIR)/LICENSE/LICENSE; then \
+	  exit 2; \
+	fi
+	echo matplotlib > $@
+
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/setup.py patch-files/setup.py.patch
 	patch $(SOURCE_DIR)/setupext.py patch-files/setupext.py.patch
 	patch $(SOURCE_DIR)/extern/qhull/qhull_a.h patch-files/qhull_a.h.patch
 	( \
-	  $(COMPILERSETUP); \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_PYTHON); \
 	  export -n DISPLAY; \
 	  cd $(SOURCE_DIR); \
 	  python setup.py build $(SETUPOPTS) \
@@ -102,13 +105,14 @@ build: $(SRC_DIRS)
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	( \
-	  $(COMPILERSETUP); \
-	  $(PYSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR)
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE

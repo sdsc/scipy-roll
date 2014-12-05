@@ -28,11 +28,11 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 
 <package>cython_pyPYVERSION</package>
 <package>ipython_pyPYVERSION</package>
-<package>libxml2_COMPILERNAME_pyPYVERSION</package>
-<package>matplotlib_COMPILERNAME_pyPYVERSION</package>
-<package>scientificpython_COMPILERNAME_pyPYVERSION</package>
-<package>scipy_COMPILERNAME_pyPYVERSION</package>
-<package>setuptools_nose_pytz_pyfits_COMPILERNAME_pyPYVERSION</package>
+<package>libxml2_pyPYVERSION</package>
+<package>matplotlib_pyPYVERSION</package>
+<package>scientificpython_pyPYVERSION</package>
+<package>scipy_pyPYVERSION</package>
+<package>setuptools_nose_pytz_pyfits_pyPYVERSION</package>
 <package>sympy_pyPYVERSION</package>
 <package>scipy-modules_pyPYVERSION</package>
 <package>scipy-roll-test</package>

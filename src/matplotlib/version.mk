@@ -11,9 +11,9 @@ ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
-NAME           = matplotlib_$(COMPILERNAME)_py$(PYVERSION)
+NAME           = sdsc-matplotlib_py$(PYVERSION)
 VERSION        = 1.4.2
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = matplotlib

@@ -72,18 +72,10 @@ copyright rpm pkg clean::
 	    for p in $(ROLLPY); do \
 	      module load $$p; \
 	      export PYVERSION=`python -c "from __future__ import print_function;import sys;print(sys.version[:3])"`; \
-	      grep -q ROLLCOMPILER $$i/version.mk; \
-	      if test $$? -eq 0; then \
-	        for c in $(ROLLCOMPILER); do \
-	          echo make $@ in $$i with ROLLCOMPILER=$$c ROLLPY=$$p PYVERSION=$${PYVERSION}; \
-	          (cd $$i && $(MAKE) ROLLCOMPILER=$$c ROLLPY=$$p PYVERSION=$${PYVERSION} PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
-	        done; \
-	      else \
-	        echo make $@ in $$i with ROLLPY=$$p PYVERSION=$${PYVERSION}; \
-	        (cd $$i && $(MAKE) ROLLPY=$$p PYVERSION=$${PYVERSION} PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
-	      fi; \
+	      echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPY=$$p PYVERSION=$${PYVERSION}; \
+	      (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$$p PYVERSION=$${PYVERSION} PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
 	    done; \
 	  else \
-	    (cd $$i && $(MAKE) $@) || exit 2; \
+	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" $@) || exit 2; \
 	  fi; \
 	done

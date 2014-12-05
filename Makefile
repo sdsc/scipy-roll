@@ -73,16 +73,12 @@ default:
 	for i in `ls nodes/*.in`; do \
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
-	  for c in $(ROLLCOMPILER); do \
-	    COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
-	    perl -pi -e 'print and s/COMPILERNAME/'$${COMPILERNAME}'/g if m/COMPILERNAME/' $$o; \
-	  done; \
 	  for p in $(ROLLPY); do \
 	    module load $${p}; \
 	    version=`python -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
 	    perl -pi -e 'print and s/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
 	  done; \
-	  perl -pi -e '$$_ = "" if m/COMPILERNAME|PYVERSION/' $$o; \
+	  perl -pi -e '$$_ = "" if m/PYVERSION/' $$o; \
 	done
 	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" roll
 
@@ -95,5 +91,5 @@ distclean: clean
 	  rm -f $$o; \
 	done
 	rm -fr RPMS SRPMS
-	rm -fr src/site-packages*
+	rm -fr cache
 	-rm -f build.log
