@@ -109,7 +109,7 @@ install::
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
