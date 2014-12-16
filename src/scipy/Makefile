@@ -70,8 +70,6 @@ ifeq ("$(COMPILERNAME)", "intel")
   SETUPOPTS = --compiler=intel --fcompiler=intelem
 endif
 
-LICENSE_FILES = $(SOURCE_DIR)/LICENSE.txt
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -85,9 +83,7 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	if ! grep -q "2012 SciPy Developers" $(LICENSE_FILES); then \
-	  exit 2; \
-	fi
+	$(CHECK_LICENSE_FILES)
 	echo BSD > $@
 
 build: $(SRC_DIRS)

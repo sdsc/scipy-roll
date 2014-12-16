@@ -63,7 +63,7 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-LICENSE_FILES = */PKG-INFO
+PYTHON_MODULES = d2to1 nose pyfits pytz setuptools stsci.distutils
 
 $(NAME).spec: DESCRIPTION LICENSE
 
@@ -77,9 +77,10 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	if ! grep -q "^License:" $(LICENSE_FILES); then \
-	  exit 2; \
-	fi
+	for F in $(PYTHON_MODULES); do \
+	  cp $$F*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
+	done
+	$(CHECK_LICENSE_FILES)
 	echo BSD and LPGL and MIT > $@
 
 build: $(SRC_DIRS)
@@ -102,11 +103,7 @@ install::
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYTZ_NAME)-$(PYTZ_VERSION).$(PYTZ_SUFFIX); \
 	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYFITS_NAME)-$(PYFITS_VERSION).$(PYFITS_SUFFIX); \
 	)
-	# Special license install to avoid collisions
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/license-info/$(NAME)
-	for F in $(LICENSE_FILES); do \
-	  cp $$F $(ROOT)/$(PKGROOT)/license-info/$(NAME)/`echo $$F | sed 's/\//-/g'`; \
-	done
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::

@@ -70,8 +70,6 @@ else ifeq ("$(COMPILERNAME)", "pgi")
   SETUPOPTS = "--compiler=pgcc"
 endif
 
-LICENSE_FILES = $(SOURCE_DIR)/LICENSE/*
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -84,9 +82,7 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	if ! grep -q "JDH" $(SOURCE_DIR)/LICENSE/LICENSE; then \
-	  exit 2; \
-	fi
+	$(CHECK_LICENSE_FILES)
 	echo matplotlib > $@
 
 build: $(SRC_DIRS)
