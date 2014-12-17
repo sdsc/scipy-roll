@@ -63,7 +63,7 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-PYTHON_MODULES = d2to1 nose pyfits pytz setuptools stsci.distutils
+PYTHON_MODULES = d2to1 pyfits pytz stsci.distutils
 
 $(NAME).spec: DESCRIPTION LICENSE
 
@@ -93,15 +93,11 @@ install::
 	  $(MODULE_LOAD_PYTHON); \
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
-	  cd $(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  cd ..; \
-	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(NOSE_NAME)-$(NOSE_VERSION).$(NOSE_SUFFIX); \
-	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(D2TO1_NAME)-$(D2TO1_VERSION).$(D2TO1_SUFFIX); \
-	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(STSCI_NAME)-$(STSCI_VERSION).$(STSCI_SUFFIX); \
-	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYTZ_NAME)-$(PYTZ_VERSION).$(PYTZ_SUFFIX); \
-	  $(ROOT)/$(PKGROOT)/bin/easy_install --install-dir $${sitepath} $(PYFITS_NAME)-$(PYFITS_VERSION).$(PYFITS_SUFFIX); \
+	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
+	  easy_install --install-dir $${sitepath} $(SOURCE_PKG); \
+	  easy_install --install-dir $${sitepath} $(PYTZ_PKG); \
+	  easy_install --install-dir $${sitepath} $(PYFITS_PKG); \
+	  easy_install --install-dir $${sitepath} $(STSCI_PKG) \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

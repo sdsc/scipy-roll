@@ -88,6 +88,8 @@ to specify one or more moduefiles that should be loaded instead, e.g.
 % make ROLLPY='python opt-python'
 ```
 
+The python installation used to build scipy must included the setuptools module.
+
 ## Installation
 
 To install, execute these instructions on a Rocks frontend:
