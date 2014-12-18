@@ -87,18 +87,22 @@ build:: $(SRC_DIRS)
 	    export LDFLAGS=-L$${LIBPATH}; \
 	  fi; \
 	  cd $(SOURCE_DIR); \
-	  ./configure --prefix=$(PKGROOT) PYTHON_SITE_PACKAGES=$(PKGROOT); \
+	  ./configure --prefix=$(PKGROOT); \
 	  $(MAKE) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
+	# NOTE: In addition to installing into $(PKGROOT), the libxml2 install
+	# process places some lib files in locations relative to the python
+	# path.  Using the DESTDIR make var ensures that all of these get
+	# bundled into the rpm instead of being installed on the build machine.
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  $(MAKE) prefix=$(ROOT)/$(PKGROOT) install \
+	  $(MAKE) DESTDIR=$(ROOT) install \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
