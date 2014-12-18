@@ -77,9 +77,6 @@ DESCRIPTION:
 	) > $@
 
 LICENSE: $(SRC_DIRS)
-	for F in $(PYTHON_MODULES); do \
-	  cp $$F*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
-	done
 	$(CHECK_LICENSE_FILES)
 	echo BSD and LPGL and MIT > $@
 
@@ -87,6 +84,7 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
+	# NOTE: pyfits requires d2to1 and stsci.distutils
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(MODULE_LOAD_CC); \
@@ -94,14 +92,12 @@ install::
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
 	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
-	  easy_install --install-dir $${sitepath} $(SOURCE_PKG); \
-	  easy_install --install-dir $${sitepath} $(PYTZ_PKG); \
-	  easy_install --install-dir $${sitepath} $(PYFITS_PKG); \
-	  easy_install --install-dir $${sitepath} $(STSCI_PKG) \
+	  easy_install --install-dir $${sitepath} $(D2TO1_PKG); \
+	  easy_install --install-dir $${sitepath} $(STSCI_PKG); \
+	  easy_install --install-dir $${sitepath} $(SOURCE_PKG) \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
 	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
-
