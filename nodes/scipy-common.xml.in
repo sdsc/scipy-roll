@@ -4,13 +4,10 @@
 
 <description>
 Python scientific libraries
-cython http://cython.org
 IPython http://ipython.org
 libxml2 http://xmlsoft.org
 matplotlib http://matplotlib.sourceforge.net
-nose http://pypi.python.org/pypi/nose
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
-pytz http://pytz.sourceforge.net
 scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
 scipy http://www.scipy.org
 setuptools https://pypi.python.org/pypi/setuptools
@@ -26,13 +23,11 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 
-<package>cython_pyPYVERSION</package>
 <package>ipython_pyPYVERSION</package>
 <package>libxml2_pyPYVERSION</package>
 <package>matplotlib_pyPYVERSION</package>
 <package>scientificpython_pyPYVERSION</package>
 <package>scipy_pyPYVERSION</package>
-<package>setuptools_nose_pytz_pyfits_pyPYVERSION</package>
 <package>sympy_pyPYVERSION</package>
 <package>scipy-modules_pyPYVERSION</package>
 <package>scipy-roll-test</package>
