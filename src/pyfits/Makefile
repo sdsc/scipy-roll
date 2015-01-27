@@ -81,6 +81,7 @@ LICENSE: $(SRC_DIRS)
 	echo BSD and LPGL and MIT > $@
 
 build: $(SRC_DIRS)
+	patch $(SOURCE_DIR)/setup.cfg patch-files/setup.cfg.patch
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
@@ -94,7 +95,8 @@ install::
 	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
 	  easy_install --install-dir $${sitepath} $(D2TO1_PKG); \
 	  easy_install --install-dir $${sitepath} $(STSCI_PKG); \
-	  easy_install --install-dir $${sitepath} $(SOURCE_PKG) \
+	  cd $(SOURCE_DIR); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
