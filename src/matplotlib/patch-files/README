@@ -1,4 +1,4 @@
-setup.py -- add support for intel compilers
+setup.py -- add support for intel compilers; remove numpy from download list
 setupext.py -- decode call translated to unicode and broke compilation
 qhull_a.h -- use of template in Intel C compilation caused compiler to fail
 

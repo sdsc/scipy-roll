@@ -1,5 +1,5 @@
---- matplotlib-1.4.0/setup.py	2014-07-30 20:17:39.000000000 -0700
-+++ patch-files/setup.py	2014-10-13 09:40:48.609008009 -0700
+--- setup.py	2015-01-27 11:39:09.140549177 -0800
++++ patch-files/setup.py	2015-01-27 11:40:16.433583504 -0800
 @@ -47,6 +47,8 @@
      del sdist.sdist.make_release_tree
  
@@ -9,3 +9,13 @@
  
  import setupext
  from setupext import print_line, print_raw, print_message, print_status
+@@ -63,7 +65,8 @@
+     setupext.Python(),
+     setupext.Platform(),
+     'Required dependencies and extensions',
+-    setupext.Numpy(),
++    #JJH: Assume numpy installed w/python
++    #setupext.Numpy(),
+     setupext.Six(),
+     setupext.Dateutil(),
+     setupext.Pytz(),
