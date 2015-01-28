@@ -23,13 +23,13 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 
-<package>ipython_pyPYVERSION</package>
-<package>libxml2_pyPYVERSION</package>
-<package>matplotlib_pyPYVERSION</package>
-<package>scientificpython_pyPYVERSION</package>
-<package>scipy_pyPYVERSION</package>
-<package>sympy_pyPYVERSION</package>
-<package>scipy-modules_pyPYVERSION</package>
-<package>scipy-roll-test</package>
+<package>sdsc-ipython_pyPYVERSION</package>
+<package>sdsc-libxml2_pyPYVERSION</package>
+<package>sdsc-matplotlib_pyPYVERSION</package>
+<package>sdsc-scientificpython_pyPYVERSION</package>
+<package>sdsc-scipy_pyPYVERSION</package>
+<package>sdsc-sympy_pyPYVERSION</package>
+<package>sdsc-scipy-modules_pyPYVERSION</package>
+<package>sdsc-scipy-roll-test</package>
 
 </kickstart>
