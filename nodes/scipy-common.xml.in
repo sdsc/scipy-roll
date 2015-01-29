@@ -26,6 +26,7 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>sdsc-ipython_pyPYVERSION</package>
 <package>sdsc-libxml2_pyPYVERSION</package>
 <package>sdsc-matplotlib_pyPYVERSION</package>
+<package>sdsc-pyfits_pyPYVERSION</package>
 <package>sdsc-scientificpython_pyPYVERSION</package>
 <package>sdsc-scipy_pyPYVERSION</package>
 <package>sdsc-sympy_pyPYVERSION</package>
