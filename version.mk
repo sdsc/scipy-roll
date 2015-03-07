@@ -1,5 +1,6 @@
-ROLLNAME = scipy
-RELEASE  = 0
-COLOR    = orange
+ROLLNAME	= scipy
+VERSION        :=$(shell bash version.sh -v)
+RELEASE        :=$(shell bash version.sh -h)
+COLOR		= dimgrey
 
-REDHAT.ROOT = $(PWD)
+REDHAT.ROOT	= $(CURDIR)
