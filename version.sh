@@ -8,7 +8,7 @@ DESC=`eval ${DESC_CMD}`
 if [ ! -d "./.git" ] && [ -z "${DESC}" ]
 then
     # Try to support using the tagged downloads
-    DESC=`pwd | grep -oe 'python-roll-.\+' | sed 's/python-roll-//g'`
+    DESC=`pwd | grep -oe 'scipy-roll-.\+' | sed 's/scipy-roll-//g'`
     LOCAL_REV="-github_archive"
 fi
 
