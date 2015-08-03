@@ -63,7 +63,7 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-$(NAME).spec: DESCRIPTION LICENSE
+$(NAME).spec: DESCRIPTION 
 
 DESCRIPTION:
 	echo "Jupyter single user shell" > $@
