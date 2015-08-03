@@ -71,7 +71,7 @@ DESCRIPTION:
 build:
 
 install::
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/bin
 	( \
               cp jupyterhub-singleuser $(ROOT)/$(PKGROOT)/bin \
 	)
