@@ -68,6 +68,8 @@ $(NAME).spec: DESCRIPTION
 DESCRIPTION:
 	echo "Jupyter single user shell" > $@
 
+build:
+
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
