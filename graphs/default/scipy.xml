@@ -4,10 +4,16 @@
 
 <description>
 Python scientific libraries
+funcsigs http://pypi.python.org/pypi/funcsigs
 IPython http://ipython.org
 libxml2 http://xmlsoft.org
+llvmlite http://pypi.python.org/pypi/llvmlite
 matplotlib http://matplotlib.sourceforge.net
+numba http://numba.pydata.org
+jupyterhub https://gist.github.com/zonca
+pandas http://pandas.pydata.org
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
+requests http://docs.python-requests.org
 scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
 scipy http://www.scipy.org
 setuptools https://pypi.python.org/pypi/setuptools

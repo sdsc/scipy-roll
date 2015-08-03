@@ -7,17 +7,26 @@ matplotlib, pyfits, scientificpython and scipy.
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
+- <a href="http://pypi.python.org/pypi/funcsigs" target="_blank">funcsigs</a> is a backport of the PEP 362 function signature features from Python 3.3’s inspect module.
 - <a href="http://ipython.org" target="_blank">iPython</a> provides a rich
 architecture for interactive computing using the Python programming language.
-- <a href="http://xmlsoft.org" target="_blank">libxml2</a> Libxml2 is the XML C parser
-and toolkit developed for the Gnome project 
+- <a href="https://gist.github.com/zonca" target="_blank">jupyterhub</a> extend a regular ipython notebook server to be aware of multiuser things
+- <a href="http://xmlsoft.org" target="_blank">libxml2</a> Libxml2 is the XML C parser and toolkit developed for the Gnome project 
+- <a href="pypi.python.org/pypi/llvmlite"
+target="_blank">llvmlite</a> is a lightweight LLVM python binding for writing JIT compilers
 - <a href="http://matplotlib.org" target="_blank">matplotlib</a> is a python 2D
 plotting library which produces publication quality figures in a variety of
 hardcopy formats and interactive environments across platforms.
+- <a href="http://numba.pydata.org"
+target="_blank">numba</a> generates optimized machine code from pure Python code
+- <a href="http://pandas.pydata.org"
+target="_blank">pandas</a> is an open source, BSD-licensed library providing high-performance, easy-to-use data structures and data analysis tools for the Python programming language.
 - <a href="http://www.stsci.edu/institute/software_hardware/pyfits"
 target="_blank">PyFITS</a> provides an interface to FITS formatted files in the
 Python scripting language and PyRAF, the Python-based interface to IRAF.
-- <a href="http://http://dirac.cnrs-orleans.fr/plone/software/scientificpython" target="_blank"></a> is  a
+- <a href="http://docs.python-requests.org"
+target="_blank">requests</a> is an Apache2 Licensed HTTP library, written in Python, for human beings.
+- <a href="http://http://dirac.cnrs-orleans.fr/plone/software/scientificpython" target="_blank">scientificpython</a> is  a
 package for scientific computing with Python.
 - <a href="http://www.scipy.org" target="_blank"></a> is a Python-based
 a Python library for common tasks in scientific computing.

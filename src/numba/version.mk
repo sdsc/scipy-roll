@@ -1,3 +1,8 @@
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
 ifndef ROLLPY
   ROLLPY = python
 endif
@@ -6,14 +11,14 @@ ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
-NAME           = sdsc-ipython_py$(PYVERSION)
-VERSION        = 3.2.1
+NAME           = sdsc-numba_py$(PYVERSION)
+VERSION        = 0.20.0
 RELEASE        = 0
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
-SRC_SUBDIR     = ipython
+SRC_SUBDIR     = numba
 
-SOURCE_NAME    = ipython
+SOURCE_NAME    = numba
 SOURCE_SUFFIX  = tar.gz
 SOURCE_VERSION = $(VERSION)
 SOURCE_PKG     = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)

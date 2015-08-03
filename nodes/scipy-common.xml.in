@@ -4,10 +4,16 @@
 
 <description>
 Python scientific libraries
+funcsigs http://pypi.python.org/pypi/funcsigs
 IPython http://ipython.org
+jupyterhub https://gist.github.com/zonca
 libxml2 http://xmlsoft.org
 matplotlib http://matplotlib.sourceforge.net
+llvmlite http://pypi.python.org/pypi/llvmlite
+numba http://numba.pydata.org
+pandas http://http://pandas.pydata.org
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
+requests http://docs.python-requests.org
 scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
 scipy http://www.scipy.org
 setuptools https://pypi.python.org/pypi/setuptools
@@ -23,10 +29,16 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 
+<package>sdsc-funcsigs_pyPYVERSION</package>
 <package>sdsc-ipython_pyPYVERSION</package>
+<package>sdsc-jupyterhub</package>
 <package>sdsc-libxml2_pyPYVERSION</package>
+<package>sdsc-llvmlite_pyPYVERSION</package>
 <package>sdsc-matplotlib_pyPYVERSION</package>
+<package>sdsc-numba_pyPYVERSION</package>
+<package>sdsc-panda_pyPYVERSION</package>
 <package>sdsc-pyfits_pyPYVERSION</package>
+<package>sdsc-requests_pyPYVERSION</package>
 <package>sdsc-scientificpython_pyPYVERSION</package>
 <package>sdsc-scipy_pyPYVERSION</package>
 <package>sdsc-sympy_pyPYVERSION</package>
