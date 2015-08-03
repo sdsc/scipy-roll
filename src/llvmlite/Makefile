@@ -84,7 +84,7 @@ build: $(SRC_DIRS)
 	  $(MODULE_LOAD_PYTHON); \
           cd $(ENUM34_DIR); \
 	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ../$(SOURCE_DIR); \
 	  python setup.py build \
 	)
