@@ -82,7 +82,10 @@ build: $(SRC_DIRS)
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
           module load llvm; \
 	  $(MODULE_LOAD_PYTHON); \
-	  cd $(SOURCE_DIR); \
+          cd $(ENUM34_DIR); \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/; \
+	  cd ../$(SOURCE_DIR); \
 	  python setup.py build \
 	)
 	@echo "::: Package $(NAME) build complete :::"
