@@ -83,7 +83,7 @@ DESCRIPTION:
 
 LICENSE: $(SRC_DIRS)
 	$(CHECK_LICENSE_FILES)
-	echo numba > $@
+	echo "Contiuum Analytics" > $@
 
 build: $(SRC_DIRS)
 	( \

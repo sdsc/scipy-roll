@@ -74,7 +74,7 @@ DESCRIPTION:
 
 LICENSE: $(SRC_DIRS)
 	$(CHECK_LICENSE_FILES)
-	echo "continuum analytics" > $@
+	echo "Continuum Analytics" > $@
 
 build: $(SRC_DIRS)
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages

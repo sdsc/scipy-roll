@@ -36,7 +36,7 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>sdsc-llvmlite_pyPYVERSION</package>
 <package>sdsc-matplotlib_pyPYVERSION</package>
 <package>sdsc-numba_pyPYVERSION</package>
-<package>sdsc-panda_pyPYVERSION</package>
+<package>sdsc-pandas_pyPYVERSION</package>
 <package>sdsc-pyfits_pyPYVERSION</package>
 <package>sdsc-requests_pyPYVERSION</package>
 <package>sdsc-scientificpython_pyPYVERSION</package>

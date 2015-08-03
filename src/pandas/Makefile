@@ -74,7 +74,7 @@ DESCRIPTION:
 
 LICENSE: $(SRC_DIRS)
 	$(CHECK_LICENSE_FILES)
-	echo pandas > $@
+	echo BSD > $@
 
 build: $(SRC_DIRS)
 	( \
