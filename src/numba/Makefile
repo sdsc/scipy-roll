@@ -90,10 +90,11 @@ build: $(SRC_DIRS)
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_CUDA); \
 	  $(MODULE_LOAD_PYTHON); \
+          module load llvm; \
           export NUMBAPRO_CUDA_DRIVER=$${CUDAHOME}/lib64/libcudart.so; \
           export NUMBAPRO_LIBDEVICE=$${CUDAHOME}/nvvm/libdevice; \
-          export NUMBAPRO_NVVM=$${CUDAHOME}/nvvm/libnvvm.so; \
-          export LLVM_CONFIG=/usr/local/bin/llvm-config; \
+          export NUMBAPRO_NVVM=$${CUDAHOME}/nvvm/lib64/libnvvm.so; \
+          export LLVM_CONFIG=$${LLVMHOME}/bin/llvm-config; \
 	  cd $(SOURCE_DIR); \
 	  python setup.py build $(SETUPOPTS) \
 	)
@@ -107,8 +108,8 @@ install::
 	  $(MODULE_LOAD_PYTHON); \
           export NUMBAPRO_CUDA_DRIVER=$${CUDAHOME}/lib64/libcudart.so; \
           export NUMBAPRO_LIBDEVICE=$${CUDAHOME}/nvvm/libdevice; \
-          export NUMBAPRO_NVVM=$${CUDAHOME}/nvvm/libnvvm.so; \
-          export LLVM_CONFIG=/usr/local/bin/llvm-config; \
+          export NUMBAPRO_NVVM=$${CUDAHOME}/nvvm/lib64/libnvvm.so; \
+          export LLVM_CONFIG=$${LLVMHOME}/bin/llvm-config; \
 	  cd $(SOURCE_DIR); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed \

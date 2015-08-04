@@ -1,5 +1,14 @@
 #%Module1.0
-prepend-path PATH /opt/scipy/PYVER/bin
-foreach lib [glob -nocomplain /opt/scipy/PYVER/lib*/pythonPYVER/site-packages] {
+prepend-path PATH /opt/scipy/2.7/bin
+foreach lib [glob -nocomplain /opt/scipy/2.7/lib*/python2.7/site-packages] {
   prepend-path PYTHONPATH $lib
+}
+
+if { [ info exists env(CUDAHOME) ] && [ info exists env(LLVMHOME) ] } {
+   set cuda $env(CUDAHOME)
+   set llvm $env(LLVMHOME)
+   setenv  NUMBAPRO_CUDA_DRIVER  $cuda/lib64/libcudart.so 
+   setenv  NUMBAPRO_LIBDEVICE $cuda/nvvm/libdevice
+   setenv  NUMBAPRO_NVVM $cuda/nvvm/lib64/libnvvm.so
+   setenv  LLVM_CONFIG $llvm/bin/llvm-config
 }
