@@ -83,8 +83,25 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(MODULE_LOAD_PYTHON); \
-	  cd $(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+          cd $(PYZMP_DIR); \
+	  python setup.py build; \
+          cd $(JINJA2_DIR); \
+	  python setup.py build; \
+          cd $(TORNADO_DIR); \
+	  python setup.py build; \
+          cd $(JSONSCHEMA_DIR); \
+	  python setup.py build; \
+	  cd ../$(SOURCE_DIR); \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ../$(PYZMP_DIR); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ../$(JINJA2_DIR); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ../$(TORNADO_DIR); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ../$(JSONSCHEMA_DIR); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

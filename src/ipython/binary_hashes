@@ -1,1 +1,6 @@
 11884781 407da93d3e2de64cedd73caaf02e8c999d23d584 ipython-2.3.1.tar.gz
+       10884249  8bd7a82478f9ad51ef6a6f09b1fb34d13c57b695  ipython-3.2.1.tar.gz
+         357055  9c384267047e48e141de7ea29fcef578bd025866  Jinja2-2.8.tar.gz
+        1048389  c225b158f9e7b890f76549d3cbbf49bfbf833f2e  pyzmq-14.7.0.tar.gz
+         434304  3d72791f0927971bbb2ed9b0364a94db5c96a305  tornado-4.2.1.tar.gz
+          50855  927b103d7a458969113c33a7d1776445f535826f  jsonschema-2.5.1.tar.gz

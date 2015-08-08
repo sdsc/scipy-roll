@@ -73,7 +73,8 @@ build:
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/bin
 	( \
-              cp jupyterhub-singleuser $(ROOT)/$(PKGROOT)/bin \
+              cp jupyterhub-singleuser $(ROOT)/$(PKGROOT)/bin; \
+              chmod 0775 $(ROOT)/$(PKGROOT)/bin/* \
 	)
 	@echo "::: Package $(NAME) install complete :::"
 
