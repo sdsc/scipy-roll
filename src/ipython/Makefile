@@ -83,6 +83,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(MODULE_LOAD_PYTHON); \
+           export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
           cd $(PYZMP_DIR); \
 	  python setup.py build; \
           cd $(JINJA2_DIR); \
