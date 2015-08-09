@@ -86,11 +86,11 @@ install::
            export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
           cd $(PYZMP_DIR); \
 	  python setup.py build; \
-          cd $(JINJA2_DIR); \
+          cd ../$(JINJA2_DIR); \
 	  python setup.py build; \
-          cd $(TORNADO_DIR); \
+          cd ../$(TORNADO_DIR); \
 	  python setup.py build; \
-          cd $(JSONSCHEMA_DIR); \
+          cd ../$(JSONSCHEMA_DIR); \
 	  python setup.py build; \
 	  cd ../$(SOURCE_DIR); \
 	  python setup.py build; \
