@@ -94,7 +94,6 @@ install::
 	  python setup.py build; \
 	  cd ../$(SOURCE_DIR); \
 	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ../$(PYZMP_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ../$(JINJA2_DIR); \
@@ -103,6 +102,8 @@ install::
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ../$(JSONSCHEMA_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ../$(SOURCE_DIR); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
