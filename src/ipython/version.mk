@@ -8,7 +8,7 @@ endif
 
 NAME           = sdsc-ipython_py$(PYVERSION)
 VERSION        = 3.2.1
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = ipython
