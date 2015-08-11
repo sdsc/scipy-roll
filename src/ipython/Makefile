@@ -95,13 +95,13 @@ install::
 	  cd ../$(SOURCE_DIR); \
 	  python setup.py build; \
           cd ../$(PYZMP_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
           cd ../$(JINJA2_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
           cd ../$(TORNADO_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
           cd ../$(JSONSCHEMA_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
           cd ../$(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
 	)
