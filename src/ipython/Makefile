@@ -97,7 +97,7 @@ install::
           cd ../$(PYZMP_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ../$(JINJA2_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ../$(TORNADO_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
           cd ../$(JSONSCHEMA_DIR); \
