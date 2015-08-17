@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-matplotlib_py$(PYVERSION)
 VERSION        = 1.4.2
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = matplotlib

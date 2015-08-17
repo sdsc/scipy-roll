@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-requests_py$(PYVERSION)
 VERSION        = 2.7.0
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = requests

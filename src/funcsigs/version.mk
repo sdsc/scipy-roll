@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-funcsigs_py$(PYVERSION)
 VERSION        = 0.4
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = funcsigs

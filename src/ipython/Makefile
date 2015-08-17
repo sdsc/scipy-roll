@@ -76,6 +76,8 @@ LICENSE: $(SRC_DIRS)
 	$(CHECK_LICENSE_FILES)
 	echo BSD > $@
 
+CACHE_DIR=$(REDHAT.ROOT)/cache
+
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -83,7 +85,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(MODULE_LOAD_PYTHON); \
-           export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+           export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
           cd $(PYZMP_DIR); \
 	  python setup.py build; \
           cd ../$(JINJA2_DIR); \
@@ -95,15 +97,23 @@ install::
 	  cd ../$(SOURCE_DIR); \
 	  python setup.py build; \
           cd ../$(PYZMP_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(JINJA2_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(TORNADO_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
           cd ../$(JSONSCHEMA_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
           cd ../$(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

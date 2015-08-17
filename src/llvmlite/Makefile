@@ -76,10 +76,10 @@ LICENSE: $(SRC_DIRS)
 	$(CHECK_LICENSE_FILES)
 	echo "Continuum Analytics" > $@
 
+CACHE_DIR=$(REDHAT.ROOT)/cache
+
 build: $(SRC_DIRS)
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	( \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
           module load llvm; \
 	  $(MODULE_LOAD_PYTHON); \
           cd $(ENUM34_DIR); \
@@ -91,14 +91,21 @@ build: $(SRC_DIRS)
 	
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
+	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
 	( \
           module load llvm; \
 	  $(MODULE_LOAD_PYTHON); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
           cd $(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
           cd ../$(ENUM34_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python setup.py install --prefix=$(CACHE_DIR); \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

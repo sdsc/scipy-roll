@@ -56,4 +56,5 @@
 
 SRCDIRS = `find . -maxdepth 1 -type d \
 	-not -name CVS \
-	-not -name .`
+	-not -name . \
+	-not -name easy_install_files` easy_install_files
