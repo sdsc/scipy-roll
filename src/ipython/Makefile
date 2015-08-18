@@ -85,32 +85,48 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(MODULE_LOAD_PYTHON); \
-           export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+          TMPPYTHON=$${PYTHONPATH}; \
+          export PYTHONPATH=$${TMPPYTHON}:$(ROOT)/$(PKGROOT)/lib/python2.7/site-packages; \
+          cp -r $(PYZMP_DIR) $(PYZMP_DIR)2; \
           cd $(PYZMP_DIR); \
 	  python setup.py build; \
-          cd ../$(JINJA2_DIR); \
-	  python setup.py build; \
-          cd ../$(TORNADO_DIR); \
-	  python setup.py build; \
-          cd ../$(JSONSCHEMA_DIR); \
-	  python setup.py build; \
-	  cd ../$(SOURCE_DIR); \
-	  python setup.py build; \
-          cd ../$(PYZMP_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ..; \
+          cp -r $(JINJA2_DIR) $(JINJA2_DIR)2; \
+          cd $(JINJA2_DIR); \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ..; \
+          cp -r $(TORNADO_DIR) $(TORNADO_DIR)2; \
+          cd $(TORNADO_DIR); \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ..; \
+          cp -r $(JSONSCHEMA_DIR) $(JSONSCHEMA_DIR)2; \
+          cd $(JSONSCHEMA_DIR); \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  cd ..; \
+          cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
+          cd $(SOURCE_DIR); \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/lib/python2.7/site-packages; \
+          cd ../$(PYZMP_DIR)2; \
+	  python setup.py build; \
 	  python setup.py install --prefix=$(CACHE_DIR); \
-          cd ../$(JINJA2_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ../$(JINJA2_DIR)2 ; \
+	  python setup.py build; \
 	  python setup.py install --prefix=$(CACHE_DIR); \
-          cd ../$(TORNADO_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
-	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
-          cd ../$(JSONSCHEMA_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
-	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
-          cd ../$(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+          cd ../$(TORNADO_DIR)2; \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(CACHE_DIR); \
+          cd ../$(JSONSCHEMA_DIR)2; \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(CACHE_DIR); \
+          cd ../$(SOURCE_DIR)2; \
+	  python setup.py build; \
+	  python setup.py install --prefix=$(CACHE_DIR); \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
@@ -120,5 +136,5 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE $(PYZMP_DIR)2
 

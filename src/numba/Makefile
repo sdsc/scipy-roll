@@ -107,7 +107,7 @@ install::
 	  cd $(SOURCE_DIR); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
 	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
