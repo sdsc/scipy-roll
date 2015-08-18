@@ -70,6 +70,7 @@ DESCRIPTION:
 	( \
 	  $(DESCRIBE_PKG); \
 	  $(DESCRIBE_PYTHON) \
+	  $(DESCRIBE_CC) \
 	) > $@
 
 LICENSE: $(SRC_DIRS)
@@ -80,6 +81,7 @@ CACHE_DIR=$(REDHAT.ROOT)/cache
 build: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_PYTHON); \
+	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py build \
 	)
@@ -90,6 +92,7 @@ install::
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
 	( \
 	  $(MODULE_LOAD_PYTHON); \
+	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
