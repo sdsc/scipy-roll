@@ -74,7 +74,6 @@ install::
          cp $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages/easy-install.pth $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
          cp $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages/site.py $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
          cp $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages/site.pyc $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
-         cp $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages/site.pyo $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo; \
 	)
 	@echo "::: Package $(NAME) install complete :::"
 
