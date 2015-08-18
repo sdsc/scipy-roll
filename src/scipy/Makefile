@@ -126,6 +126,7 @@ install::
 	mkdir -p $(CACHE_DIR)
 	( \
 	  $(MODULE_LOAD_PYTHON); \
+	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  python setup.py install --prefix=$(CACHE_DIR); \
