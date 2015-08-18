@@ -89,22 +89,22 @@ install::
           export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${TMPPYTHON}; \
           module load llvm; \
  	  $(MODULE_LOAD_PYTHON); \
-          cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
-          cd $(SOURCE_DIR); \
-          python setup.py build; \
-          python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          cd ..; \
           cp -r $(ENUM34_DIR) $(ENUM34_DIR)2; \
           cd $(ENUM34_DIR); \
           python setup.py build; \
           python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
+          cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
+          cd $(SOURCE_DIR); \
+          python setup.py build; \
+          python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ..; \
           export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${TMPPYTHON}; \
-          cd $(SOURCE_DIR)2; \
+          cd $(ENUM34_DIR)2; \
           python setup.py build; \
           python setup.py install --prefix=$(CACHE_DIR); \
           cd ..; \
-          cd $(ENUM34_DIR)2; \
+          cd $(SOURCE_DIR)2; \
           python setup.py build; \
           python setup.py install --prefix=$(CACHE_DIR); \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
