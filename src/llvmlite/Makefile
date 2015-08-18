@@ -79,38 +79,30 @@ LICENSE: $(SRC_DIRS)
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
-	( \
-          module load llvm; \
-	  $(MODULE_LOAD_PYTHON); \
-          cd $(ENUM34_DIR); \
-	  python setup.py build; \
-	  cd ../$(SOURCE_DIR); \
-	  python setup.py build \
-	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
 	( \
-          TMPPYTHON=$${PYTHONMODULE}; \
-          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${TMPPYTHON); \
+          TMPPYTHON=$${PYTHONPATH}; \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${TMPPYTHON}; \
           module load llvm; \
-	  $(MODULE_LOAD_PYTHON); \
+ 	  $(MODULE_LOAD_PYTHON); \
           cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
           cd $(SOURCE_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          python setup.py build; \
+          python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(ENUM34_DIR) $(ENUM34_DIR)2; \
           cd $(ENUM34_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          python setup.py build; \
+          python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
-          export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${TMPPYTHON); \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${TMPPYTHON}; \
           cd $(SOURCE_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+          python setup.py build; \
+          python setup.py install --prefix=$(CACHE_DIR); \
           cd ..; \
           cd $(ENUM34_DIR)2; \
           python setup.py build; \
