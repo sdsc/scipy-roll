@@ -77,8 +77,9 @@ builds using the gnu compilers.  To build for a different configuration, use
 the `ROLLCOMPILER` make variable, e.g.,
 
 ```shell
-% make ROLLCOMPILER=intel
+% make ROLLCOMPILER=intel PYVERSION=X.X
 ```
+where , for example X.X=2.7
 
 The build process currently supports one or more of the values "gnu", "intel",
 and "gnu" for the `ROLLCOMPILER` variable, defaulting to "gnu".
