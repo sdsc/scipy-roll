@@ -69,9 +69,9 @@ DESCRIPTION:
 	$(MODULE_LOAD_CC); \
 	$(MODULE_LOAD_PYTHON); \
 	( \
-	  $(DESCRIBE_PKG) \
-	  $(DESCRIBE_CC) \
-	  $(DESCRIBE_MKL) \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	  $(DESCRIBE_MKL); \
 	  $(DESCRIBE_PYTHON) \
 	) > $@
 
