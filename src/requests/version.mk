@@ -11,14 +11,14 @@ ifndef PYVERSION
   PYVERSION = 2.6
 endif
 
-NAME           = sdsc-matplotlib_py$(PYVERSION)
-VERSION        = 1.4.2
-RELEASE        = 3
+NAME           = sdsc-requests_py$(PYVERSION)
+VERSION        = 2.7.0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
-SRC_SUBDIR     = matplotlib
+SRC_SUBDIR     = requests
 
-SOURCE_NAME    = matplotlib
+SOURCE_NAME    = requests
 SOURCE_SUFFIX  = tar.gz
 SOURCE_VERSION = $(VERSION)
 SOURCE_PKG     = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)

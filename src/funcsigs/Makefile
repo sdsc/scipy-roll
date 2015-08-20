@@ -63,40 +63,27 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-SETUPOPTS =
-ifeq ("$(COMPILERNAME)", "intel")
-  SETUPOPTS = "--compiler=intel"
-else ifeq ("$(COMPILERNAME)", "pgi")
-  SETUPOPTS = "--compiler=pgcc"
-endif
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
-	$(MODULE_LOAD_CC); \
 	$(MODULE_LOAD_PYTHON); \
 	( \
 	  $(DESCRIBE_PKG); \
-	  $(DESCRIBE_CC); \
 	  $(DESCRIBE_PYTHON) \
 	) > $@
 
 LICENSE: $(SRC_DIRS)
 	$(CHECK_LICENSE_FILES)
-	echo matplotlib > $@
+	echo Apache > $@
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
-	patch $(SOURCE_DIR)/setup.py patch-files/setup.py.patch
-	patch $(SOURCE_DIR)/setupext.py patch-files/setupext.py.patch
-	patch $(SOURCE_DIR)/extern/qhull/qhull_a.h patch-files/qhull_a.h.patch
 	( \
-	  $(MODULE_LOAD_CC); \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  $(MODULE_LOAD_PYTHON); \
-	  export -n DISPLAY; \
 	  cd $(SOURCE_DIR); \
-	  python setup.py build $(SETUPOPTS) \
+	  python setup.py build \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -104,17 +91,16 @@ install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
 	( \
-	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
-	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo\
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo\
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
