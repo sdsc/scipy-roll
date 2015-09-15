@@ -8,7 +8,7 @@ endif
 
 NAME           = sdsc-sympy_py$(PYVERSION)
 VERSION        = 0.7.6
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = sympy
@@ -22,3 +22,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No
+RPM.EXTRAS  = Obsoletes: sympy_py$(PYVERSION)

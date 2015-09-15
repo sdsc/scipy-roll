@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-libxml2_py$(PYVERSION)
 VERSION        = 2.9.2
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = libxml2
@@ -27,3 +27,5 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No
+
+RPM.EXTRAS  = Obsoletes: libxml2_py$(PYVERSION)

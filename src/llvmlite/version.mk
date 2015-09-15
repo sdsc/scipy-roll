@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-llvmlite_py$(PYVERSION)
 VERSION        = 0.5.0
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = llvmlite
@@ -33,3 +33,4 @@ ENUM34_DIR     = $(ENUM34_PKG:%.$(ENUM34_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(ENUM34_PKG)
 
 RPM.EXTRAS     = AutoReq:No
+RPM.EXTRAS     = Obsoletes: llvmlite_py$(PYVERSION)
