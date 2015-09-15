@@ -8,7 +8,7 @@ endif
 
 NAME           = sdsc-ipython_py$(PYVERSION)
 VERSION        = 3.2.1
-RELEASE        = 3
+RELEASE        = 4
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = ipython
@@ -45,4 +45,4 @@ JSONSCHEMA_DIR     = $(JSONSCHEMA_PKG:%.$(JSONSCHEMA_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(PYZMP_PKG) $(JINJA2_PKG) $(TORNADO_PKG) $(JSONSCHEMA_PKG)
 
-RPM.EXTRAS     = AutoReq:No
+RPM.EXTRAS     = AutoReq:No\nObsoletes: ipython_py$(PYVERSION)

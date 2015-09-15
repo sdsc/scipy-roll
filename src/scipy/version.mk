@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-scipy_py$(PYVERSION)
 VERSION        = 0.14.0
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = scipy
@@ -26,4 +26,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
-RPM.EXTRAS     = AutoReq:No
+RPM.EXTRAS     = AutoReq:No\nObsoletes: scipy_py$(PYVERSION)

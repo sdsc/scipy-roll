@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-numba_py$(PYVERSION)
 VERSION        = 0.20.0
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = numba
@@ -26,4 +26,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
-RPM.EXTRAS     = AutoReq:No
+RPM.EXTRAS     = AutoReq:No\nObsoletes: numba_py$(PYVERSION)
