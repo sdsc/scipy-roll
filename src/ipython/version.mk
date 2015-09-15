@@ -45,4 +45,4 @@ JSONSCHEMA_DIR     = $(JSONSCHEMA_PKG:%.$(JSONSCHEMA_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(PYZMP_PKG) $(JINJA2_PKG) $(TORNADO_PKG) $(JSONSCHEMA_PKG)
 
-RPM.EXTRAS     = AutoReq:No Obsoletes: ipython_py$(PYVERSION)
+RPM.EXTRAS     = AutoReq:No\nObsoletes: ipython_py$(PYVERSION)

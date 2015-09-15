@@ -7,4 +7,4 @@ SRC_SUBDIR     = jupyterhub
 
 SOURCE_NAME    = jupyterhub
 
-RPM.EXTRAS     = AutoReq:No Obsoletes: jupyterhub
+RPM.EXTRAS     = AutoReq:No\nObsoletes: jupyterhub
