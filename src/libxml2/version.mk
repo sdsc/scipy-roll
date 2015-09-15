@@ -26,6 +26,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
-RPM.EXTRAS     = AutoReq:No
-
-RPM.EXTRAS  = Obsoletes: libxml2_py$(PYVERSION)
+RPM.EXTRAS     = AutoReq:No Obsoletes: libxml2_py$(PYVERSION)

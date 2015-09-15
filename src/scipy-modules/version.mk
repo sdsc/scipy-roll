@@ -9,5 +9,4 @@ VERSION_SRC = $(REDHAT.ROOT)/src/$(PACKAGE)/version.mk
 VERSION_INC = version.inc
 include $(VERSION_INC)
 
-RPM.EXTRAS  = AutoReq:No
-RPM.EXTRAS  = Obsoletes: $(PACKAGE)-modules_py$(PYVERSION)
+RPM.EXTRAS  = AutoReq:No Obsoletes: $(PACKAGE)-modules_py$(PYVERSION)

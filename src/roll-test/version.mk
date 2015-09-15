@@ -3,5 +3,4 @@ VERSION    = 1
 RELEASE    = 6
 PKGROOT    = /root/rolltests
 
-RPM.EXTRAS = AutoReq:No
-RPM.EXTRAS  = Obsoletes: scipy-roll-test
+RPM.EXTRAS = AutoReq:No Obsoletes: scipy-roll-test

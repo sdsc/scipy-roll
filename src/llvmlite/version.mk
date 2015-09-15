@@ -32,5 +32,4 @@ ENUM34_DIR     = $(ENUM34_PKG:%.$(ENUM34_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(ENUM34_PKG)
 
-RPM.EXTRAS     = AutoReq:No
-RPM.EXTRAS     = Obsoletes: llvmlite_py$(PYVERSION)
+RPM.EXTRAS     = AutoReq:No Obsoletes: llvmlite_py$(PYVERSION)

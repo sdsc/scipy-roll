@@ -38,5 +38,4 @@ STSCI_DIR      = $(STSCI_PKG:%.$(STSCI_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(D2TO1_PKG) $(STSCI_PKG)
 
-RPM.EXTRAS     = AutoReq:No
-RPM.EXTRAS  = Obsoletes: pyfits_py$(PYVERSION)
+RPM.EXTRAS     = AutoReq:No Obsoletes: pyfits_py$(PYVERSION)
