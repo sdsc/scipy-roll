@@ -81,7 +81,13 @@ DESCRIPTION:
 	  $(DESCRIBE_PYTHON) \
 	) > $@
 
+ADDED_MODULES = singledispatch
+
 LICENSE: $(SRC_DIRS)
+	for F in $(ADDED_MODULES); do \
+          echo $$F*/PKG-INFO; \
+	  cp $$F*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
+	done
 	$(CHECK_LICENSE_FILES)
 	echo "Contiuum Analytics" > $@
 
@@ -92,8 +98,6 @@ build: $(SRC_DIRS)
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_CUDA); \
 	  $(MODULE_LOAD_PYTHON); \
-	  cd $(SOURCE_DIR); \
-	  python setup.py build $(SETUPOPTS) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -104,10 +108,22 @@ install::
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_CUDA); \
 	  $(MODULE_LOAD_PYTHON); \
-	  cd $(SOURCE_DIR); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
-	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+          cp -r $(SINGLEDISPATCH_DIR) $(SINGLEDISPATCH_DIR)2; \
+          cd $(SINGLEDISPATCH_DIR); \
+          python setup.py build; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd ..; \
+          cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
+	  cd $(SOURCE_DIR); \
+	  python setup.py build $(SETUPOPTS); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+          cd ../$(SINGLEDISPATCH_DIR)2; \
+          python setup.py build; \
+	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+          cd ../$(SOURCE_DIR)2; \
+	  python setup.py build $(SETUPOPTS); \
 	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
@@ -118,4 +134,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) $(SOURCE_DIR)2 $(SINGLEDISPATCH_DIR) $(SINGLEDISPATCH_DIR)2 DESCRIPTION LICENSE
