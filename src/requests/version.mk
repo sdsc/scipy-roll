@@ -12,8 +12,8 @@ ifndef PYVERSION
 endif
 
 NAME           = sdsc-requests_py$(PYVERSION)
-VERSION        = 2.7.0
-RELEASE        = 3
+VERSION        = 2.8.0
+RELEASE        = 0
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = requests

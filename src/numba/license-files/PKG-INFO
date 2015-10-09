@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: numba
-Version: 0.20.0
+Version: 0.21.0
 Summary: compiling Python code using LLVM
 Home-page: http://numba.github.com
 Author: Continuum Analytics, Inc.

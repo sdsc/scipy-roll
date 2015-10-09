@@ -7,8 +7,8 @@ ifndef PYVERSION
 endif
 
 NAME           = sdsc-sympy_py$(PYVERSION)
-VERSION        = 0.7.6
-RELEASE        = 2
+VERSION        = 0.7.6.1
+RELEASE        = 0
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = sympy

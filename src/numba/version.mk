@@ -12,8 +12,8 @@ ifndef PYVERSION
 endif
 
 NAME           = sdsc-numba_py$(PYVERSION)
-VERSION        = 0.20.0
-RELEASE        = 2
+VERSION        = 0.21.0
+RELEASE        = 0
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = numba

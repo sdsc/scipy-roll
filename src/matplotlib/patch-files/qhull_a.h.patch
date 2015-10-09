@@ -1,5 +1,5 @@
---- qhull_a.h	2014-10-13 14:16:16.663516603 -0700
-+++ patch-files/qhull_a.h	2014-10-13 14:18:11.451513153 -0700
+--- matplotlib-1.4.3/extern/qhull/qhull_a.h	2014-12-23 15:04:40.000000000 -0800
++++ patch-files/qhull_a.h	2015-10-08 18:03:48.287287537 -0700
 @@ -103,10 +103,14 @@
  #   define QHULL_OS_WIN
  #endif

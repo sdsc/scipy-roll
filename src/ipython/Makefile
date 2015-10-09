@@ -72,11 +72,18 @@ DESCRIPTION:
 	  $(DESCRIBE_PYTHON) \
 	) > $@
 
+ADDED_MODULES = pyzmq Jinja2 tornado jsonschema
+
 LICENSE: $(SRC_DIRS)
+	for F in $(ADDED_MODULES); do \
+          echo $$F*/PKG-INFO; \
+	  cp $$F*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
+	done
 	$(CHECK_LICENSE_FILES)
 	echo BSD > $@
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
+
 
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
@@ -87,7 +94,7 @@ install::
 	  $(MODULE_LOAD_PYTHON); \
           TMPPYTHON=$${PYTHONPATH}; \
           export PYTHONPATH=$${TMPPYTHON}:$(ROOT)/$(PKGROOT)/lib/python2.7/site-packages; \
-          cp -r $(PYZMP_DIR) $(PYZMP_DIR)2; \
+          mv $(PYZMP_DIR) $(PYZMP_DIR)2; \
           cd $(PYZMP_DIR); \
 	  python setup.py build; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
@@ -102,7 +109,7 @@ install::
 	  python setup.py build; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
-          cp -r $(JSONSCHEMA_DIR) $(JSONSCHEMA_DIR)2; \
+          cp -r $(JSONSCHEMA_DIR) $(JSONSCHEMA_DIR); \
           cd $(JSONSCHEMA_DIR); \
 	  python setup.py build; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
@@ -136,5 +143,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE $(PYZMP_DIR)2
-
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE $(PYZMP_DIR)2 $(JSONSCHEMA_DIR)2 $(JINJA2_DIR) $(TORNADO_DIR)

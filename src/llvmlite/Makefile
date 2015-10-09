@@ -72,11 +72,17 @@ DESCRIPTION:
 	  $(DESCRIBE_PYTHON) \
 	) > $@
 
+ADDED_MODULES = enum34
+
 LICENSE: $(SRC_DIRS)
+	for F in $(ADDED_MODULES); do \
+	  cp $$F*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
+	done
 	$(CHECK_LICENSE_FILES)
 	echo "Continuum Analytics" > $@
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
+
 
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
