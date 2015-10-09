@@ -124,7 +124,7 @@ install::
 	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
           cd ../$(SOURCE_DIR)2; \
 	  python setup.py build $(SETUPOPTS); \
-	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+	  python setup.py install --prefix=$(CACHE_DIR); \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
