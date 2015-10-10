@@ -104,34 +104,33 @@ build: $(SRC_DIRS)
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
-	$(PKGROOT_BIND_MOUNT)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_CUDA); \
 	  $(MODULE_LOAD_PYTHON); \
-	  export PYTHONPATH=$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+          TMPPYTHON=$${PYTHONPATH}; \
+          export PYTHONPATH=$${TMPPYTHON}:$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
           cp -r $(SINGLEDISPATCH_DIR) $(SINGLEDISPATCH_DIR)2; \
           cd $(SINGLEDISPATCH_DIR); \
           python setup.py build; \
-	  python setup.py install --prefix=$(PKGROOT); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
 	  cd $(SOURCE_DIR); \
 	  python setup.py build $(SETUPOPTS); \
-	  python setup.py install --prefix=$(PKGROOT) --root=/ --single-version-externally-managed; \
-	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages; \
           cd ../$(SINGLEDISPATCH_DIR)2; \
           python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+	  python setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(SOURCE_DIR)2; \
 	  python setup.py build $(SETUPOPTS); \
 	  python setup.py install --prefix=$(CACHE_DIR); \
-          rm -f $(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
-          rm -f $(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
-          rm -f $(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
-          rm -f $(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo\
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo \
 	)
-	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
