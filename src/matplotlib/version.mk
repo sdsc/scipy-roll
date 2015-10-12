@@ -12,8 +12,8 @@ ifndef PYVERSION
 endif
 
 NAME           = sdsc-matplotlib_py$(PYVERSION)
-VERSION        = 1.4.2
-RELEASE        = 4
+VERSION        = 1.4.3
+RELEASE        = 0
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = matplotlib

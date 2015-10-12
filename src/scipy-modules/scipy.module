@@ -1,6 +1,6 @@
 #%Module1.0
-prepend-path PATH /opt/scipy/2.7/bin
-foreach lib [glob -nocomplain /opt/scipy/2.7/lib*/python2.7/site-packages] {
+prepend-path PATH /opt/scipy/PYVER/bin
+foreach lib [glob -nocomplain /opt/scipy/PYVER/lib*/python2.7/site-packages] {
   prepend-path PYTHONPATH $lib
 }
 

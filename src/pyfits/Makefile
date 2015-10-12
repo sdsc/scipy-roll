@@ -76,7 +76,13 @@ DESCRIPTION:
 	  $(DESCRIBE_PYTHON) \
 	) > $@
 
+ADDED_MODULES = d2to1 stsci.distutils
+
 LICENSE: $(SRC_DIRS)
+	for F in $(ADDED_MODULES); do \
+          echo $$F*/PKG-INFO; \
+	  cp $$F*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
+	done
 	$(CHECK_LICENSE_FILES)
 	echo BSD and LPGL and MIT > $@
 
