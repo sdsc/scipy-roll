@@ -4,7 +4,6 @@
 
 <description>
 Python scientific libraries
-funcsigs http://pypi.python.org/pypi/funcsigs
 IPython http://ipython.org
 libxml2 http://xmlsoft.org
 llvmlite http://pypi.python.org/pypi/llvmlite

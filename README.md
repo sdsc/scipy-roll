@@ -7,7 +7,6 @@ matplotlib, pyfits, scientificpython and scipy.
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
-- <a href="http://pypi.python.org/pypi/funcsigs" target="_blank">funcsigs</a> is a backport of the PEP 362 function signature features from Python 3.3’s inspect module.
 - <a href="http://ipython.org" target="_blank">iPython</a> provides a rich
 architecture for interactive computing using the Python programming language.
 - <a href="https://gist.github.com/zonca" target="_blank">jupyterhub</a> extend a regular ipython notebook server to be aware of multiuser things
