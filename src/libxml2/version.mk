@@ -12,8 +12,8 @@ ifndef PYVERSION
 endif
 
 NAME           = sdsc-libxml2_py$(PYVERSION)
-VERSION        = 2.9.2
-RELEASE        = 2
+VERSION        = 2.9.3
+RELEASE        = 3
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = libxml2
