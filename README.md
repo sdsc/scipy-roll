@@ -76,7 +76,7 @@ builds using the gnu compilers.  To build for a different configuration, use
 the `ROLLCOMPILER` make variable, e.g.,
 
 ```shell
-% make ROLLCOMPILER=intel PYVERSION=X.X
+% make ROLLCOMPILER=intel ROLLPY=python
 ```
 where , for example X.X=2.7
 
