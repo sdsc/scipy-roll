@@ -78,7 +78,6 @@ the `ROLLCOMPILER` make variable, e.g.,
 ```shell
 % make ROLLCOMPILER=intel ROLLPY=python
 ```
-where , for example X.X=2.7
 
 The build process currently supports one or more of the values "gnu", "intel",
 and "gnu" for the `ROLLCOMPILER` variable, defaulting to "gnu".
