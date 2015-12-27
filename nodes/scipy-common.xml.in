@@ -4,7 +4,6 @@
 
 <description>
 Python scientific libraries
-funcsigs http://pypi.python.org/pypi/funcsigs
 IPython http://ipython.org
 jupyterhub https://gist.github.com/zonca
 libxml2 http://xmlsoft.org
@@ -29,7 +28,6 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 
-<package>sdsc-funcsigs_pyPYVERSION</package>
 <package>sdsc-ipython_pyPYVERSION</package>
 <package>sdsc-jupyterhub</package>
 <package>sdsc-libxml2_pyPYVERSION</package>

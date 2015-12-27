@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-pyfits_py$(PYVERSION)
 VERSION        = 3.3
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = pyfits
