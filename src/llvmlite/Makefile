@@ -63,13 +63,17 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
+DESCRIBE_LLVM = echo built with llvm $(call GET_MODULE_VERSION, llvm)
+MODULE_LOAD_LLVM = $(call MODULE_LOAD_PACKAGE, llvm, LLVMHOME)
+
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
 	$(MODULE_LOAD_PYTHON); \
 	( \
 	  $(DESCRIBE_PKG); \
-	  $(DESCRIBE_PYTHON) \
+	  $(DESCRIBE_PYTHON); \
+	  $(DESCRIBE_LLVM) \
 	) > $@
 
 ADDED_MODULES = enum34
@@ -81,9 +85,6 @@ LICENSE: $(SRC_DIRS)
 	$(CHECK_LICENSE_FILES)
 	echo "Continuum Analytics" > $@
 
-CACHE_DIR=$(REDHAT.ROOT)/cache
-
-
 build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -91,32 +92,16 @@ install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
 	( \
-          TMPPYTHON=$${PYTHONPATH}; \
-          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${TMPPYTHON}; \
-          module load llvm; \
- 	  $(MODULE_LOAD_PYTHON); \
-          cp -r $(ENUM34_DIR) $(ENUM34_DIR)2; \
-          cd $(ENUM34_DIR); \
-          python setup.py build; \
-          python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          cd ..; \
-          cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
-          cd $(SOURCE_DIR); \
-          python setup.py build; \
-          python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          cd ..; \
-          export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${TMPPYTHON}; \
-          cd $(ENUM34_DIR)2; \
-          python setup.py build; \
-          python setup.py install --prefix=$(CACHE_DIR); \
-          cd ..; \
-          cd $(SOURCE_DIR)2; \
-          python setup.py build; \
-          python setup.py install --prefix=$(CACHE_DIR); \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo \
+	  $(MODULE_LOAD_PYTHON); \
+	  $(MODULE_LOAD_LLVM); \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+	  cd $(ENUM34_DIR); \
+	  python setup.py build || exit 2; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  cd ../$(SOURCE_DIR); \
+	  python setup.py build || exit 2; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/{easy-install.pth,site.py*} \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
