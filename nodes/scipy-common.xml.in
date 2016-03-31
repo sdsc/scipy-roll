@@ -4,13 +4,15 @@
 
 <description>
 Python scientific libraries
+billiard https://pypi.python.org/pypi/billiard
 IPython http://ipython.org
 jupyterhub https://gist.github.com/zonca
+jupyterhub https://gist.github.com/zonca
 libxml2 http://xmlsoft.org
-matplotlib http://matplotlib.sourceforge.net
 llvmlite http://pypi.python.org/pypi/llvmlite
+matplotlib http://matplotlib.sourceforge.net
 numba http://numba.pydata.org
-pandas http://http://pandas.pydata.org
+pandas http://pandas.pydata.org
 pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 requests http://docs.python-requests.org
 scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
@@ -28,6 +30,7 @@ All rights reserved. Rocks(r) v5.1 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 
+<package>sdsc-billiard_pyPYVERSION</package>
 <package>sdsc-ipython_pyPYVERSION</package>
 <package>sdsc-jupyterhub</package>
 <package>sdsc-libxml2_pyPYVERSION</package>
