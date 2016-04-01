@@ -7,7 +7,6 @@ Python scientific libraries
 billiard https://pypi.python.org/pypi/billiard
 IPython http://ipython.org
 jupyterhub https://gist.github.com/zonca
-jupyterhub https://gist.github.com/zonca
 libxml2 http://xmlsoft.org
 llvmlite http://pypi.python.org/pypi/llvmlite
 matplotlib http://matplotlib.sourceforge.net
