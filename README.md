@@ -7,6 +7,7 @@ matplotlib, pyfits, scientificpython and scipy.
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
+- <a href="https://pypi.python.org/pypi/billiard" target="_blank">billiard</a> is a fork of the Python 2.7 multiprocessing package
 - <a href="http://ipython.org" target="_blank">iPython</a> provides a rich
 architecture for interactive computing using the Python programming language.
 - <a href="https://gist.github.com/zonca" target="_blank">jupyterhub</a> extend a regular ipython notebook server to be aware of multiuser things
