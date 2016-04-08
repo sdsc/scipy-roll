@@ -57,6 +57,11 @@ modulefile provided by the SDSC intel-roll is available.  It will build without
 the modulefile as long as the environment variables it provides are otherwise
 defined.
 
+Building the llvmlite package requires that LLVM be installed on the build
+machine.  The build process assumes that the LLVM modulefile provided by the
+SDSC llvm-roll is available.  It will build without the modulefile as long as
+the environment variables it provides are otherwise defined.
+
 
 ## Building
 
