@@ -63,10 +63,15 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-$(NAME).spec: DESCRIPTION 
+$(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
-	echo "Jupyter single user shell" > $@
+	( \
+	  $(DESCRIBE_PKG) \
+	) > $@
+
+LICENSE:
+	echo BSD > $@
 
 build:
 
@@ -79,4 +84,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION 
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
