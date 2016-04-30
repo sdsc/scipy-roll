@@ -1,4 +1,10 @@
 #%Module1.0
+module-whatis "scipy"
+module-whatis "Version: VERSION"
+module-whatis "Description: scipy"
+module-whatis "Compiler: ROLLCOMPILER"
+module-whatis "Python version: PYVER"
+setenv SCIPYHOME /opt/scipy/PYVER
 prepend-path PATH /opt/scipy/PYVER/bin
 foreach lib [glob -nocomplain /opt/scipy/PYVER/lib*/python2.7/site-packages] {
   prepend-path PYTHONPATH $lib
