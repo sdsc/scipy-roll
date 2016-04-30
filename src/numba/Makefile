@@ -72,13 +72,12 @@ $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
 	$(MODULE_LOAD_CC); \
-	$(MODULE_LOAD_CUDA); \
 	$(MODULE_LOAD_PYTHON); \
 	( \
 	  $(DESCRIBE_PKG); \
 	  $(DESCRIBE_CC); \
-	  $(DESCRIBE_CUDA); \
-	  $(DESCRIBE_PYTHON) \
+	  $(DESCRIBE_PYTHON); \
+	  $(DESCRIBE_CUDA) \
 	) > $@
 
 ADDED_MODULES = singledispatch

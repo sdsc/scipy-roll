@@ -65,6 +65,13 @@ include $(SDSCDEVEL)/Rules.mk
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
+$(NAME).spec: DESCRIPTION
+
+DESCRIPTION:
+	( \
+	  $(DESCRIBE_PKG) \
+	) > $@
+
 build: 
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -78,5 +85,5 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) 
+	rm -rf $(SOURCE_DIR) DESCRIPTION
 
