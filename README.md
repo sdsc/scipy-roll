@@ -57,6 +57,9 @@ modulefile provided by the SDSC intel-roll is available.  It will build without
 the modulefile as long as the environment variables it provides are otherwise
 defined.
 
+The numba build attempts to load a cuda modulefile; if successful, this package
+will be built with cuda support.
+
 Building the llvmlite package requires that LLVM be installed on the build
 machine.  The build process assumes that the LLVM modulefile provided by the
 SDSC llvm-roll is available.  It will build without the modulefile as long as
@@ -72,7 +75,7 @@ machine (e.g., a frontend or development appliance):
 % make 2>&1 | tee build.log
 ```
 
-A successful build will create the file `weka-*.disk1.iso`.  If you built the
+A successful build will create the file `scipy-*.disk1.iso`.  If you built the
 roll on a Rocks frontend, proceed to the installation step. If you built the
 roll on a Rocks development appliance, you need to copy the roll to your Rocks
 frontend before continuing with installation.
