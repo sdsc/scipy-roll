@@ -70,9 +70,10 @@ DESCRIPTION:
 	$(MODULE_LOAD_PYTHON); \
 	( \
 	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_PYTHON); \
 	  $(DESCRIBE_CC); \
 	  $(DESCRIBE_MKL); \
-	  $(DESCRIBE_PYTHON) \
+	  $(DESCRIBE_NETCDF) \
 	) > $@
 
 LICENSE: $(SRC_DIRS)
@@ -85,10 +86,11 @@ build: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
+	  $(MODULE_LOAD_NETCDF); \
 	  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  python setup.py config --cc $(CC) \
+	  python setup.py config --cc $(CC) --netcdf_prefix=$${NETCDFHOME} \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -98,11 +100,12 @@ install::
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
+	  $(MODULE_LOAD_NETCDF); \
 	  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --netcdf_prefix=$${NETCDFHOME}; \
+	  python setup.py install --prefix=$(CACHE_DIR) --netcdf_prefix=$${NETCDFHOME}; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
