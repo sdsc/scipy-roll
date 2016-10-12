@@ -52,10 +52,10 @@ The roll sources assume that modulefiles provided by SDSC compiler and python
 rolls are available, but it will build without them as long as the environment
 variables they provide are otherwise defined.
 
-The build process requires the MKL libraries and assumes that the mkl
-modulefile provided by the SDSC intel-roll is available.  It will build without
-the modulefile as long as the environment variables it provides are otherwise
-defined.
+The build process requires the MKL and NETCDF libraries and assumes that the
+modulefiles provided by the SDSC intel and netcdf rolls are available.  It will
+build without the modulefiles as long as the environment variables they provide
+are otherwise defined.
 
 The numba build attempts to load a cuda modulefile; if successful, this package
 will be built with cuda support.
