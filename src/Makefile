@@ -65,16 +65,13 @@ default:
 	@echo "copyright|rpm|pkg|clean"
 
 copyright rpm pkg clean::
+	module load $(ROLLPY); \
+	export version=`python -c "from __future__ import print_function;import sys;print(sys.version[:3])"`; \
 	for i in $(SRCDIRS) ; do \
 	  grep -q PYVERSION $$i/version.mk; \
 	  if test $$? -eq 0; then \
-	    PYDEFAULT=`echo $(ROLLPY) | sed 's/ .*//'`; \
-	    for p in $(ROLLPY); do \
-	      module load $$p; \
-	      export PYVERSION=`python -c "from __future__ import print_function;import sys;print(sys.version[:3])"`; \
-	      echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPY=$$p PYVERSION=$${PYVERSION}; \
-	      (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$$p PYVERSION=$${PYVERSION} PYDEFAULT=$${PYDEFAULT} $@) || exit 2; \
-	    done; \
+	    echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPY=$(ROLLPY) PYVERSION=$${version}; \
+	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$$p PYVERSION=$${version} $@) || exit 2; \
 	  else \
 	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" $@) || exit 2; \
 	  fi; \
