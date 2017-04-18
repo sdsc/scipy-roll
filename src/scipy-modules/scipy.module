@@ -6,9 +6,10 @@ module-whatis "Compiler: ROLLCOMPILER"
 module-whatis "Python version: PYVER"
 setenv SCIPYHOME /opt/scipy/PYVER
 prepend-path PATH /opt/scipy/PYVER/bin
-foreach lib [glob -nocomplain /opt/scipy/PYVER/lib*/python2.7/site-packages] {
+foreach lib [glob -nocomplain /opt/scipy/PYVER/lib*/pythonPYVER/site-packages] {
   prepend-path PYTHONPATH $lib
 }
+module load ROLLPY
 
 if { [ info exists env(CUDAHOME) ] && [ info exists env(LLVMHOME) ] } {
    set cuda $env(CUDAHOME)

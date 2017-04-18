@@ -13,23 +13,22 @@ my $isInstalled = -d '/opt/scipy';
 my $output;
 
 my @MODULES = (
-  'billiard','IPython', 'libxml2', 'llvmlite','matplotlib', 'numba','pyfits', 'requests','scipy',
-  'Scientific', 'sympy'
+  'billiard','IPython', 'libxml2', 'llvmlite', 'matplotlib', 'numba', 'pyfits',
+  'requests', 'scipy', 'Scientific', 'sympy'
 );
-my @PYTHONS = split(/\s+/, "ROLLPY");
 
 my $TESTFILE = 'tmpscipy';
 
 open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
 #!/bin/bash
-module load \$1
+module load ROLLPY
 export version=`python -c "import sys; print sys.version[:3]"`
 module load scipy/\${version}
 python <<ENDPY
-import \$2
-help(\$2)
-print "\$2 name %s" % \$2.__name__
+import \$1
+help(\$1)
+print "\$1 name is %s" % \$1.__name__
 ENDPY
 END
 close(OUT);
@@ -42,13 +41,11 @@ if($appliance =~ /$installedOnAppliancesPattern/) {
 }
 SKIP: {
 
-  skip 'scipy not installed', int(@PYTHONS) * int(@MODULES) + 3
+  skip 'scipy not installed', int(@MODULES) + 3
     if ! $isInstalled;
-  foreach my $python(@PYTHONS) {
-    foreach my $module(@MODULES) {
-      $output = `bash $TESTFILE.sh $python $module 2>&1`;
-      like($output, qr/$module name/, "$module/$python module load works");
-    }
+  foreach my $module(@MODULES) {
+    $output = `bash $TESTFILE.sh $module 2>&1`;
+    like($output, qr/$module name is $module/, "$module module load works");
   }
 
   `/bin/ls /opt/modulefiles/applications/scipy/[0-9]* 2>&1`;

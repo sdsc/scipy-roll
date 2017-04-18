@@ -70,15 +70,12 @@ endif
 include Rolls.mk
 
 default:
+	module load $(ROLLPY); \
+	version=`python -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
 	for i in `ls nodes/*.in`; do \
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
-	  for p in $(ROLLPY); do \
-	    module load $${p}; \
-	    version=`python -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
-	    perl -pi -e 'print and s/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
-	  done; \
-	  perl -pi -e '$$_ = "" if m/PYVERSION/' $$o; \
+	  perl -pi -e 's/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
 	done
 	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" roll
 
