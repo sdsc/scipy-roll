@@ -71,7 +71,7 @@ copyright rpm pkg clean::
 	  grep -q PYVERSION $$i/version.mk; \
 	  if test $$? -eq 0; then \
 	    echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPY=$(ROLLPY) PYVERSION=$${version}; \
-	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$$p PYVERSION=$${version} $@) || exit 2; \
+	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$(ROLLPY) PYVERSION=$${version} $@) || exit 2; \
 	  else \
 	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" $@) || exit 2; \
 	  fi; \
