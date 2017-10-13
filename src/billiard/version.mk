@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-billiard_py$(PYVERSION)
 VERSION        = 3.3.0.23
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = billiard
@@ -27,3 +27,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No
+RPM.PREFIX     = $(PKGROOT)

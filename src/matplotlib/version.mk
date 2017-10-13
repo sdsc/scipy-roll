@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-matplotlib_py$(PYVERSION)
 VERSION        = 1.4.3
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = matplotlib
@@ -27,3 +27,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No\nObsoletes: matplotlib_py$(PYVERSION)
+RPM.PREFIX     = $(PKGROOT)

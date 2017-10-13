@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-pyfits_py$(PYVERSION)
 VERSION        = 3.3
-RELEASE        = 3
+RELEASE        = 4
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = pyfits
@@ -39,3 +39,4 @@ STSCI_DIR      = $(STSCI_PKG:%.$(STSCI_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(D2TO1_PKG) $(STSCI_PKG)
 
 RPM.EXTRAS     = AutoReq:No\nObsoletes: pyfits_py$(PYVERSION)
+RPM.PREFIX     = $(PKGROOT)

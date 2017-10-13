@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-pandas_py$(PYVERSION)
 VERSION        = 0.16.2
-RELEASE        = 4
+RELEASE        = 5
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = pandas
@@ -27,3 +27,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No\nObsoletes: pandas_py$(PYVERSION)
+RPM.PREFIX     = $(PKGROOT)

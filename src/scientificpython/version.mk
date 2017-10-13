@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-scientificpython_py$(PYVERSION)
 VERSION        = 2.9.4
-RELEASE        = 5
+RELEASE        = 6
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = scientificpython
@@ -27,3 +27,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No\nObsoletes: scientificpython_py$(PYVERSION)
+RPM.PREFIX     = $(PKGROOT)
