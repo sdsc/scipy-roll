@@ -54,7 +54,7 @@
 #
 # @Copyright@
 #
- $Log$
+#$Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
 
