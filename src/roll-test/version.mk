@@ -4,4 +4,4 @@ RELEASE    = 10
 PKGROOT    = /root/rolltests
 
 RPM.EXTRAS = AutoReq:No\nObsoletes: scipy-roll-test
-RPM.FILES  = $(PKGROOT)/biotools.t
+RPM.FILES  = $(PKGROOT)/scipy.t
