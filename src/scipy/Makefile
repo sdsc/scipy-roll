@@ -65,7 +65,7 @@ include $(SDSCDEVEL)/Rules.mk
 COMPILE_FLAGS = -O2 -shared -fPIC
 SETUPOPTS = --compiler=unix --fcompiler=gnu95
 ifeq ("$(COMPILERNAME)", "intel")
-  COMPILE_FLAGS = -xHost -O3 -shared -fPIC -openmp
+  COMPILE_FLAGS = -xHost -O3 -shared -fPIC -qopenmp
   SETUPOPTS = --compiler=intel --fcompiler=intelem
 endif
 
