@@ -85,6 +85,7 @@ LICENSE: $(SRC_DIRS)
 	echo "Continuum Analytics" > $@
 
 build: $(SRC_DIRS)
+	patch $(SOURCE_DIR)/ffi/Makefile.linux patch-files/Makefile.linux.patch
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
