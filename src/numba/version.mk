@@ -12,8 +12,8 @@ ifndef PYVERSION
 endif
 
 NAME                   = sdsc-numba_py$(PYVERSION)
-VERSION                = 0.21.0
-RELEASE                = 2
+VERSION                = 0.35.0
+RELEASE                = 0
 PKGROOT                = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR             = numba
@@ -32,5 +32,5 @@ SINGLEDISPATCH_DIR     = $(SINGLEDISPATCH_PKG:%.$(SINGLEDISPATCH_SUFFIX)=%)
 
 TAR_GZ_PKGS            = $(SOURCE_PKG) $(SINGLEDISPATCH_PKG)
 
-RPM.EXTRAS             = AutoReq:No\nObsoletes: numba_py$(PYVERSION)
+RPM.EXTRAS             = AutoReq:No\nObsoletes: numba_py$(PYVERSION)\n%define __os_install_post /usr/lib/rpm/brp-compress
 RPM.PREFIX             = $(PKGROOT)
