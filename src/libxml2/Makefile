@@ -96,12 +96,17 @@ install::
 	# process places some lib files in locations relative to the python
 	# path.  Using the DESTDIR make var ensures that all of these get
 	# bundled into the rpm instead of being installed on the build machine.
+	# The python module gets placed into $(ROOT)/opt/python; we move its
+	# contents to keep everything together.
 	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  $(MAKE) DESTDIR=$(ROOT) install \
+	  $(MAKE) DESTDIR=$(ROOT) install; \
+	  if test -d $(ROOT)/opt/python/lib; then \
+	    mv $(ROOT)/opt/python/lib/* $(ROOT)/opt/scipy/$(PYVERSION)/lib/; \
+	  fi \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
