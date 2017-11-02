@@ -53,8 +53,6 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 # @Copyright@
-#
-#$Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
 
