@@ -1,0 +1,13 @@
+--- Makefile.linux	2017-10-31 12:13:25.620158242 -0700
++++ patch-files/Makefile.linux	2017-10-31 12:14:16.068152971 -0700
+@@ -5,8 +5,8 @@
+ CXX_FLTO_FLAGS ?= -flto
+ LD_FLTO_FLAGS ?= -flto -Wl,--exclude-libs=ALL
+ 
+-CXXFLAGS = $(LLVM_CXXFLAGS) $(CXX_FLTO_FLAGS)
+-LDFLAGS = $(LLVM_LDFLAGS) $(LD_FLTO_FLAGS)
++CXXFLAGS = $(LLVM_CXXFLAGS)
++LDFLAGS = $(LLVM_LDFLAGS)
+ LIBS = $(LLVM_LIBS)
+ INCLUDE = core.h
+ SRC = assembly.cpp bitcode.cpp core.cpp initfini.cpp module.cpp value.cpp \
