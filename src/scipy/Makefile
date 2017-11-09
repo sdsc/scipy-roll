@@ -94,7 +94,7 @@ build: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
-	  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+	  export MKLLIB=$${MKLHOME}/lib/intel64; \
 	  $(MODULE_LOAD_PYTHON); \
 	  export COMMENTMKL='\#'; \
 	  if test -n "$${MKL_ROOT}"; then \
