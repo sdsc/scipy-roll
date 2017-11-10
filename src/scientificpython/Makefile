@@ -86,7 +86,7 @@ build: $(SRC_DIRS)
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
 	  $(MODULE_LOAD_NETCDF); \
-	  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+	  export MKLLIB=$${MKLHOME}/lib/intel64; \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py config --cc $(CC) --netcdf_prefix=$${NETCDFHOME} \
@@ -100,7 +100,7 @@ install::
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
 	  $(MODULE_LOAD_NETCDF); \
-	  export MKLLIB=`find $${MKL_ROOT}/lib/* -maxdepth 0 | head -1`; \
+	  export MKLLIB=$${MKLHOME}/lib/intel64; \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --netcdf_prefix=$${NETCDFHOME}; \

@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-scientificpython_py$(PYVERSION)
 VERSION        = 2.9.4
-RELEASE        = 6
+RELEASE        = 7
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = scientificpython
