@@ -65,6 +65,8 @@ include $(SDSCDEVEL)/Rules.mk
 DESCRIBE_LLVM = echo built with llvm $(call GET_MODULE_VERSION, llvm)
 MODULE_LOAD_LLVM = $(call MODULE_LOAD_PACKAGE, llvm, LLVMHOME)
 
+LLVMLITE_CACHE = $(REDHAT.ROOT)/cache/llvmlite
+
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -90,7 +92,7 @@ build: $(SRC_DIRS)
 	
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
-	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
+	mkdir -p -m 755 $(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages
 	( \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_LLVM); \
@@ -101,7 +103,9 @@ install::
 	  cd ../$(SOURCE_DIR); \
 	  python setup.py build || exit 2; \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/{easy-install.pth,site.py*} \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/{easy-install.pth,site.py*}; \
+	  cp -r $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/* \
+	        $(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages/ \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
