@@ -55,7 +55,9 @@
 # @Copyright@
 #
 
+# numba depends on llvmlite
 SRCDIRS = `find . -maxdepth 1 -type d \
 	-not -name CVS \
 	-not -name . \
-	-not -name easy_install_files` easy_install_files
+	-not -name numba \
+	-not -name easy_install_files` numba easy_install_files

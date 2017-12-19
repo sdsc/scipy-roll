@@ -106,7 +106,7 @@ install::
 	  $(MODULE_LOAD_CUDA); \
 	  $(MODULE_LOAD_PYTHON); \
           TMPPYTHON=$${PYTHONPATH}; \
-          export PYTHONPATH=$${TMPPYTHON}:$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
+          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/llvmlite/lib/python$(PYVERSION)/site-packages:$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
           cp -r $(SINGLEDISPATCH_DIR) $(SINGLEDISPATCH_DIR)2; \
           cd $(SINGLEDISPATCH_DIR); \
           python setup.py build; \
@@ -116,7 +116,7 @@ install::
 	  cd $(SOURCE_DIR); \
 	  python setup.py build $(SETUPOPTS); \
 	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages; \
+          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/llvmlite/lib/python$(PYVERSION)/site-packages:$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages; \
           cd ../$(SINGLEDISPATCH_DIR)2; \
           python setup.py build; \
 	  python setup.py install --prefix=$(CACHE_DIR); \
