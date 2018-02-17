@@ -95,6 +95,10 @@ build: $(SRC_DIRS)
 	  $(MODULE_LOAD_PYTHON); \
 	  export -n DISPLAY; \
 	  cd $(SOURCE_DIR); \
+	  if test "$(ROLLCOMPILER)" = "gnu"; then \
+	    : Avoid gcc segfault--see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82492.; \
+	    export CFLAGS="-O1"; \
+	  fi; \
 	  python setup.py build $(SETUPOPTS) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
