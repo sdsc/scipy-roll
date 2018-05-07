@@ -2,7 +2,7 @@ PACKAGE     = scipy
 CATEGORY    = applications
 
 NAME        = sdsc-$(PACKAGE)-modules_py$(PYVERSION)
-RELEASE     = 11
+RELEASE     = 12
 PKGROOT     = /opt/modulefiles/$(CATEGORY)/$(PACKAGE)
 
 VERSION_SRC = $(REDHAT.ROOT)/src/$(PACKAGE)/version.mk
