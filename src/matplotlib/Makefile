@@ -99,7 +99,7 @@ build: $(SRC_DIRS)
 	    : Avoid gcc segfault--see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82492.; \
 	    export CFLAGS="-O1"; \
 	  fi; \
-	  python setup.py build $(SETUPOPTS) \
+	  python$(PYVERSION) setup.py build $(SETUPOPTS) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -112,8 +112,8 @@ install::
 	  cd $(SOURCE_DIR); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
-	  python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
