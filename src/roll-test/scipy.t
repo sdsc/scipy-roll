@@ -46,8 +46,12 @@ SKIP: {
     if ! $isInstalled;
   foreach my $pyversion(@pyversions) {
     foreach my $module(@MODULES) {
+     SKIP: {
+      skip 'no python$pyversion module available', 1
+         if $module =~ /scipy|pandas|matplotlib|llvmlite/ && $pyversion >= 3;
       $output = `bash $TESTFILE.sh $module $pyversion 2>&1`;
       like($output, qr/$module name is $module/, "$module module for python $pyversion load works");
+     }
     }
   }
 
