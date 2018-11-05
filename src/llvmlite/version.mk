@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-llvmlite_py$(PYVERSION)
 VERSION        = 0.20.0
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = llvmlite

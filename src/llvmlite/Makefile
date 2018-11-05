@@ -98,11 +98,11 @@ install::
 	  $(MODULE_LOAD_LLVM); \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
 	  cd $(ENUM34_DIR); \
-	  python setup.py build || exit 2; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(PYVERSION) setup.py build || exit 2; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ../$(SOURCE_DIR); \
-	  python setup.py build || exit 2; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(PYVERSION) setup.py build || exit 2; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/{easy-install.pth,site.py*}; \
 	  cp -r $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/* \
 	        $(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages/ \
