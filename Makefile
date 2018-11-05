@@ -78,7 +78,6 @@ default:
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
           for c in $(PYVERSION); do \
-               echo "C $${c}"; \
                perl -pi -e "print and s/PYVERSION/$$c/g if m/PYVERSION/" $$o; \
            done; \
            perl -pi -e '$$_ = "" if m/PYVERSION/' $$o; \
