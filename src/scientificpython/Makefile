@@ -83,6 +83,9 @@ CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
 	( \
+          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
 	  $(MODULE_LOAD_NETCDF); \
@@ -97,6 +100,10 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(CACHE_DIR)
 	( \
+          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
 	  $(MODULE_LOAD_NETCDF); \
