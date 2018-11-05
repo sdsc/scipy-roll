@@ -1,7 +1,7 @@
 PACKAGE     = scipy
 CATEGORY    = applications
 
-NAME        = sdsc-$(PACKAGE)-modules_py$(PYVERSION)
+NAME        = sdsc-$(PACKAGE)-modules
 RELEASE     = 13
 PKGROOT     = /opt/modulefiles/$(CATEGORY)/$(PACKAGE)
 

@@ -92,6 +92,9 @@ build: $(SRC_DIRS)
 	cp libblas.a $(SOURCE_DIR); \
 	cp liblapack.a $(SOURCE_DIR); \
 	( \
+          if  (( $$(echo "$(PYVERSION) >= 3.6" |bc -l) )); then \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
@@ -124,6 +127,10 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(CACHE_DIR)
 	( \
+          if  (( $$(echo "$(PYVERSION) >= 3.6" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/math-install.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \

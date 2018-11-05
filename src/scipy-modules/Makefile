@@ -5,7 +5,7 @@ include Rules.mk
 include $(SDSCDEVEL)/Rules.mk
 
 $(VERSION_INC): $(VERSION_SRC)
-	/bin/echo VERSION = $(word 1, $(PYVERSION)) > $@
+	/bin/echo VERSION = $(firstword, $(PYVERSION)) > $@
  
 build:
 
@@ -15,8 +15,8 @@ clean::
 	rm -f $(VERSION_INC)
 
 scipy-modulefile-install:
-        mkdir -p -m 755 $(ROOT)/$(PKGROOT)
-        for V in $(PYVERSION); do \
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	for V in $(PYVERSION); do \
           cp *.module $(ROOT)/$(PKGROOT)/$$V; \
           cp *.version $(ROOT)/$(PKGROOT)/.version.$$V; \
           perl -pi -e 's#COMPILERNAME#$(COMPILERNAME)#g;' \

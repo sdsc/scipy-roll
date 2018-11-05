@@ -75,13 +75,15 @@ include Rolls.mk
 default:
 	module load $(ROLLPY); \
 	for i in `ls nodes/*.in`; do \
+	  export o=`echo $$i | sed 's/\.in//'`; \
+	  cp $$i $$o; \
           for c in $(PYVERSION); do \
                echo "C $${c}"; \
                perl -pi -e "print and s/PYVERSION/$$c/g if m/PYVERSION/" $$o; \
            done; \
            perl -pi -e '$$_ = "" if m/PYVERSION/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" PYVERSION=$(PYVERSION) roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" PYVERSION="$(PYVERSION)" roll
 
 clean::
 	rm -f _arch bootstrap.py

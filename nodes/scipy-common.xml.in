@@ -42,7 +42,7 @@ All rights reserved. Rocks(r) v7 www.rocksclusters.org
 <package>sdsc-scientificpython_pyPYVERSION</package>
 <package>sdsc-scipy_pyPYVERSION</package>
 <package>sdsc-sympy_pyPYVERSION</package>
-<package>sdsc-scipy-modules_pyPYVERSION</package>
+<package>sdsc-scipy-modules</package>
 <package>sdsc-scipy-roll-test</package>
 <package>sdsc-scipy-easy_install_files_pyPYVERSION</package>
 
