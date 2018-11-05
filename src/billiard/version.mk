@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-billiard_py$(PYVERSION)
 VERSION        = 3.3.0.23
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = billiard

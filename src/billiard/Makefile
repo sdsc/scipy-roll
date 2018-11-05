@@ -92,7 +92,7 @@ build: $(SRC_DIRS)
 	  $(MODULE_LOAD_PYTHON); \
           export CC=$(CC); \
           cd $(SOURCE_DIR); \
-	  python setup.py build; \
+	  python$(PYVERSION) setup.py build; \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
