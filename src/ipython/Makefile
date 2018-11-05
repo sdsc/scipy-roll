@@ -96,44 +96,44 @@ install::
           export PYTHONPATH=$${TMPPYTHON}:$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
           cp -r $(PYZMQ_DIR) $(PYZMQ_DIR)2; \
           cd $(PYZMQ_DIR); \
-          python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(JINJA2_DIR) $(JINJA2_DIR)2; \
           cd $(JINJA2_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(TORNADO_DIR) $(TORNADO_DIR)2; \
           cd $(TORNADO_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(JSONSCHEMA_DIR) $(JSONSCHEMA_DIR)2; \
           cd $(JSONSCHEMA_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ..; \
           cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
           cd $(SOURCE_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages; \
           cd ../$(PYZMQ_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(JINJA2_DIR)2 ; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(TORNADO_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(JSONSCHEMA_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(SOURCE_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(PYVERSION) setup.py build; \
+	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR); \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
