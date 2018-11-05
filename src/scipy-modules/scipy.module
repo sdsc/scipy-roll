@@ -3,10 +3,10 @@ module-whatis "scipy"
 module-whatis "Version: VERSION"
 module-whatis "Description: scipy"
 module-whatis "Compiler: ROLLCOMPILER"
-module-whatis "Python version: PYVER"
-setenv SCIPYHOME /opt/scipy/PYVER
-prepend-path PATH /opt/scipy/PYVER/bin
-foreach lib [glob -nocomplain /opt/scipy/PYVER/lib*/pythonPYVER/site-packages] {
+module-whatis "Python version: VERSION"
+setenv SCIPYHOME /opt/scipy/VERSION
+prepend-path PATH /opt/scipy/VERSION/bin
+foreach lib [glob -nocomplain /opt/scipy/VERSION/lib*/pythonVERSION/site-packages] {
   prepend-path PYTHONPATH $lib
 }
 module load ROLLPY llvm
