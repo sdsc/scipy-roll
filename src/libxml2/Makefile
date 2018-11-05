@@ -81,13 +81,20 @@ build:: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
+          mkdir python; \
+          cp -r $${PYTHONROOT}/* python; \
+          cd python/bin; \
+          rm -f python; \
+          ln -s python$(PYVERSION) python; \
+          cd ../..; \
 	  export CC=$(CC); \
 	  if test -n "$${LIBPATH}"; then \
 	    export LDFLAGS=-L$${LIBPATH}; \
 	  fi; \
 	  cd $(SOURCE_DIR); \
-	  ./configure --prefix=$(PKGROOT); \
-	  $(MAKE) \
+	  ./configure --prefix=$(PKGROOT) --with-python=$(PWD)/python; \
+	  $(MAKE) -j 16; \
+          rm -rf ../python \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 
