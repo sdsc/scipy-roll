@@ -5,7 +5,7 @@ include Rules.mk
 include $(SDSCDEVEL)/Rules.mk
 
 $(VERSION_INC): $(VERSION_SRC)
-	/bin/echo VERSION = $(firstword, $(PYVERSION)) > $@
+	/bin/echo VERSION = $(firstword  $(PYVERSION)) > $@
  
 build:
 
