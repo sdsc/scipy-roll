@@ -18,14 +18,15 @@ my @MODULES = (
 );
 
 my $TESTFILE = 'tmpscipy';
+my @pyversions = split(/\s+/,'PYVERSION');
 
 open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
 #!/bin/bash
 module load ROLLPY
-export version=`python -c "import sys; print sys.version[:3]"`
+export version=\$2
 module load scipy/\${version}
-python <<ENDPY
+python\$2 <<ENDPY
 import \$1
 help(\$1)
 print "\$1 name is %s" % \$1.__name__
@@ -43,9 +44,11 @@ SKIP: {
 
   skip 'scipy not installed', int(@MODULES) + 3
     if ! $isInstalled;
-  foreach my $module(@MODULES) {
-    $output = `bash $TESTFILE.sh $module 2>&1`;
-    like($output, qr/$module name is $module/, "$module module load works");
+  foreach my $pyversion(@pyversions) {
+    foreach my $module(@MODULES) {
+      $output = `bash $TESTFILE.sh $module $pyversion 2>&1`;
+      like($output, qr/$module name is $module/, "$module module for python $pyversion load works");
+    }
   }
 
   `/bin/ls /opt/modulefiles/applications/scipy/[0-9]* 2>&1`;

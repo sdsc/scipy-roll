@@ -7,5 +7,8 @@ include $(SDSCDEVEL)/Rules.mk
 build:
 
 install:: typical-roll-test-install
+	perl -pi -e 's#PYVERSION#$(PYVERSION)#g;' \
+          $(ROOT)/$(PKGROOT)/*.t
+
 
 clean::
