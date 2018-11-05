@@ -1,6 +1,6 @@
-NAME           = sdsc-jupyterhub
+NAME           = sdsc-jupyterhub_py$(PYVERSION)
 VERSION        = 1.0
-RELEASE        = 4
+RELEASE        = 5
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = jupyterhub
