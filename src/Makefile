@@ -63,13 +63,17 @@ default:
 
 copyright rpm pkg clean::
 	module load $(ROLLPY); \
-	export version=`python -c "from __future__ import print_function;import sys;print(sys.version[:3])"`; \
-	for i in $(SRCDIRS) ; do \
-	  grep -q PYVERSION $$i/version.mk; \
-	  if test $$? -eq 0; then \
-	    echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPY=$(ROLLPY) PYVERSION=$${version}; \
-	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$(ROLLPY) PYVERSION=$${version} $@) || exit 2; \
-	  else \
-	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" $@) || exit 2; \
-	  fi; \
-	done
+        for i in $(SRCDIRS); do \
+           package=`echo $$i | sed 's/\.\///'`; \
+           if test `grep -c "\<NAME.*PYVERSION" $$i/version.mk` -gt 0; then  \
+             for c in $(PYVERSION); do \
+                  echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) PYVERSION=$${c} starting at `date +"%F %T"`; \
+                 (cd $$i && $(MAKE) ROLLCOMPILER=$(ROLLCOMPILER) PYVERSION=$${c} $@) || exit 2; \
+                 echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) PYVERSION=$${c} completed at `date +"%F %T"`; \
+             done; \
+           else \
+             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" PYVERSION="$(PYVERSION)" starting at `date +"%F %T"`; \
+             (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" PYVERSION="$(PYVERSION)" $@) || exit 2; \
+             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" PYVERSION="$(PYVERSION)" completed at `date +"%F %T"`; \
+           fi; \
+        done
