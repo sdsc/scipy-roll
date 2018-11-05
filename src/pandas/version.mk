@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-pandas_py$(PYVERSION)
 VERSION        = 0.16.2
-RELEASE        = 5
+RELEASE        = 6
 PKGROOT        = /opt/scipy/$(PYVERSION)
 
 SRC_SUBDIR     = pandas
