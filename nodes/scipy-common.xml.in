@@ -31,7 +31,7 @@ All rights reserved. Rocks(r) v7 www.rocksclusters.org
 
 <package>sdsc-billiard_pyPYVERSION</package>
 <package>sdsc-ipython_pyPYVERSION</package>
-<package>sdsc-jupyterhub</package>
+<package>sdsc-jupyterhub_pyPYVERSION</package>
 <package>sdsc-libxml2_pyPYVERSION</package>
 <package>sdsc-llvmlite_pyPYVERSION</package>
 <package>sdsc-matplotlib_pyPYVERSION</package>
