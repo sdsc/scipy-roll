@@ -91,6 +91,9 @@ build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/setupext.py patch-files/setupext.py.patch
 	patch $(SOURCE_DIR)/extern/qhull/qhull_a.h patch-files/qhull_a.h.patch
 	( \
+          if  (( $$(echo "$(PYVERSION) >= 3.6" |bc -l) )); then \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  export -n DISPLAY; \
@@ -107,6 +110,10 @@ install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
 	( \
+          if  (( $$(echo "$(PYVERSION) >= 3.6" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
