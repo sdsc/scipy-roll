@@ -89,7 +89,7 @@ build: $(SRC_DIRS)
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  python setup.py config --cc $(CC) --netcdf_prefix=$${NETCDFHOME} \
+	  python$(PYVERSION) setup.py config --cc $(CC) --netcdf_prefix=$${NETCDFHOME} \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -103,8 +103,8 @@ install::
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --netcdf_prefix=$${NETCDFHOME}; \
-	  python setup.py install --prefix=$(CACHE_DIR) --netcdf_prefix=$${NETCDFHOME}; \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --netcdf_prefix=$${NETCDFHOME}; \
+	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR) --netcdf_prefix=$${NETCDFHOME}; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
