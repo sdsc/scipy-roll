@@ -92,7 +92,7 @@ build: $(SRC_DIRS)
 	cp libblas.a $(SOURCE_DIR); \
 	cp liblapack.a $(SOURCE_DIR); \
 	( \
-          if  (( $$(echo "$(PYVERSION) >= 3.6" |bc -l) )); then \
+          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
              exit; \
           fi; \
 	  $(MODULE_LOAD_CC); \
@@ -127,7 +127,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(CACHE_DIR)
 	( \
-          if  (( $$(echo "$(PYVERSION) >= 3.6" |bc -l) )); then \
+          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
              exit; \
           fi; \

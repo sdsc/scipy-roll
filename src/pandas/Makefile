@@ -80,7 +80,7 @@ LICENSE: $(SRC_DIRS)
 CACHE_DIR=$(REDHAT.ROOT)/cache
 build: $(SRC_DIRS)
 	( \
-          if  (( $$(echo "$(PYVERSION) >= 3.6" |bc -l) )); then \
+          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
              exit; \
           fi; \
 	  $(MODULE_LOAD_PYTHON); \
@@ -94,7 +94,7 @@ install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
 	( \
-          if  (( $$(echo "$(PYVERSION) >= 3.6" |bc -l) )); then \
+          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
              exit; \
           fi; \
