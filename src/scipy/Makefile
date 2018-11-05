@@ -106,7 +106,7 @@ build: $(SRC_DIRS)
 	  fi; \
 	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg; \
 	  cd $(SOURCE_DIR); \
-	  python setup.py config $(SETUPOPTS) \
+	  python$(PYVERSION) setup.py config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \
 	  for x in csr csc coo bsr dia; do \
@@ -127,8 +127,8 @@ install::
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
