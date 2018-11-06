@@ -126,7 +126,8 @@ install::
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/__pycache__ \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
