@@ -28,4 +28,4 @@ scipy-modulefile-install:
                    -e "s#VERSION#$$V#g;" \
             $(ROOT)/$(PKGROOT)/.version.$$V $(ROOT)/$(PKGROOT)/$$V; \
         done
-
+        ln -s $(PKGROOT)/.version.$(VERSION) $(ROOT)/$(PKGROOT)/.version
