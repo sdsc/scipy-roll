@@ -18,7 +18,7 @@ my @MODULES = (
 );
 
 my $TESTFILE = 'tmpscipy';
-my @pyversions = split(/\s+/,'PYVERSION');
+my @pyversions = split(/\s+/,'PYV');
 
 open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
