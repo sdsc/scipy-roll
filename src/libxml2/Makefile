@@ -106,15 +106,19 @@ install::
 	# The python module gets placed into $(ROOT)/opt/python; we move its
 	# contents to keep everything together.
 	mkdir -p $(ROOT)/$(PKGROOT)
+	$(PKGROOT_BIND_MOUNT)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  $(MAKE) DESTDIR=$(ROOT) install; \
-	  if test -d $(ROOT)/opt/python/lib; then \
-	    mv $(ROOT)/opt/python/lib/* $(ROOT)/opt/scipy/$(PYVERSION)/lib/; \
-	  fi \
+          m=''; \
+          if  (( $$(echo "$(PYVERSION) >= 3.0" |bc -l) )); then \
+               m='m'; \
+          fi; \
+	    $(MAKE) CPPFLAGS=-I/opt/python/include/python$(PYVERSION)$${m} install; \
+          cp -r ../python/lib $(PKGROOT) \
 	)
+	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
