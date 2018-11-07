@@ -65,15 +65,15 @@ copyright rpm pkg clean::
 	module load $(ROLLPY); \
         for i in $(SRCDIRS); do \
            package=`echo $$i | sed 's/\.\///'`; \
-           if test `grep -c "\<NAME.*PYVERSION" $$i/version.mk` -gt 0; then  \
-             for c in $(PYVERSION); do \
-                  echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) PYVERSION=$${c} starting at `date +"%F %T"`; \
-                 (cd $$i && $(MAKE) ROLLCOMPILER=$(ROLLCOMPILER) PYVERSION=$${c} $@) || exit 2; \
-                 echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) PYVERSION=$${c} completed at `date +"%F %T"`; \
+           if test `grep -c "\<NAME.*ROLLPYVERSION" $$i/version.mk` -gt 0; then  \
+             for c in $(ROLLPYVERSION); do \
+                  echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPYVERSION=$${c} starting at `date +"%F %T"`; \
+                 (cd $$i && $(MAKE) ROLLCOMPILER=$(ROLLCOMPILER) ROLLPYVERSION=$${c} $@) || exit 2; \
+                 echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPYVERSION=$${c} completed at `date +"%F %T"`; \
              done; \
            else \
-             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" PYVERSION="$(PYVERSION)" starting at `date +"%F %T"`; \
-             (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" PYVERSION="$(PYVERSION)" $@) || exit 2; \
-             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" PYVERSION="$(PYVERSION)" completed at `date +"%F %T"`; \
+             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYVERSION="$(ROLLPYVERSION)" starting at `date +"%F %T"`; \
+             (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYVERSION="$(ROLLPYVERSION)" $@) || exit 2; \
+             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYVERSION="$(ROLLPYVERSION)" completed at `date +"%F %T"`; \
            fi; \
         done

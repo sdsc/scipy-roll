@@ -85,7 +85,7 @@ build:: $(SRC_DIRS)
           cp -r $${PYTHONROOT}/* python; \
           cd python/bin; \
           rm -f python; \
-          ln -s python$(PYVERSION) python; \
+          ln -s python$(ROLLPYVERSION) python; \
           cd ../..; \
 	  export CC=$(CC); \
 	  if test -n "$${LIBPATH}"; then \
@@ -112,10 +112,10 @@ install::
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
           m=''; \
-          if  (( $$(echo "$(PYVERSION) >= 3.0" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.0" |bc -l) )); then \
                m='m'; \
           fi; \
-	    $(MAKE) CPPFLAGS=-I/opt/python/include/python$(PYVERSION)$${m} install; \
+	    $(MAKE) CPPFLAGS=-I/opt/python/include/python$(ROLLPYVERSION)$${m} install; \
           cp -r ../python/lib $(PKGROOT) \
 	)
 	$(PKGROOT_BIND_UMOUNT)

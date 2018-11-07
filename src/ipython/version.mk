@@ -2,14 +2,14 @@ ifndef ROLLPY
   ROLLPY = python
 endif
 
-ifndef PYVERSION
-  PYVERSION = 2.6
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.6
 endif
 
-NAME               = sdsc-ipython_py$(PYVERSION)
+NAME               = sdsc-ipython_py$(ROLLPYVERSION)
 VERSION            = 3.2.1
 RELEASE            = 7
-PKGROOT            = /opt/scipy/$(PYVERSION)
+PKGROOT            = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR         = ipython
 
@@ -45,5 +45,5 @@ JSONSCHEMA_DIR     = $(JSONSCHEMA_PKG:%.$(JSONSCHEMA_SUFFIX)=%)
 
 TAR_GZ_PKGS        = $(SOURCE_PKG) $(PYZMQ_PKG) $(JINJA2_PKG) $(TORNADO_PKG) $(JSONSCHEMA_PKG)
 
-RPM.EXTRAS         = AutoReq:No\nObsoletes: ipython_py$(PYVERSION)
+RPM.EXTRAS         = AutoReq:No\nObsoletes: ipython_py$(ROLLPYVERSION)
 RPM.PREFIX         = $(PKGROOT)

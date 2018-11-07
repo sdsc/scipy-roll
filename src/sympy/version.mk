@@ -2,14 +2,14 @@ ifndef ROLLPY
   ROLLPY = python
 endif
 
-ifndef PYVERSION
-  PYVERSION = 2.6
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.6
 endif
 
-NAME           = sdsc-sympy_py$(PYVERSION)
+NAME           = sdsc-sympy_py$(ROLLPYVERSION)
 VERSION        = 0.7.6.1
 RELEASE        = 2
-PKGROOT        = /opt/scipy/$(PYVERSION)
+PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = sympy
 
@@ -21,5 +21,5 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
-RPM.EXTRAS     = AutoReq:No\nObsoletes: sympy_py$(PYVERSION)
+RPM.EXTRAS     = AutoReq:No\nObsoletes: sympy_py$(ROLLPYVERSION)
 RPM.PREFIX     = $(PKGROOT)

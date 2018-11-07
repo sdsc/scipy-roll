@@ -59,8 +59,8 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
-ifndef PYVERSION
-  PYVERSION = 2.6
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.6
 endif
 
 
@@ -77,12 +77,12 @@ default:
 	for i in `ls nodes/*.in`; do \
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
-          for c in $(PYVERSION); do \
-               perl -pi -e "print and s/PYVERSION/$$c/g if m/PYVERSION/" $$o; \
+          for c in $(ROLLPYVERSION); do \
+               perl -pi -e "print and s/ROLLPYVERSION/$$c/g if m/ROLLPYVERSION/" $$o; \
            done; \
-           perl -pi -e '$$_ = "" if m/PYVERSION/' $$o; \
+           perl -pi -e '$$_ = "" if m/ROLLPYVERSION/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" PYVERSION="$(PYVERSION)" roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" ROLLPYVERSION="$(ROLLPYVERSION)" roll
 
 clean::
 	rm -f _arch bootstrap.py

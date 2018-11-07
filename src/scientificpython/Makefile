@@ -83,7 +83,7 @@ CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
 	( \
-          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
              exit; \
           fi; \
 	  $(MODULE_LOAD_CC); \
@@ -92,7 +92,7 @@ build: $(SRC_DIRS)
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  python$(PYVERSION) setup.py config --cc $(CC) --netcdf_prefix=$${NETCDFHOME} \
+	  python$(ROLLPYVERSION) setup.py config --cc $(CC) --netcdf_prefix=$${NETCDFHOME} \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
@@ -100,7 +100,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(CACHE_DIR)
 	( \
-          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
              exit; \
           fi; \
@@ -110,13 +110,13 @@ install::
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --netcdf_prefix=$${NETCDFHOME}; \
-	  python$(PYVERSION) setup.py install --prefix=$(CACHE_DIR) --netcdf_prefix=$${NETCDFHOME}; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo; \
-          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/__pycache__ \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --netcdf_prefix=$${NETCDFHOME}; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR) --netcdf_prefix=$${NETCDFHOME}; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyo; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__ \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

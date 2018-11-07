@@ -7,14 +7,14 @@ ifndef ROLLPY
   ROLLPY = python
 endif
 
-ifndef PYVERSION
-  PYVERSION = 2.6
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.6
 endif
 
-NAME           = sdsc-pyfits_py$(PYVERSION)
+NAME           = sdsc-pyfits_py$(ROLLPYVERSION)
 VERSION        = 3.3
 RELEASE        = 4
-PKGROOT        = /opt/scipy/$(PYVERSION)
+PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = pyfits
 
@@ -38,5 +38,5 @@ STSCI_DIR      = $(STSCI_PKG:%.$(STSCI_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(D2TO1_PKG) $(STSCI_PKG)
 
-RPM.EXTRAS     = AutoReq:No\nObsoletes: pyfits_py$(PYVERSION)
+RPM.EXTRAS     = AutoReq:No\nObsoletes: pyfits_py$(ROLLPYVERSION)
 RPM.PREFIX     = $(PKGROOT)

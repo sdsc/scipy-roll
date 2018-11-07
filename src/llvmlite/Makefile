@@ -91,25 +91,25 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
-	mkdir -p -m 755 $(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
+	mkdir -p -m 755 $(LLVMLITE_CACHE)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
-          if  (( $$(echo "$(PYVERSION) >= 3.7" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
              exit; \
           fi; \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_LLVM); \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
 	  cd $(ENUM34_DIR); \
-	  python$(PYVERSION) setup.py build || exit 2; \
-	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(ROLLPYVERSION) setup.py build || exit 2; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ../$(SOURCE_DIR); \
-	  python$(PYVERSION) setup.py build || exit 2; \
-	  python$(PYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/{easy-install.pth,site.py*}; \
-	  cp -r $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/* \
-	        $(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages/ \
+	  python$(ROLLPYVERSION) setup.py build || exit 2; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/{easy-install.pth,site.py*}; \
+	  cp -r $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/* \
+	        $(LLVMLITE_CACHE)/lib/python$(ROLLPYVERSION)/site-packages/ \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
