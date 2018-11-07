@@ -11,7 +11,7 @@ ifndef ROLLPYVERSION
   ROLLPYVERSION = 2.6
 endif
 
-NAME           = sdsc-matplotlib_py$(PYVERSION)
+NAME           = sdsc-matplotlib_py$(ROLLPYVERSION)
 VERSION        = 1.4.3
 RELEASE        = 3
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
