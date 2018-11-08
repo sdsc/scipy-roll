@@ -96,6 +96,10 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p -m 755 $(CACHE_DIR)
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
