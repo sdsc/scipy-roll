@@ -104,14 +104,14 @@ install::
 	  easy_install --install-dir $${sitepath} $(D2TO1_PKG); \
 	  easy_install --install-dir $${sitepath} $(STSCI_PKG); \
 	  cd $(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
           cd ..; \
           sitepath=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
 	  mkdir -p $${sitepath}; \
 	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
           easy_install --install-dir $${sitepath} $(D2TO1_PKG); \
           easy_install --install-dir $${sitepath} $(STSCI_PKG); \
-          python setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed;\
+          python$(ROLLPYVERSION)  setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed;\
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
