@@ -62,18 +62,17 @@ default:
 	@echo "copyright|rpm|pkg|clean"
 
 copyright rpm pkg clean::
-	module load $(ROLLPY); \
         for i in $(SRCDIRS); do \
            package=`echo $$i | sed 's/\.\///'`; \
            if test `grep -c "\<NAME.*ROLLPYVERSION" $$i/version.mk` -gt 0; then  \
              for c in $(ROLLPYVERSION); do \
-                  echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPYVERSION=$${c} starting at `date +"%F %T"`; \
-                 (cd $$i && $(MAKE) ROLLCOMPILER=$(ROLLCOMPILER) ROLLPYVERSION=$${c} $@) || exit 2; \
-                 echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPYVERSION=$${c} completed at `date +"%F %T"`; \
+                  echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPY=$(ROLLPY) ROLLPYVERSION=$${c} starting at `date +"%F %T"`; \
+                 (cd $$i && $(MAKE) ROLLCOMPILER=$(ROLLCOMPILER) ROLLPY=$(ROLLPY) ROLLPYVERSION=$${c} $@) || exit 2; \
+                 echo make $@ in $$i with ROLLCOMPILER=$(ROLLCOMPILER) ROLLPY=$(ROLLPY) ROLLPYVERSION=$${c} completed at `date +"%F %T"`; \
              done; \
            else \
-             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYVERSION="$(ROLLPYVERSION)" starting at `date +"%F %T"`; \
-             (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYVERSION="$(ROLLPYVERSION)" $@) || exit 2; \
-             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPYVERSION="$(ROLLPYVERSION)" completed at `date +"%F %T"`; \
+             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$(ROLLPY) ROLLPYVERSION="$(ROLLPYVERSION)" starting at `date +"%F %T"`; \
+             (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$(ROLLPY) ROLLPYVERSION="$(ROLLPYVERSION)" $@) || exit 2; \
+             echo make $@ in $$i with ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY=$(ROLLPY) ROLLPYVERSION="$(ROLLPYVERSION)" completed at `date +"%F %T"`; \
            fi; \
         done
