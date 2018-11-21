@@ -62,7 +62,7 @@ default:
 	@echo "copyright|rpm|pkg|clean"
 
 copyright rpm pkg clean::
-        for i in $(SRCDIRS); do \
+	for i in $(SRCDIRS); do \
            package=`echo $$i | sed 's/\.\///'`; \
            if test `grep -c "\<NAME.*ROLLPYVERSION" $$i/version.mk` -gt 0; then  \
              for c in $(ROLLPYVERSION); do \
