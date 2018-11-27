@@ -108,7 +108,7 @@ install::
 	  python$(ROLLPYVERSION) setup.py build || exit 2; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cp -r $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/* \
-	        $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages/ \
+	        $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/{easy-install.pth,site.py*}; \
 	)
 	$(INSTALL_LICENSE_FILES)
