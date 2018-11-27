@@ -1,4 +1,4 @@
-##
+
 # $Id$
 #
 # @Copyright@
@@ -89,44 +89,45 @@ LICENSE: $(SRC_DIRS)
 	echo "Contiuum Analytics" > $@
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
+LLVMLITE_CACHE=$(REDHAT.ROOT)/cache/llvmlite
 
 build: $(SRC_DIRS)
-	@echo "::: Package $(NAME) build complete :::"
-	
-install::
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
-	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
-             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
-             exit; \
-          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_CUDA); \
 	  $(MODULE_LOAD_PYTHON); \
-          TMPPYTHON=$${PYTHONPATH}; \
-          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/llvmlite/lib/python$(ROLLPYVERSION)/site-packages:$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
+	)
+	@echo "::: Package $(NAME) build complete :::"
+	
+install::
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
+	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages
+	( \
+	  $(MODULE_LOAD_PYTHON); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_CUDA); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages; \
           cp -r $(SINGLEDISPATCH_DIR) $(SINGLEDISPATCH_DIR)2; \
           cd $(SINGLEDISPATCH_DIR); \
-          python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          python setup.py build; \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
 	  cd $(SOURCE_DIR); \
-	  python$(ROLLPYVERSION) setup.py build $(SETUPOPTS); \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/llvmlite/lib/python$(ROLLPYVERSION)/site-packages:$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
+	  python setup.py build $(SETUPOPTS); \
+	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/*enum*; \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages; \
           cd ../$(SINGLEDISPATCH_DIR)2; \
-          python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+          python setup.py build; \
+	  python setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(SOURCE_DIR)2; \
-	  python$(ROLLPYVERSION) setup.py build $(SETUPOPTS); \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyo; \
-          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__ \
+	  python setup.py build $(SETUPOPTS); \
+	  python setup.py install --prefix=$(CACHE_DIR); \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
