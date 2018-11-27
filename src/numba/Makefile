@@ -89,7 +89,6 @@ LICENSE: $(SRC_DIRS)
 	echo "Contiuum Analytics" > $@
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
-LLVMLITE_CACHE=$(REDHAT.ROOT)/cache/llvmlite
 
 build: $(SRC_DIRS)
 	( \
@@ -106,7 +105,7 @@ install::
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_CUDA); \
-          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages; \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages; \
           cp -r $(SINGLEDISPATCH_DIR) $(SINGLEDISPATCH_DIR)2; \
           cd $(SINGLEDISPATCH_DIR); \
           python setup.py build; \
