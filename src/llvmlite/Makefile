@@ -65,7 +65,7 @@ include $(SDSCDEVEL)/Rules.mk
 DESCRIBE_LLVM = echo built with llvm $(call GET_MODULE_VERSION, llvm)
 MODULE_LOAD_LLVM = $(call MODULE_LOAD_PACKAGE, llvm, LLVMHOME)
 
-CACHE_DIR = $(REDHAT.ROOT)/cache/llvmlite
+CACHE_DIR = $(REDHAT.ROOT)/cache
 
 $(NAME).spec: DESCRIPTION LICENSE
 
