@@ -83,7 +83,7 @@ CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
              exit; \
           fi; \
 	  $(MODULE_LOAD_CC); \
@@ -100,7 +100,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(CACHE_DIR)
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
              exit; \
           fi; \

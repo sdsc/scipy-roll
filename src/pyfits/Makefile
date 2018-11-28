@@ -96,7 +96,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p -m 755 $(CACHE_DIR)
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
              exit; \
           fi; \

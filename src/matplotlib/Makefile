@@ -91,7 +91,7 @@ build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/setupext.py patch-files/setupext.py.patch
 	patch $(SOURCE_DIR)/extern/qhull/qhull_a.h patch-files/qhull_a.h.patch
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.7" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
              exit; \
           fi; \
 	  $(MODULE_LOAD_CC); \
