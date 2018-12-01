@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-pyfits_py$(ROLLPYVERSION)
 VERSION        = 3.3
-RELEASE        = 4
+RELEASE        = 5
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = pyfits

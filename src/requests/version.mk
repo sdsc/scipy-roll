@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-requests_py$(ROLLPYVERSION)
 VERSION        = 2.8.0
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = requests
