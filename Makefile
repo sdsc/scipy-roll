@@ -59,6 +59,12 @@ ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
 endif
 
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.6
+endif
+
+
+
 ifndef ROLLPY
   ROLLPY = python
 endif
@@ -68,13 +74,15 @@ include Rolls.mk
 
 default:
 	module load $(ROLLPY); \
-	version=`python -c "from __future__ import print_function;import sys; print(sys.version[:3])"`; \
 	for i in `ls nodes/*.in`; do \
 	  export o=`echo $$i | sed 's/\.in//'`; \
 	  cp $$i $$o; \
-	  perl -pi -e 's/PYVERSION/'$${version}'/g if m/PYVERSION/' $$o; \
+          for c in $(ROLLPYVERSION); do \
+               perl -pi -e "print and s/ROLLPYVERSION/$$c/g if m/ROLLPYVERSION/" $$o; \
+           done; \
+           perl -pi -e '$$_ = "" if m/ROLLPYVERSION/' $$o; \
 	done
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" roll
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLPY="$(ROLLPY)" ROLLPYVERSION="$(ROLLPYVERSION)" roll
 
 clean::
 	rm -f _arch bootstrap.py

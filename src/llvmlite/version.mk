@@ -7,14 +7,14 @@ ifndef ROLLPY
   ROLLPY = python
 endif
 
-ifndef PYVERSION
-  PYVERSION = 2.6
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.6
 endif
 
-NAME           = sdsc-llvmlite_py$(PYVERSION)
+NAME           = sdsc-llvmlite_py$(ROLLPYVERSION)
 VERSION        = 0.20.0
-RELEASE        = 1
-PKGROOT        = /opt/scipy/$(PYVERSION)
+RELEASE        = 2
+PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = llvmlite
 
@@ -32,5 +32,5 @@ ENUM34_DIR     = $(ENUM34_PKG:%.$(ENUM34_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(ENUM34_PKG)
 
-RPM.EXTRAS     = AutoReq:No\nObsoletes: llvmlite_py$(PYVERSION)
+RPM.EXTRAS     = AutoReq:No\nObsoletes: llvmlite_py$(ROLLPYVERSION)
 RPM.PREFIX     = $(PKGROOT)

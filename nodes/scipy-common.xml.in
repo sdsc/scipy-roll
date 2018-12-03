@@ -29,21 +29,21 @@ All rights reserved. Rocks(r) v7 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 
-<package>sdsc-billiard_pyPYVERSION</package>
-<package>sdsc-ipython_pyPYVERSION</package>
-<package>sdsc-jupyterhub</package>
-<package>sdsc-libxml2_pyPYVERSION</package>
-<package>sdsc-llvmlite_pyPYVERSION</package>
-<package>sdsc-matplotlib_pyPYVERSION</package>
-<package>sdsc-numba_pyPYVERSION</package>
-<package>sdsc-pandas_pyPYVERSION</package>
-<package>sdsc-pyfits_pyPYVERSION</package>
-<package>sdsc-requests_pyPYVERSION</package>
-<package>sdsc-scientificpython_pyPYVERSION</package>
-<package>sdsc-scipy_pyPYVERSION</package>
-<package>sdsc-sympy_pyPYVERSION</package>
-<package>sdsc-scipy-modules_pyPYVERSION</package>
+<package>sdsc-billiard_pyROLLPYVERSION</package>
+<package>sdsc-ipython_pyROLLPYVERSION</package>
+<package>sdsc-jupyterhub_pyROLLPYVERSION</package>
+<package>sdsc-libxml2_pyROLLPYVERSION</package>
+<package>sdsc-llvmlite_pyROLLPYVERSION</package>
+<package>sdsc-matplotlib_pyROLLPYVERSION</package>
+<package>sdsc-numba_pyROLLPYVERSION</package>
+<package>sdsc-pandas_pyROLLPYVERSION</package>
+<package>sdsc-pyfits_pyROLLPYVERSION</package>
+<package>sdsc-requests_pyROLLPYVERSION</package>
+<package>sdsc-scientificpython_pyROLLPYVERSION</package>
+<package>sdsc-scipy_pyROLLPYVERSION</package>
+<package>sdsc-sympy_pyROLLPYVERSION</package>
+<package>sdsc-scipy-modules</package>
 <package>sdsc-scipy-roll-test</package>
-<package>sdsc-scipy-easy_install_files_pyPYVERSION</package>
+<package>sdsc-scipy-easy_install_files_pyROLLPYVERSION</package>
 
 </kickstart>

@@ -7,14 +7,14 @@ ifndef ROLLPY
   ROLLPY = python
 endif
 
-ifndef PYVERSION
-  PYVERSION = 2.6
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.6
 endif
 
-NAME           = sdsc-billiard_py$(PYVERSION)
+NAME           = sdsc-billiard_py$(ROLLPYVERSION)
 VERSION        = 3.3.0.23
-RELEASE        = 1
-PKGROOT        = /opt/scipy/$(PYVERSION)
+RELEASE        = 2
+PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = billiard
 

@@ -89,55 +89,60 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
+	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_PYTHON); \
           TMPPYTHON=$${PYTHONPATH}; \
-          export PYTHONPATH=$${TMPPYTHON}:$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages; \
+          export PYTHONPATH=$${TMPPYTHON}:$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
           cp -r $(PYZMQ_DIR) $(PYZMQ_DIR)2; \
           cd $(PYZMQ_DIR); \
-          python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(JINJA2_DIR) $(JINJA2_DIR)2; \
           cd $(JINJA2_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(TORNADO_DIR) $(TORNADO_DIR)2; \
           cd $(TORNADO_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           cd ..; \
           cp -r $(JSONSCHEMA_DIR) $(JSONSCHEMA_DIR)2; \
           cd $(JSONSCHEMA_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ..; \
           cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
           cd $(SOURCE_DIR); \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/lib/python$(PYVERSION)/site-packages; \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
           cd ../$(PYZMQ_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(JINJA2_DIR)2 ; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(TORNADO_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(JSONSCHEMA_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(SOURCE_DIR)2; \
-	  python setup.py build; \
-	  python setup.py install --prefix=$(CACHE_DIR); \
-	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
-	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
-	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
-	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo \
+	  python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyo; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__ \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

@@ -65,7 +65,7 @@ include $(SDSCDEVEL)/Rules.mk
 DESCRIBE_LLVM = echo built with llvm $(call GET_MODULE_VERSION, llvm)
 MODULE_LOAD_LLVM = $(call MODULE_LOAD_PACKAGE, llvm, LLVMHOME)
 
-LLVMLITE_CACHE = $(REDHAT.ROOT)/cache/llvmlite
+CACHE_DIR = $(REDHAT.ROOT)/cache
 
 $(NAME).spec: DESCRIPTION LICENSE
 
@@ -91,21 +91,25 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
-	mkdir -p -m 755 $(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
+	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_LLVM); \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages:$${PYTHONPATH}; \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
 	  cd $(ENUM34_DIR); \
-	  python setup.py build || exit 2; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(ROLLPYVERSION) setup.py build || exit 2; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
 	  cd ../$(SOURCE_DIR); \
-	  python setup.py build || exit 2; \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/{easy-install.pth,site.py*}; \
-	  cp -r $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/* \
-	        $(LLVMLITE_CACHE)/lib/python$(PYVERSION)/site-packages/ \
+	  python$(ROLLPYVERSION) setup.py build || exit 2; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  cp -r $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/* \
+	        $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/{easy-install.pth,site.py*}; \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

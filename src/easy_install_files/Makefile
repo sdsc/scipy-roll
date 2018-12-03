@@ -75,9 +75,9 @@ build:
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages
-	sed 's#.*/#./#' $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages/easy-install.pth > $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth
-	cp $(CACHE_DIR)/lib/python$(PYVERSION)/site-packages/site.py $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py
+	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
+	sed 's#.*/#./#' $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth > $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth
+	cp $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages/site.py $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::

@@ -92,6 +92,9 @@ build: $(SRC_DIRS)
 	cp libblas.a $(SOURCE_DIR); \
 	cp liblapack.a $(SOURCE_DIR); \
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
@@ -106,7 +109,7 @@ build: $(SRC_DIRS)
 	  fi; \
 	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg; \
 	  cd $(SOURCE_DIR); \
-	  python setup.py config $(SETUPOPTS) \
+	  python$(ROLLPYVERSION) setup.py config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \
 	  for x in csr csc coo bsr dia; do \
@@ -124,15 +127,20 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	mkdir -p $(CACHE_DIR)
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
-	  python setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  python setup.py install --prefix=$(CACHE_DIR); \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/easy-install.pth; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.py; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyc; \
-          rm -f $(ROOT)/$(PKGROOT)/lib/python$(PYVERSION)/site-packages/site.pyo\
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
+          rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyo; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__ \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

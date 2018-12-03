@@ -18,17 +18,18 @@ my @MODULES = (
 );
 
 my $TESTFILE = 'tmpscipy';
+my @pyversions = split(/\s+/,'PYV');
 
 open(OUT, ">$TESTFILE.sh");
 print OUT <<END;
 #!/bin/bash
 module load ROLLPY
-export version=`python -c "import sys; print sys.version[:3]"`
+version=\$2
 module load scipy/\${version}
-python <<ENDPY
+python\${version} <<ENDPY
 import \$1
 help(\$1)
-print "\$1 name is %s" % \$1.__name__
+print("\$1 name is %s" % \$1.__name__)
 ENDPY
 END
 close(OUT);
@@ -43,9 +44,15 @@ SKIP: {
 
   skip 'scipy not installed', int(@MODULES) + 3
     if ! $isInstalled;
-  foreach my $module(@MODULES) {
-    $output = `bash $TESTFILE.sh $module 2>&1`;
-    like($output, qr/$module name is $module/, "$module module load works");
+  foreach my $pyversion(@pyversions) {
+    foreach my $module(@MODULES) {
+     SKIP: {
+      skip "no python$pyversion $module module available", 1
+         if $module =~ /IPython|libxml2|llvmlite|matplotlib|numba|pandas|pyfits|Scientific|scipy/ && $pyversion >= 3.6;
+      $output = `bash $TESTFILE.sh $module $pyversion 2>&1`;
+      like($output, qr/$module name is $module/, "$module module for python $pyversion load works");
+     }
+    }
   }
 
   `/bin/ls /opt/modulefiles/applications/scipy/[0-9]* 2>&1`;

@@ -79,15 +79,25 @@ LICENSE: $(SRC_DIRS)
 
 build:: $(SRC_DIRS)
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
+          mkdir python; \
+          cp -r $${PYTHONROOT}/* python; \
+          cd python/bin; \
+          rm -f python; \
+          ln -s python$(ROLLPYVERSION) python; \
+          cd ../..; \
 	  export CC=$(CC); \
 	  if test -n "$${LIBPATH}"; then \
 	    export LDFLAGS=-L$${LIBPATH}; \
 	  fi; \
 	  cd $(SOURCE_DIR); \
-	  ./configure --prefix=$(PKGROOT); \
-	  $(MAKE) \
+	  ./configure --prefix=$(PKGROOT) --with-python=$(PWD)/python; \
+	  $(MAKE) -j 16; \
+          rm -rf ../python \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 
@@ -99,15 +109,23 @@ install::
 	# The python module gets placed into $(ROOT)/opt/python; we move its
 	# contents to keep everything together.
 	mkdir -p $(ROOT)/$(PKGROOT)
+	$(PKGROOT_BIND_MOUNT)
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  cd $(SOURCE_DIR); \
-	  $(MAKE) DESTDIR=$(ROOT) install; \
-	  if test -d $(ROOT)/opt/python/lib; then \
-	    mv $(ROOT)/opt/python/lib/* $(ROOT)/opt/scipy/$(PYVERSION)/lib/; \
-	  fi \
+          m=''; \
+          if  (( $$(echo "$(ROLLPYVERSION) >= 3.0" |bc -l) )); then \
+               m='m'; \
+          fi; \
+	    $(MAKE) CPPFLAGS=-I/opt/python/include/python$(ROLLPYVERSION)$${m} install; \
+          cp -r ../python/lib $(PKGROOT) \
 	)
+	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 

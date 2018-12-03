@@ -7,14 +7,14 @@ ifndef ROLLPY
   ROLLPY = python
 endif
 
-ifndef PYVERSION
-  PYVERSION = 2.6
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.6
 endif
 
-NAME                   = sdsc-numba_py$(PYVERSION)
+NAME                   = sdsc-numba_py$(ROLLPYVERSION)
 VERSION                = 0.35.0
-RELEASE                = 1
-PKGROOT                = /opt/scipy/$(PYVERSION)
+RELEASE                = 2
+PKGROOT                = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR             = numba
 
@@ -32,5 +32,5 @@ SINGLEDISPATCH_DIR     = $(SINGLEDISPATCH_PKG:%.$(SINGLEDISPATCH_SUFFIX)=%)
 
 TAR_GZ_PKGS            = $(SOURCE_PKG) $(SINGLEDISPATCH_PKG)
 
-RPM.EXTRAS             = AutoReq:No\nObsoletes: numba_py$(PYVERSION)\n%define __os_install_post /usr/lib/rpm/brp-compress
+RPM.EXTRAS             = AutoReq:No\nObsoletes: numba_py$(ROLLPYVERSION)\n%define __os_install_post /usr/lib/rpm/brp-compress
 RPM.PREFIX             = $(PKGROOT)
