@@ -79,9 +79,6 @@ LICENSE: $(SRC_DIRS)
 
 build:: $(SRC_DIRS)
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
-             exit; \
-          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
           mkdir python; \
@@ -89,46 +86,36 @@ build:: $(SRC_DIRS)
           cd python/bin; \
           rm -f python; \
           ln -s python$(ROLLPYVERSION) python; \
+          export PATH=`pwd`:$${PATH}; \
           cd ../..; \
 	  export CC=$(CC); \
 	  if test -n "$${LIBPATH}"; then \
 	    export LDFLAGS=-L$${LIBPATH}; \
 	  fi; \
 	  cd $(SOURCE_DIR); \
-	  ./configure --prefix=$(PKGROOT) --with-python=$(PWD)/python; \
-	  $(MAKE) -j 16; \
-          rm -rf ../python \
+          ./configure --prefix=$(PKGROOT) -with-python=python --with-python-install-dir=$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
+           $(MAKE) -j 16 \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
-	# NOTE: In addition to installing into $(PKGROOT), the libxml2 install
-	# process places some lib files in locations relative to the python
-	# path.  Using the DESTDIR make var ensures that all of these get
-	# bundled into the rpm instead of being installed on the build machine.
-	# The python module gets placed into $(ROOT)/opt/python; we move its
-	# contents to keep everything together.
 	mkdir -p $(ROOT)/$(PKGROOT)
 	$(PKGROOT_BIND_MOUNT)
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
-             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
-             exit; \
-          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
+          export PATH=`pwd`/python/bin:$${PATH}; \
 	  cd $(SOURCE_DIR); \
           m=''; \
           if  (( $$(echo "$(ROLLPYVERSION) >= 3.0" |bc -l) )); then \
                m='m'; \
           fi; \
-	    $(MAKE) CPPFLAGS=-I/opt/python/include/python$(ROLLPYVERSION)$${m} install; \
-          cp -r ../python/lib $(PKGROOT) \
+          $(MAKE) CPPFLAGS=-I/opt/python/include/python$(ROLLPYVERSION)$${m} install \
 	)
 	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) python DESCRIPTION LICENSE
 

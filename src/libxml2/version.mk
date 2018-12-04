@@ -8,12 +8,12 @@ ifndef ROLLPY
 endif
 
 ifndef ROLLPYVERSION
-  ROLLPYVERSION = 2.6
+  ROLLPYVERSION = 2.7
 endif
 
 NAME           = sdsc-libxml2_py$(ROLLPYVERSION)
-VERSION        = 2.9.3
-RELEASE        = 5
+VERSION        = 2.9.8
+RELEASE        = 0
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = libxml2
