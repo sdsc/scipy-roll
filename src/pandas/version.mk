@@ -1,6 +1,4 @@
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
+override ROLLCOMPILER = gnu
 COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 ifndef ROLLPY
@@ -8,12 +6,12 @@ ifndef ROLLPY
 endif
 
 ifndef ROLLPYVERSION
-  ROLLPYVERSION = 2.6
+  ROLLPYVERSION = 2.7
 endif
 
 NAME           = sdsc-pandas_py$(ROLLPYVERSION)
-VERSION        = 0.16.2
-RELEASE        = 6
+VERSION        = 0.23.4
+RELEASE        = 0
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = pandas
