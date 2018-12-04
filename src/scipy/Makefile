@@ -98,9 +98,6 @@ build: $(SRC_DIRS)
 	  if test -n "$${MKL_ROOT}"; then \
 	    export MKLLINK="-L$${MKLLIB} -lmkl_rt"; \
 	    export COMMENTMKL=''; \
-	  else \
-	    export BLAS=$(PWD)/$(SOURCE_DIR)/libblas.a; \
-	    export LAPACK=$(PWD)/$(SOURCE_DIR)/liblapack.a; \
 	  fi; \
 	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg; \
           cd $(PYTEST_DIR); \
