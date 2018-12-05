@@ -5,6 +5,7 @@ module-whatis "Description: scipy"
 module-whatis "Compiler: ROLLCOMPILER"
 module-whatis "Python version: VERSION"
 setenv SCIPYHOME /opt/scipy/VERSION
+setenv MKL_THREADING_LAYER TBB
 prepend-path PATH /opt/scipy/VERSION/bin
 foreach lib [glob -nocomplain /opt/scipy/VERSION/lib*/pythonVERSION/site-packages] {
   prepend-path PYTHONPATH $lib

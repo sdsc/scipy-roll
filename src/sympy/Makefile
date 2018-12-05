@@ -81,13 +81,20 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(CACHE_DIR)
+	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
+	mkdir -p $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
 	  $(MODULE_LOAD_PYTHON); \
-	  cd $(SOURCE_DIR); \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+          cd $(MPMATH_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+          cd ../$(SOURCE_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
