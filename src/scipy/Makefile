@@ -88,7 +88,7 @@ LICENSE: $(SRC_DIRS)
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
-	cp site.cfg $(SOURCE_DIR)
+	cp patch-files/site.cfg $(SOURCE_DIR)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
@@ -99,10 +99,10 @@ build: $(SRC_DIRS)
 	    export MKLLINK="-L$${MKLLIB} -lmkl_rt"; \
 	    export COMMENTMKL=''; \
 	  fi; \
-	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg; \
           cd $(PYTEST_DIR); \
           python$(ROLLPYVERSION) setup.py build; \
 	  cd ../$(SOURCE_DIR); \
+	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" site.cfg; \
 	  python$(ROLLPYVERSION) setup.py config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \
