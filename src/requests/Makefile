@@ -82,7 +82,15 @@ build: $(SRC_DIRS)
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
           export PATH=/usr/local/bin:$${PATH}; \
 	  $(MODULE_LOAD_PYTHON); \
-	  cd $(SOURCE_DIR); \
+          cd $(CERTIFI_DIR); \
+          python$(ROLLPYVERSION) setup.py build; \
+          cd ../$(CHARDET_DIR); \
+          python$(ROLLPYVERSION) setup.py build; \
+          cd ../$(IDNA_DIR); \
+          python$(ROLLPYVERSION) setup.py build; \
+          cd ../$(URLLIB3_DIR); \
+          python$(ROLLPYVERSION) setup.py build; \
+	  cd ../$(SOURCE_DIR); \
 	  python$(ROLLPYVERSION) setup.py build \
 	)
 	@echo "::: Package $(NAME) build complete :::"
@@ -92,7 +100,27 @@ install::
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
 	  $(MODULE_LOAD_PYTHON); \
-	  cd $(SOURCE_DIR); \
+          cd $(CERTIFI_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+          cd ../$(CHARDET_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+          cd ../$(IDNA_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+          cd ../$(URLLIB3_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+	  cd ../$(SOURCE_DIR); \
           export PATH=/usr/local/bin:$${PATH}; \
 	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
