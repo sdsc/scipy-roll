@@ -76,7 +76,12 @@ build:
 	
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
-	sed 's#.*/#./#' $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth > $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth
+	sed '/^\/opt\/python/d' $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth > .tmp.pth
+	while read LINE; \
+        do \
+            echo $${LINE} >>/tmp/oo; \
+            basename $${LINE}  |sed 's/^/.\//'; \
+        done < .tmp.pth > $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth
 	cp $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages/site.py $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py
 	@echo "::: Package $(NAME) install complete :::"
 
