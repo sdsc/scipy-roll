@@ -126,6 +126,7 @@ install::
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
           export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
           python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+          chmod 0644 $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/idna-$(IDNA_VERSION)-py$(ROLLPYVERSION).egg-info/*; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
