@@ -89,12 +89,7 @@ CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
 	cp patch-files/site.cfg $(SOURCE_DIR)
-	cp libblas.a $(SOURCE_DIR); \
-	cp liblapack.a $(SOURCE_DIR); \
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
-             exit; \
-          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
@@ -103,38 +98,32 @@ build: $(SRC_DIRS)
 	  if test -n "$${MKL_ROOT}"; then \
 	    export MKLLINK="-L$${MKLLIB} -lmkl_rt"; \
 	    export COMMENTMKL=''; \
-	  else \
-	    export BLAS=$(PWD)/$(SOURCE_DIR)/libblas.a; \
-	    export LAPACK=$(PWD)/$(SOURCE_DIR)/liblapack.a; \
 	  fi; \
-	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" $(SOURCE_DIR)/site.cfg; \
-	  cd $(SOURCE_DIR); \
+          cd $(PYTEST_DIR); \
+          python$(ROLLPYVERSION) setup.py build; \
+	  cd ../$(SOURCE_DIR); \
+	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" site.cfg; \
 	  python$(ROLLPYVERSION) setup.py config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
 	                  build_ext $(SETUPOPTS); \
-	  for x in csr csc coo bsr dia; do \
-	    $(CXX) $(COMPILE_FLAGS) \
-	      build/temp.linux-x86_64-*/scipy/sparse/sparsetools/$${x}_wrap.o\
-	      -o build/lib.linux-x86_64-*/scipy/sparse/sparsetools/_$${x}.so;\
-	  done; \
-	  $(CXX) $(COMPILE_FLAGS) \
-	    build/temp.linux-x86_64-*/scipy/interpolate/src/_interpolate.o \
-	    -o build/lib.linux-x86_64-*/scipy/interpolate/_interpolate.so; \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(CACHE_DIR)
+	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
+	mkdir -p $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
-             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
-             exit; \
-          fi; \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_CC); \
-	  cd $(SOURCE_DIR); \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          cd $(PYTEST_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+          cd ../$(SOURCE_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
