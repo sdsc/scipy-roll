@@ -104,10 +104,14 @@ install::
 	  cd $(ENUM34_DIR); \
 	  python$(ROLLPYVERSION) setup.py build || exit 2; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
 	  cd ../$(SOURCE_DIR); \
 	  python$(ROLLPYVERSION) setup.py build || exit 2; \
+	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  cp -r $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/* \
+	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
 	        $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/{easy-install.pth,site.py*}; \
 	)
