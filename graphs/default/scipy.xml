@@ -4,6 +4,7 @@
 
 <description>
 Python scientific libraries
+astropy http://www.astropy.org
 billiard https://pypi.python.org/pypi/billiard
 IPython http://ipython.org
 jupyterhub https://gist.github.com/zonca
@@ -12,7 +13,6 @@ llvmlite http://pypi.python.org/pypi/llvmlite
 matplotlib http://matplotlib.sourceforge.net
 numba http://numba.pydata.org
 pandas http://pandas.pydata.org
-pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 requests http://docs.python-requests.org
 scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
 scipy http://www.scipy.org
