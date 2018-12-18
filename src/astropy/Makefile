@@ -100,7 +100,7 @@ install::
           export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
           python$(ROLLPYVERSION)  setup.py install --prefix=$(CACHE_DIR); \
           cd ../$(SOURCE_DIR); \
-          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
           export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
           python$(ROLLPYVERSION)  setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed;\
