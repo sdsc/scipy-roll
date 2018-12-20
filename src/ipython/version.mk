@@ -33,7 +33,6 @@ $(IPYTHON_PACKAGES):
 	$(eval $(UPPER)_DIR = $($(UPPER)_PKG:%.$($(UPPER)_SUFFIX)=%))
 	$(eval IPYTHON_PKGS  += $($(UPPER)_PKG))
 	$(eval IPYTHON_DIRS  += $($(UPPER)_DIR))
-	echo "##### $(IPYTHON_DIRS) #####"
 
 
 TAR_GZ_PKGS: $(IPYTHON_PACKAGES)
