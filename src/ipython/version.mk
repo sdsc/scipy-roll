@@ -3,12 +3,15 @@ ifndef ROLLPY
 endif
 
 ifndef ROLLPYVERSION
-  ROLLPYVERSION = 2.6
+  ROLLPYVERSION = 2.7
 endif
 
+IPYTHON_PACKAGES = wcwidth-0.1.7 ptyprocess-0.6.0 ipython_genutils-0.2.0 prompt_toolkit-2.0.7 pathlib2-2.3.3 pexpect-4.6.0 pickleshare-0.7.5 decorator-4.3.0 Pygments-2.3.1 backports.shutil_get_terminal_size-1.0.0 traitlets-4.3.2 backcall-0.1.0
+
+
 NAME               = sdsc-ipython_py$(ROLLPYVERSION)
-VERSION            = 3.2.1
-RELEASE            = 7
+VERSION            = 7.2.0
+RELEASE            = 0
 PKGROOT            = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR         = ipython
@@ -19,31 +22,24 @@ SOURCE_VERSION     = $(VERSION)
 SOURCE_PKG         = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
 SOURCE_DIR         = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
-PYZMQ_NAME        = pyzmq
-PYZMQ_SUFFIX      = tar.gz
-PYZMQ_VERSION     = 14.7.0
-PYZMQ_PKG         = $(PYZMQ_NAME)-$(PYZMQ_VERSION).$(PYZMQ_SUFFIX)
-PYZMQ_DIR         = $(PYZMQ_PKG:%.$(PYZMQ_SUFFIX)=%)
+$(IPYTHON_PACKAGES):
+	$(eval PYTHON_PACKAGE  = $(shell echo $@ |sed 's/-[[:digit:]].[[:digit:]].[[:digit:]]\+//g'))
+	$(eval PYTHON_PACKAGE_VERSION  = $(shell echo $@ | sed 's/$(PYTHON_PACKAGE)-//'))
+	$(eval UPPER = $(shell echo $(PYTHON_PACKAGE) |tr a-z A-Z))
+	$(eval $(UPPER)_NAME  = $(PYTHON_PACKAGE))
+	$(eval $(UPPER)_SUFFIX = tar.gz)
+	$(eval $(UPPER)_VERSION = $(PYTHON_PACKAGE_VERSION))
+	$(eval $(UPPER)_PKG = $($(UPPER)_NAME)-$($(UPPER)_VERSION).$($(UPPER)_SUFFIX))
+	$(eval $(UPPER)_DIR = $($(UPPER)_PKG:%.$($(UPPER)_SUFFIX)=%))
+	$(eval IPYTHON_PKGS  += $($(UPPER)_PKG))
+	$(eval IPYTHON_DIRS  += $($(UPPER)_DIR))
+	echo "##### $(IPYTHON_DIRS) #####"
 
-JINJA2_NAME        = Jinja2
-JINJA2_SUFFIX      = tar.gz
-JINJA2_VERSION     = 2.8
-JINJA2_PKG         = $(JINJA2_NAME)-$(JINJA2_VERSION).$(JINJA2_SUFFIX)
-JINJA2_DIR         = $(JINJA2_PKG:%.$(JINJA2_SUFFIX)=%)
 
-TORNADO_NAME        = tornado
-TORNADO_SUFFIX      = tar.gz
-TORNADO_VERSION     = 4.2.1
-TORNADO_PKG         = $(TORNADO_NAME)-$(TORNADO_VERSION).$(TORNADO_SUFFIX)
-TORNADO_DIR         = $(TORNADO_PKG:%.$(TORNADO_SUFFIX)=%)
+TAR_GZ_PKGS: $(IPYTHON_PACKAGES)
 
-JSONSCHEMA_NAME    = jsonschema
-JSONSCHEMA_SUFFIX  = tar.gz
-JSONSCHEMA_VERSION = 2.5.1
-JSONSCHEMA_PKG     = $(JSONSCHEMA_NAME)-$(JSONSCHEMA_VERSION).$(JSONSCHEMA_SUFFIX)
-JSONSCHEMA_DIR     = $(JSONSCHEMA_PKG:%.$(JSONSCHEMA_SUFFIX)=%)
+TAR_GZ_PKGS        = $(SOURCE_PKG)
 
-TAR_GZ_PKGS        = $(SOURCE_PKG) $(PYZMQ_PKG) $(JINJA2_PKG) $(TORNADO_PKG) $(JSONSCHEMA_PKG)
-
-RPM.EXTRAS         = AutoReq:No\nObsoletes: ipython_py$(ROLLPYVERSION)
+RPM.EXTRAS         = AutoReq:No\nObsoletes: ipython_py$(ROLLPYVERSION)\n%global _python_bytecompile_errors_terminate_build 0
 RPM.PREFIX         = $(PKGROOT)
+
