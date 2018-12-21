@@ -13,7 +13,7 @@ my $isInstalled = -d '/opt/scipy';
 my $output;
 
 my @MODULES = (
-  'billiard','IPython', 'libxml2', 'llvmlite', 'matplotlib', 'numba', 'pyfits',
+  'billiard','IPython', 'libxml2', 'llvmlite', 'matplotlib', 'numba', 'astropy',
   'requests', 'scipy', 'Scientific', 'sympy'
 );
 
@@ -48,7 +48,7 @@ SKIP: {
     foreach my $module(@MODULES) {
      SKIP: {
       skip "no python$pyversion $module module available", 1
-         if ( $module =~ /IPython|llvmlite|numba|Scientific/ && $pyversion >= 3 ) || ( $module =~ /matplotlib/  && $pyversion < 3 );
+         if ( $module =~ /IPython|llvmlite|numba|Scientific/ && $pyversion >= 3 ) || ( $module =~ /matplotlib|astropy/  && $pyversion < 3 );
       $output = `bash $TESTFILE.sh $module $pyversion 2>&1`;
       like($output, qr/$module name is $module/, "$module module for python $pyversion load works");
      }

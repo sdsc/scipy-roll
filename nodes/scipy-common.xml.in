@@ -4,6 +4,7 @@
 
 <description>
 Python scientific libraries
+astropy http://www.astropy.org
 billiard https://pypi.python.org/pypi/billiard
 IPython http://ipython.org
 jupyterhub https://gist.github.com/zonca
@@ -12,7 +13,6 @@ llvmlite http://pypi.python.org/pypi/llvmlite
 matplotlib http://matplotlib.sourceforge.net
 numba http://numba.pydata.org
 pandas http://pandas.pydata.org
-pyFits http://www.stsci.edu/institute/software_hardware/pyfits
 requests http://docs.python-requests.org
 scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
 scipy http://www.scipy.org
@@ -29,6 +29,7 @@ All rights reserved. Rocks(r) v7 www.rocksclusters.org
 <package>tkinter</package>
 <package>tk-devel</package>
 
+<package>sdsc-astropy_pyROLLPYVERSION</package>
 <package>sdsc-billiard_pyROLLPYVERSION</package>
 <package>sdsc-ipython_pyROLLPYVERSION</package>
 <package>sdsc-jupyterhub_pyROLLPYVERSION</package>
@@ -37,7 +38,6 @@ All rights reserved. Rocks(r) v7 www.rocksclusters.org
 <package>sdsc-matplotlib_pyROLLPYVERSION</package>
 <package>sdsc-numba_pyROLLPYVERSION</package>
 <package>sdsc-pandas_pyROLLPYVERSION</package>
-<package>sdsc-pyfits_pyROLLPYVERSION</package>
 <package>sdsc-requests_pyROLLPYVERSION</package>
 <package>sdsc-scientificpython_pyROLLPYVERSION</package>
 <package>sdsc-scipy_pyROLLPYVERSION</package>

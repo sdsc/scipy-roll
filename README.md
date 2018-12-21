@@ -2,11 +2,11 @@
 
 ## Overview
 
-This roll bundles a collection of Python scientific computing modules: ipython,
-matplotlib, pyfits, scientificpython and scipy.  
+This roll bundles a collection of Python scientific computing modules: astropy,billiard,ipython, libxml2,llvmlite,matplotlib,numba,pandas,requests,scientificpython,scipy and sympy.  
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
++- <a href="http://www.astropy.org" target="_blank">astropy</a> contains functionality aimed at professional astronomers and astrophysicists, but may be useful to anyone developing astronomy software
 - <a href="https://pypi.python.org/pypi/billiard" target="_blank">billiard</a> is a fork of the Python 2.7 multiprocessing package
 - <a href="http://ipython.org" target="_blank">iPython</a> provides a rich
 architecture for interactive computing using the Python programming language.
@@ -28,8 +28,9 @@ Python scripting language and PyRAF, the Python-based interface to IRAF.
 target="_blank">requests</a> is an Apache2 Licensed HTTP library, written in Python, for human beings.
 - <a href="http://http://dirac.cnrs-orleans.fr/plone/software/scientificpython" target="_blank">scientificpython</a> is  a
 package for scientific computing with Python.
-- <a href="http://www.scipy.org" target="_blank"></a> is a Python-based
+- <a href="http://www.scipy.org" target="_blank">scipy</a> is a Python-based
 a Python library for common tasks in scientific computing.
+- <a href="http://sympy.org" target="_blank">sympy</a>  s a Python library for symbolic mathematics
 
 
 ## Requirements
@@ -81,17 +82,17 @@ roll on a Rocks development appliance, you need to copy the roll to your Rocks
 frontend before continuing with installation.
 
 This roll source supports building with different compilers and different
-python installations.  The `ROLLCOMPILER` and `ROLLPY` make variables can be
-used to specify the name of compiler and python modulefiles to use for building
-the software, e.g.,
+python installations.  The `ROLLCOMPILER` ,`ROLLPY`, and ROLLPYVERSION make
+variables can be used to specify the compiler,python modulefiles and python versionsfor building the software, e.g.,
 
 ```shell
-% make ROLLCOMPILER=intel ROLLPY=opt-python 2>&1 | tee build.log
+% make ROLLCOMPILER=intel ROLLPY=opt-python ROLLPYTHONVERSION=3.5 2>&1 | tee build.log
 ```
 
 The build process recognizes "gnu", "intel" or "pgi" as the value for the
 `ROLLCOMPILER` variable; any python modulefile name may be used as the value of
 the `ROLLPY` variable.  The default values are "gnu" and "python".
+The values for ROLLPYTHONVERSION are dependent on those available in the python roll.
 
 The python installation used to build scipy must included the setuptools module.
 

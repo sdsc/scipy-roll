@@ -62,8 +62,6 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-PYTHON_MODULES = d2to1 pyfits pytz stsci.distutils
-
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
@@ -75,52 +73,48 @@ DESCRIPTION:
 	  $(DESCRIBE_PYTHON) \
 	) > $@
 
-ADDED_MODULES = d2to1 stsci.distutils
 
 LICENSE: $(SRC_DIRS)
-	for F in $(ADDED_MODULES); do \
-          echo $$F*/PKG-INFO; \
-	  cp $$F*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
-	done
 	$(CHECK_LICENSE_FILES)
-	echo BSD and LPGL and MIT > $@
+	echo The Astropy Developers > $@
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
-	patch $(SOURCE_DIR)/setup.cfg patch-files/setup.cfg.patch
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
 	# NOTE: pyfits requires d2to1 and stsci.distutils
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p -m 755 $(CACHE_DIR)
+	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
+	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
+          if  (( $$(echo "$(ROLLPYVERSION) <= 3.4" |bc -l) )); then \
              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
              exit; \
           fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
-	  sitepath=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
-	  mkdir -p $${sitepath}; \
-	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
-	  easy_install --install-dir $${sitepath} $(D2TO1_PKG); \
-	  easy_install --install-dir $${sitepath} $(STSCI_PKG); \
-	  cd $(SOURCE_DIR); \
+          cd $(PYTEST-ASTROPY_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
+          python$(ROLLPYVERSION)  setup.py install --prefix=$(CACHE_DIR); \
+          cd ../$(SOURCE_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
-          cd ..; \
-          sitepath=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
-	  mkdir -p $${sitepath}; \
-	  export PYTHONPATH=$${sitepath}:$${PYTHONPATH}; \
-          easy_install --install-dir $${sitepath} $(D2TO1_PKG); \
-          easy_install --install-dir $${sitepath} $(STSCI_PKG); \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
           python$(ROLLPYVERSION)  setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed;\
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyo; \
-          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__ \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/py*; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/pluggy*; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/more_itertools*; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/attrs*; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/atomicwrites*; \
+          rm -f $(ROOT)/$(PKGROOT)/bin/py*test \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

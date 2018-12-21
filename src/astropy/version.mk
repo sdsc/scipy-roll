@@ -1,0 +1,36 @@
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
+
+ifndef ROLLPY
+  ROLLPY = python
+endif
+
+ifndef ROLLPYVERSION
+  ROLLPYVERSION = 2.7
+endif
+
+NAME           = sdsc-astropy_py$(ROLLPYVERSION)
+VERSION        = 3.0.5
+RELEASE        = 0
+PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
+
+SRC_SUBDIR     = astropy
+
+SOURCE_NAME    = astropy
+SOURCE_SUFFIX  = tar.gz
+SOURCE_VERSION = $(VERSION)
+SOURCE_PKG     = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
+SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
+
+PYTEST-ASTROPY_NAME    = pytest-astropy
+PYTEST-ASTROPY_SUFFIX  = tar.gz
+PYTEST-ASTROPY_VERSION = 0.5.0
+PYTEST-ASTROPY_PKG     = $(PYTEST-ASTROPY_NAME)-$(PYTEST-ASTROPY_VERSION).$(PYTEST-ASTROPY_SUFFIX)
+PYTEST-ASTROPY_DIR     = $(PYTEST-ASTROPY_PKG:%.$(PYTEST-ASTROPY_SUFFIX)=%)
+
+TAR_GZ_PKGS    = $(SOURCE_PKG) $(PYTEST-ASTROPY_PKG)
+
+RPM.EXTRAS     = AutoReq:No\n%global _python_bytecompile_errors_terminate_build 0
+RPM.PREFIX     = $(PKGROOT)
