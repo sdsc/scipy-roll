@@ -55,12 +55,14 @@
 # @Copyright@
 #
 
+
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
+.PHONY: $(IPYTHON_PACKAGES)
 
 $(NAME).spec: DESCRIPTION LICENSE
 
@@ -71,72 +73,59 @@ DESCRIPTION:
 	  $(DESCRIBE_PYTHON) \
 	) > $@
 
-ADDED_MODULES = pyzmq Jinja2 tornado jsonschema
 
 LICENSE: $(SRC_DIRS)
-	for F in $(ADDED_MODULES); do \
-          echo $$F*/PKG-INFO; \
-	  cp $$F*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
-	done
 	$(CHECK_LICENSE_FILES)
 	echo BSD > $@
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
+ipythondownload : $(IPYTHON_PACKAGES)
+	for PYTHON_PACKAGE in $(IPYTHON_PKGS); do \
+           echo "::: Downloading $(DL.SERVER)/$(DL.PATH)/$${PYTHON_PACKAGE} :::"; \
+           if [ -f $${PYTHON_PACKAGE} ]; then \
+                echo "::: $${PYTHON_PACKAGE} exists. Skipping... :::" ; \
+           else \
+                $(DL.CMD) $(DL.OPTS) $(DL.SERVER)/$(DL.PATH)/$${PYTHON_PACKAGE} ; \
+                echo "::: Verifying size of $${PYTHON_PACKAGE} :::" ; \
+                $(GREP.CMD) `$(STAT.CMD) --printf="%s" $${PYTHON_PACKAGE}` $(VERIFY.HASHES) ; \
+                echo "::: Verifying hash of $${PYTHON_PACKAGE} :::" ; \
+                $(GREP.CMD) `$(VERIFY.CMD) $(VERIFY.OPTS) $${PYTHON_PACKAGE} ` $(VERIFY.HASHES) ; \
+                echo "" ; \
+           fi; \
+           echo "::: Unbundling $${PYTHON_PACKAGE} :::"; \
+           $(TAR.CMD) $(TGZ.OPTS) $${PYTHON_PACKAGE}; \
+           echo ""; \
+        done
 
-build: $(SRC_DIRS)
-	#patch $(PYZMQ_DIR)/setup.py patch-files/setup.py.patch
+
+
+
+build: $(SRC_DIRS) ipythondownload
 	@echo "::: Package $(NAME) build complete :::"
 	
-install::
+install:: $(IPYTHON_PACKAGES)
 	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
-             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
-             exit; \
+          if  (( $$(echo "$(ROLLPYVERSION) < 3.5" |bc -l) )); then \
+              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+              exit; \
           fi; \
 	  $(MODULE_LOAD_PYTHON); \
-          TMPPYTHON=$${PYTHONPATH}; \
-          export PYTHONPATH=$${TMPPYTHON}:$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
-          cp -r $(PYZMQ_DIR) $(PYZMQ_DIR)2; \
-          cd $(PYZMQ_DIR); \
+          for PYTHON_DIR in $(IPYTHON_DIRS); do \
+             cd $${PYTHON_DIR}; \
+             export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
+             python$(ROLLPYVERSION) setup.py build; \
+	     python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+             export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
+	     python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+             cd ..; \
+          done; \
+          cd $(SOURCE_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
           python$(ROLLPYVERSION) setup.py build; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          cd ..; \
-          cp -r $(JINJA2_DIR) $(JINJA2_DIR)2; \
-          cd $(JINJA2_DIR); \
-	  python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          cd ..; \
-          cp -r $(TORNADO_DIR) $(TORNADO_DIR)2; \
-          cd $(TORNADO_DIR); \
-	  python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          cd ..; \
-          cp -r $(JSONSCHEMA_DIR) $(JSONSCHEMA_DIR)2; \
-          cd $(JSONSCHEMA_DIR); \
-	  python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  cd ..; \
-          cp -r $(SOURCE_DIR) $(SOURCE_DIR)2; \
-          cd $(SOURCE_DIR); \
-	  python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          export PYTHONPATH=$${TMPPYTHON}:$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
-          cd ../$(PYZMQ_DIR)2; \
-	  python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
-          cd ../$(JINJA2_DIR)2 ; \
-	  python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
-          cd ../$(TORNADO_DIR)2; \
-	  python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
-          cd ../$(JSONSCHEMA_DIR)2; \
-	  python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
-          cd ../$(SOURCE_DIR)2; \
-	  python$(ROLLPYVERSION) setup.py build; \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
@@ -148,4 +137,5 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE $(PYZMQ_DIR) $(PYZMQ_DIR)2 $(JSONSCHEMA) $(JSONSCHEMA_DIR)2 $(JINJA2_DIR) $(JINJA2_DIR)2 $(TORNADO_DIR) $(TORNADO_DIR)2
+	rm -rf DESCRIPTION LICENSE $(IPYTHON_PACKAGES)
+
