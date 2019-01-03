@@ -2,7 +2,7 @@
 
 ## Overview
 
-This roll bundles a collection of Python scientific computing modules: astropy,billiard,ipython, libxml2,llvmlite,matplotlib,numba,pandas,requests,scientificpython,scipy and sympy.  
+This roll bundles a collection of Python scientific computing modules: astropy,billiard,ipython, jupyter,libxml2,llvmlite,matplotlib,numba,pandas,requests,scientificpython,scipy and sympy.  
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
@@ -10,7 +10,7 @@ For more information about the various packages included in the scipy roll pleas
 - <a href="https://pypi.python.org/pypi/billiard" target="_blank">billiard</a> is a fork of the Python 2.7 multiprocessing package
 - <a href="http://ipython.org" target="_blank">iPython</a> provides a rich
 architecture for interactive computing using the Python programming language.
-- <a href="https://gist.github.com/zonca" target="_blank">jupyterhub</a> extend a regular ipython notebook server to be aware of multiuser things
+- <a href="https://jupyter.org/" target="_blank">jupyter</a>  is an open-source web application that allows you to create and share documents that contain live code, equations, visualizations and narrative text. 
 - <a href="http://xmlsoft.org" target="_blank">libxml2</a> Libxml2 is the XML C parser and toolkit developed for the Gnome project 
 - <a href="pypi.python.org/pypi/llvmlite"
 target="_blank">llvmlite</a> is a lightweight LLVM python binding for writing JIT compilers

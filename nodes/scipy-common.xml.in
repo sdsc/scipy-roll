@@ -7,7 +7,7 @@ Python scientific libraries
 astropy http://www.astropy.org
 billiard https://pypi.python.org/pypi/billiard
 IPython http://ipython.org
-jupyterhub https://gist.github.com/zonca
+jupyter https://jupyter.org/
 libxml2 http://xmlsoft.org
 llvmlite http://pypi.python.org/pypi/llvmlite
 matplotlib http://matplotlib.sourceforge.net
@@ -32,7 +32,7 @@ All rights reserved. Rocks(r) v7 www.rocksclusters.org
 <package>sdsc-astropy_pyROLLPYVERSION</package>
 <package>sdsc-billiard_pyROLLPYVERSION</package>
 <package>sdsc-ipython_pyROLLPYVERSION</package>
-<package>sdsc-jupyterhub_pyROLLPYVERSION</package>
+<package>sdsc-jupyter_pyROLLPYVERSION</package>
 <package>sdsc-libxml2_pyROLLPYVERSION</package>
 <package>sdsc-llvmlite_pyROLLPYVERSION</package>
 <package>sdsc-matplotlib_pyROLLPYVERSION</package>

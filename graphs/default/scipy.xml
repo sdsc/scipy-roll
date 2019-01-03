@@ -7,7 +7,7 @@ Python scientific libraries
 astropy http://www.astropy.org
 billiard https://pypi.python.org/pypi/billiard
 IPython http://ipython.org
-jupyterhub https://gist.github.com/zonca
+jupyter https://jupyter.org/
 libxml2 http://xmlsoft.org
 llvmlite http://pypi.python.org/pypi/llvmlite
 matplotlib http://matplotlib.sourceforge.net
