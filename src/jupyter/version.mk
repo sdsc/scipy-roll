@@ -24,9 +24,7 @@ SOURCE_DIR         = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 
 $(JUPYTER_PACKAGES):
 	$(eval PYTHON_PACKAGE  = $(shell echo $@ |sed 's/-[[:digit:]][[:digit:]].[[:digit:]].[[:digit:]]\+//g'|sed 's/-[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]\+//g'|sed 's/-[[:digit:]].[[:digit:]].[[:digit:]]\+//g' |sed 's/-[[:digit:]].[[:digit:]]\+//g' ))
-	echo  "PYTHON_PACKAGE $(PYTHON_PACKAGE)"
 	$(eval PYTHON_PACKAGE_VERSION  = $(shell echo $@ | sed 's/$(PYTHON_PACKAGE)-//'))
-	echo  "PYTHON_PACKAGE_VERSION $(PYTHON_PACKAGE_VERSION)"
 	$(eval UPPER = $(shell echo $(PYTHON_PACKAGE) |tr a-z A-Z))
 	$(eval $(UPPER)_NAME  = $(PYTHON_PACKAGE))
 	$(eval $(UPPER)_SUFFIX = tar.gz)
