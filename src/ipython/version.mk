@@ -6,7 +6,7 @@ ifndef ROLLPYVERSION
   ROLLPYVERSION = 2.7
 endif
 
-IPYTHON_PACKAGES = wcwidth-0.1.7 ptyprocess-0.6.0 ipyparallel-6.2.3 ipython_genutils-0.2.0 prompt_toolkit-2.0.7 pathlib2-2.3.3 pexpect-4.6.0 pickleshare-0.7.5 decorator-4.3.0 Pygments-2.3.1 backports.shutil_get_terminal_size-1.0.0 traitlets-4.3.2 backcall-0.1.0
+IPYTHON_PACKAGES = eggs-0.0.3 wcwidth-0.1.7 ptyprocess-0.6.0 ipyparallel-6.2.3 ipython_genutils-0.2.0 prompt_toolkit-2.0.7 pathlib2-2.3.3 pexpect-4.6.0 pickleshare-0.7.5 decorator-4.3.0 Pygments-2.3.1 backports.shutil_get_terminal_size-1.0.0 traitlets-4.3.2 backcall-0.1.0
 
 
 NAME               = sdsc-ipython_py$(ROLLPYVERSION)
