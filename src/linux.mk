@@ -60,4 +60,5 @@ SRCDIRS = `find . -maxdepth 1 -type d \
 	-not -name CVS \
 	-not -name . \
 	-not -name numba \
-	-not -name easy_install_files` numba easy_install_files
+        -not -name jupyter \
+	-not -name easy_install_files` jupyter numba easy_install_files

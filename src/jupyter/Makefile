@@ -55,32 +55,87 @@
 # @Copyright@
 #
 
+
 REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
+.PHONY: $(JUPYTER_PACKAGES)
 
 $(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
+	$(MODULE_LOAD_PYTHON); \
 	( \
-	  $(DESCRIBE_PKG) \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_PYTHON) \
 	) > $@
 
-LICENSE:
+
+LICENSE: $(SRC_DIRS)
+	$(CHECK_LICENSE_FILES)
 	echo BSD > $@
 
-build:
+CACHE_DIR=$(REDHAT.ROOT)/cache
 
-install::
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/bin
+jupyterdownload : $(JUPYTER_PACKAGES)
+	for PYTHON_PACKAGE in $(JUPYTER_PKGS); do \
+           echo "::: Downloading $(DL.SERVER)/$(DL.PATH)/$${PYTHON_PACKAGE} :::"; \
+           if [ -f $${PYTHON_PACKAGE} ]; then \
+                echo "::: $${PYTHON_PACKAGE} exists. Skipping... :::" ; \
+           else \
+                $(DL.CMD) $(DL.OPTS) $(DL.SERVER)/$(DL.PATH)/$${PYTHON_PACKAGE} ; \
+                echo "::: Verifying size of $${PYTHON_PACKAGE} :::" ; \
+                $(GREP.CMD) `$(STAT.CMD) --printf="%s" $${PYTHON_PACKAGE}` $(VERIFY.HASHES) ; \
+                echo "::: Verifying hash of $${PYTHON_PACKAGE} :::" ; \
+                $(GREP.CMD) `$(VERIFY.CMD) $(VERIFY.OPTS) $${PYTHON_PACKAGE} ` $(VERIFY.HASHES) ; \
+                echo "" ; \
+           fi; \
+           echo "::: Unbundling $${PYTHON_PACKAGE} :::"; \
+           $(TAR.CMD) $(TGZ.OPTS) $${PYTHON_PACKAGE}; \
+           echo ""; \
+        done
+
+
+
+
+build: $(SRC_DIRS) jupyterdownload
+	@echo "::: Package $(NAME) build complete :::"
+	
+install:: $(JUPYTER_PACKAGES)
+	mkdir -p $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
-              cp jupyterhub-singleuser $(ROOT)/$(PKGROOT)/bin; \
-              chmod 0775 $(ROOT)/$(PKGROOT)/bin/* \
+          if  (( $$(echo "$(ROLLPYVERSION) < 3.5" |bc -l) )); then \
+              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+              exit; \
+          fi; \
+	  $(MODULE_LOAD_PYTHON); \
+          for PYTHON_DIR in $(JUPYTER_DIRS); do \
+             cd $${PYTHON_DIR}; \
+             export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
+             python$(ROLLPYVERSION) setup.py build; \
+	     python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+             export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
+	     python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+             cd ..; \
+          done; \
+          cd $(SOURCE_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
+          python$(ROLLPYVERSION) setup.py build; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
+	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyo; \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__ \
 	)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+	rm -rf DESCRIPTION LICENSE $(JUPYTER_PACKAGES)
+
