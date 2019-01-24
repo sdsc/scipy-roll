@@ -12,7 +12,7 @@ ifndef ROLLPYVERSION
 endif
 
 NAME           = sdsc-llvmlite_py$(ROLLPYVERSION)
-VERSION        = 0.26.0
+VERSION        = 0.27.0
 RELEASE        = 0
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
