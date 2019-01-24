@@ -87,33 +87,31 @@ LICENSE: $(SRC_DIRS)
 	echo "Continuum Analytics" > $@
 
 build: $(SRC_DIRS)
-	patch $(SOURCE_DIR)/ffi/Makefile.linux patch-files/Makefile.linux.patch
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) >= 3.6" |bc -l) )); then \
-             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
-             exit; \
-          fi; \
-	  $(MODULE_LOAD_PYTHON); \
-	  $(MODULE_LOAD_LLVM); \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
-	  cd $(ENUM34_DIR); \
-	  python$(ROLLPYVERSION) setup.py build || exit 2; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
-	  cd ../$(SOURCE_DIR); \
-	  python$(ROLLPYVERSION) setup.py build || exit 2; \
-	  export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
-	        $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
-	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/{easy-install.pth,site.py*}; \
+         $(MODULE_LOAD_PYTHON); \
+         $(MODULE_LOAD_LLVM); \
+         if  (( $$(echo "$(ROLLPYVERSION) < 3" |bc -l) )); then \
+	     cd $(ENUM34_DIR); \
+	     python$(ROLLPYVERSION) setup.py build || exit 2; \
+	     export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+	     python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	     export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+	     python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+             cd ..; \
+         fi; \
+         cd $(SOURCE_DIR); \
+	 python$(ROLLPYVERSION) setup.py build || exit 2; \
+	 export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+	 python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
+	 export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+	 python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
+         echo "./llvmlite" >> $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
+	 rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/{easy-install.pth,site.py*}; \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
