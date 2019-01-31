@@ -8,12 +8,12 @@ ifndef ROLLPY
 endif
 
 ifndef ROLLPYVERSION
-  ROLLPYVERSION = 2.6
+  ROLLPYVERSION = 2.7
 endif
 
 NAME                   = sdsc-numba_py$(ROLLPYVERSION)
-VERSION                = 0.35.0
-RELEASE                = 2
+VERSION                = 0.42.0
+RELEASE                = 0
 PKGROOT                = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR             = numba
