@@ -1,0 +1,12 @@
+--- ipykernel-5.1.0/setup.py	2018-10-08 01:17:25.000000000 -0700
++++ patch-files/setup.py	2019-01-25 08:41:32.042136291 -0800
+@@ -40,9 +40,6 @@
+     Prevents setup.py install from performing setuptools' default easy_install,
+     which it should never ever do.
+     """
+-    def run(self):
+-        sys.exit("Aborting implicit building of eggs. Use `pip install .` to install from source.")
+-
+ 
+ pjoin = os.path.join
+ here = os.path.abspath(os.path.dirname(__file__))

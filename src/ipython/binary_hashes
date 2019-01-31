@@ -1,15 +1,16 @@
            9690  0fd5461f4dbb55b6570cfa9067b25bf6152940bb  backcall-0.1.0.tar.gz
            4279  a4355a1478ae9cc11f12eee22e6fd4c419874bd3  backports.shutil_get_terminal_size-1.0.0.tar.gz
           33758  834a94c0fa6c00d3f9419092bc220e51b0d95f42  decorator-4.3.0.tar.gz
+           4628  98988b2aee2ba26d349a5324435d926b762584f9  eggs-0.0.3.tar.gz
+        5112895  6d35ff6b4d3a41102076c84fdb13627c86689249  ipython-7.2.0.tar.gz
           22208  b8e825cb0446506917515c5c50f7e76f21a799c0  ipython_genutils-0.2.0.tar.gz
+         365792  d43b91c579768ca27c13fc174eb4d26b4518160d  jedi-0.13.2.tar.gz
+         387587  2474d1503876de883807320ca7edb74c83356348  parso-0.3.2.tar.gz
           33813  3e35359f4045987384a73f4c7d60762feacf172a  pathlib2-2.3.3.tar.gz
          148966  5adb1f71dbccad90add7d3710deab97632517b6b  pexpect-4.6.0.tar.gz
            6161  ccda2a19076c36145cb9f7056c3a3fa94557863e  pickleshare-0.7.5.tar.gz
+         343267  f6ae4ab90cdc1b5d5466bbaefc35e0478db6531f  prompt_toolkit-2.0.7.tar.gz
           70115  f0d3295a19b340c5d08859dae223731364fa0022  ptyprocess-0.6.0.tar.gz
         3124216  dbf104478ac53630f738f9df8bb608cca287dcc0  Pygments-2.3.1.tar.gz
           88173  c869809a117f49e87a665b73dc7d314c52ece946  traitlets-4.3.2.tar.gz
           22884  dd9a929f3dd4a6de45e46ed04b325b8c1cda7046  wcwidth-0.1.7.tar.gz
-         343267  f6ae4ab90cdc1b5d5466bbaefc35e0478db6531f  prompt_toolkit-2.0.7.tar.gz
-        5112895  6d35ff6b4d3a41102076c84fdb13627c86689249  ipython-7.2.0.tar.gz
-        2371030  b6a6781e7c63c0a7bfe7e35f7ae649161185d765  ipyparallel-6.2.3.tar.gz
-           4628  98988b2aee2ba26d349a5324435d926b762584f9  eggs-0.0.3.tar.gz

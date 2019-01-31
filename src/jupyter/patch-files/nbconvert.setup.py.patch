@@ -1,0 +1,11 @@
+--- nbconvert-5.4.0/setup.py	2018-09-06 12:08:07.000000000 -0700
++++ patch-files/setup.py	2019-01-25 08:53:57.040154777 -0800
+@@ -135,8 +135,6 @@
+     Prevents setup.py install performing setuptools' default easy_install,
+     which it should never ever do.
+     """
+-    def run(self):
+-        sys.exit("Aborting implicit building of eggs. Use `pip install .` to install from source.")
+ 
+ def css_first(command):
+     class CSSFirst(command):

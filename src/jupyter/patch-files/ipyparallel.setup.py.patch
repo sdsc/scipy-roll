@@ -1,0 +1,12 @@
+--- ipyparallel-6.2.3/setup.py	2018-10-19 06:52:24.000000000 -0700
++++ patch-files/ipyparallel.setup.py	2019-01-25 08:32:01.984077807 -0800
+@@ -54,8 +54,7 @@
+     Prevents setup.py install performing setuptools' default easy_install,
+     which it should never ever do.
+     """
+-    def run(self):
+-        sys.exit("Aborting implicit building of eggs. Use `pip install .` to install from source.")
++
+ 
+ #-----------------------------------------------------------------------------
+ # get on with it

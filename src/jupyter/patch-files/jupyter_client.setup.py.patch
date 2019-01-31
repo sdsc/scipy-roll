@@ -1,0 +1,11 @@
+--- jupyter_client-5.2.4/setup.py	2018-12-10 06:19:44.000000000 -0800
++++ patch-files/setup.py	2019-01-24 16:21:36.715616171 -0800
+@@ -52,8 +52,6 @@
+     Prevents setup.py install from performing setuptools' default easy_install,
+     which it should never ever do.
+     """
+-    def run(self):
+-        sys.exit("Aborting implicit building of eggs. Use `pip install .` to install from source.")
+ 
+ 
+ setup_args = dict(

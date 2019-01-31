@@ -1,0 +1,11 @@
+--- notebook-5.7.4/setup.py	2018-12-17 02:00:48.000000000 -0800
++++ patch-files/setup.py	2019-01-25 08:55:27.076117658 -0800
+@@ -123,8 +123,6 @@
+     Prevents setup.py install from performing setuptools' default easy_install,
+     which it should never ever do.
+     """
+-    def run(self):
+-        sys.exit("Aborting implicit building of eggs. Use `pip install .` to install from source.")
+ 
+ setup_args['cmdclass'] = {
+     'build_py': css_js_prerelease(

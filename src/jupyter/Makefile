@@ -102,6 +102,11 @@ jupyterdownload : $(JUPYTER_PACKAGES)
 
 
 build: $(SRC_DIRS) jupyterdownload
+	patch $(JUPYTER_CLIENT_DIR)/setup.py patch-files/jupyter_client.setup.py.patch
+	patch $(IPYKERNEL_DIR)/setup.py patch-files/ipykernel.setup.py.patch
+	patch $(NBCONVERT_DIR)/setup.py patch-files/nbconvert.setup.py.patch
+	patch $(NOTEBOOK_DIR)/setup.py patch-files/notebook.setup.py.patch
+	patch $(IPYPARALLEL_DIR)/setup.py patch-files/ipyparallel.setup.py.patch
 	@echo "::: Package $(NAME) build complete :::"
 	
 install:: $(JUPYTER_PACKAGES)
@@ -114,7 +119,7 @@ install:: $(JUPYTER_PACKAGES)
 	  $(MODULE_LOAD_PYTHON); \
           for PYTHON_DIR in $(JUPYTER_DIRS); do \
              cd $${PYTHON_DIR}; \
-             export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
+             export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
              python$(ROLLPYVERSION) setup.py build; \
 	     python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
              export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
@@ -122,7 +127,7 @@ install:: $(JUPYTER_PACKAGES)
              cd ..; \
           done; \
           cd $(SOURCE_DIR); \
-          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
           python$(ROLLPYVERSION) setup.py build; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \

@@ -6,12 +6,12 @@ ifndef ROLLPYVERSION
   ROLLPYVERSION = 2.7
 endif
 
-JUPYTER_PACKAGES = backports_abc-0.5 bleach-3.0.2 Data-Stag-0.14 defusedxml-0.5.0 entrypoints-0.2.3 IO-String-1.08 ipykernel-5.1.0 ipywidgets-7.4.2 jedi-0.13.2 Jinja2-2.10 jsonschema-2.6.0 jupyter_client-5.1.0 jupyter_client-5.2.4 jupyter_console-5.2.0 jupyter_console-6.0.0 jupyter_core-4.3.0 jupyter_core-4.4.0 MarkupSafe-1.1.0 mistune-0.8.4 nbconvert-5.4.0 nbformat-4.4.0 notebook-5.1.0 notebook-5.7.4 pandocfilters-1.4.2 parso-0.3.1 prometheus_client-0.5.0 python-dateutil-2.7.5 pyzmq-17.1.2 qtconsole-4.4.3 Send2Trash-1.5.0 terminado-0.8.1 testpath-0.4.2 tornado-5.1.1 webencodings-0.5.1 widgetsnbextension-3.4.2
+JUPYTER_PACKAGES = tornado-4.5.2 backports_abc-0.5 bleach-3.0.2 Data-Stag-0.14 defusedxml-0.5.0 entrypoints-0.2.3 IO-String-1.08 ipywidgets-7.4.2 Jinja2-2.10 jsonschema-2.6.0 jupyter_client-5.2.4 jupyter_console-6.0.0 jupyter_core-4.4.0 ipykernel-5.1.0 ipyparallel-6.2.3 MarkupSafe-1.1.0 mistune-0.8.4 nbconvert-5.4.0 nbformat-4.4.0 notebook-5.7.4 pandocfilters-1.4.2 prometheus_client-0.5.0 python-dateutil-2.7.5 pyzmq-17.1.2 qtconsole-4.4.3 Send2Trash-1.5.0 terminado-0.8.1 testpath-0.4.2 webencodings-0.5.1 widgetsnbextension-3.4.2
 
 
 NAME               = sdsc-jupyter_py$(ROLLPYVERSION)
 VERSION            = 1.0.0
-RELEASE            = 0
+RELEASE            = 1
 PKGROOT            = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR         = jupyter
