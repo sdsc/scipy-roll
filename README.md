@@ -6,7 +6,7 @@ This roll bundles a collection of Python scientific computing modules: astropy,b
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
-+- <a href="http://www.astropy.org" target="_blank">astropy</a> contains functionality aimed at professional astronomers and astrophysicists, but may be useful to anyone developing astronomy software
+- <a href="http://www.astropy.org" target="_blank">astropy</a> contains functionality aimed at professional astronomers and astrophysicists, but may be useful to anyone developing astronomy software
 - <a href="https://pypi.python.org/pypi/billiard" target="_blank">billiard</a> is a fork of the Python 2.7 multiprocessing package
 - <a href="http://ipython.org" target="_blank">iPython</a> provides a rich
 architecture for interactive computing using the Python programming language.
@@ -65,6 +65,8 @@ Building the llvmlite package requires that LLVM be installed on the build
 machine.  The build process assumes that the LLVM modulefile provided by the
 SDSC llvm-roll is available.  It will build without the modulefile as long as
 the environment variables it provides are otherwise defined.
+
+jupyter requires the following additional rpms available from (centos 6) http://mirror.cs.pitt.edu/epel/6/x86_64/ or (centos 7) http://mirror.cs.pitt.edu/epel/7/x86_64/Packages/z/ : libsodium, openpgm and zeromq-devel
 
 
 ## Building
