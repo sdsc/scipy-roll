@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-scipy_py$(ROLLPYVERSION)
 VERSION        = 1.1.0
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = scipy
@@ -33,5 +33,5 @@ PYTEST_DIR     = $(PYTEST_PKG:%.$(PYTEST_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(PYTEST_PKG)
 
-RPM.EXTRAS     = AutoReq:No\nObsoletes: scipy_py$(ROLLPYVERSION)
+RPM.EXTRAS     = AutoReq:No\nObsoletes: scipy_py$(ROLLPYVERSION)\n%global _python_bytecompile_errors_terminate_build 0
 RPM.PREFIX     = $(PKGROOT)
