@@ -6,21 +6,18 @@ ifndef ROLLPYVERSION
   ROLLPYVERSION = 2.7
 endif
 
-IPYTHON_PACKAGES = eggs-0.0.3 wcwidth-0.1.7 ptyprocess-0.6.0 ipython_genutils-0.2.0 jedi-0.13.2 prompt_toolkit-2.0.7 pathlib2-2.3.3 pexpect-4.6.0 pickleshare-0.7.5 decorator-4.3.0 parso-0.3.2 Pygments-2.3.1 backports.shutil_get_terminal_size-1.0.0 traitlets-4.3.2 backcall-0.1.0
+IPYTHON_PACKAGES = eggs-0.0.3 wcwidth-0.1.7 ptyprocess-0.6.0 ipython_genutils-0.2.0  parso-0.3.2 jedi-0.13.2 prompt_toolkit-2.0.7 pexpect-4.6.0 pickleshare-0.7.5 decorator-4.3.0 Pygments-2.3.1 backports.shutil_get_terminal_size-1.0.0 traitlets-4.3.2 backcall-0.1.0 ipython-7.2.0
 
 
 NAME               = sdsc-ipython_py$(ROLLPYVERSION)
 VERSION            = 7.2.0
-RELEASE            = 1
+RELEASE            = 2
 PKGROOT            = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR         = ipython
 
-SOURCE_NAME        = ipython
-SOURCE_SUFFIX      = tar.gz
-SOURCE_VERSION     = $(VERSION)
-SOURCE_PKG         = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
-SOURCE_DIR         = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
+SOURCE_DIR         = ipython-$(VERSION)
+
 
 $(IPYTHON_PACKAGES):
 	$(eval PYTHON_PACKAGE  = $(shell echo $@ |sed 's/-[[:digit:]][[:digit:]].[[:digit:]].[[:digit:]]\+//g'|sed 's/-[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]\+//g'|sed 's/-[[:digit:]].[[:digit:]].[[:digit:]]\+//g' |sed 's/-[[:digit:]].[[:digit:]]\+//g' ))
@@ -33,11 +30,8 @@ $(IPYTHON_PACKAGES):
 	$(eval $(UPPER)_DIR = $($(UPPER)_PKG:%.$($(UPPER)_SUFFIX)=%))
 	$(eval IPYTHON_PKGS  += $($(UPPER)_PKG))
 	$(eval IPYTHON_DIRS  += $($(UPPER)_DIR))
+	$(eval IPYTHON_NAMES += $($(UPPER)_NAME))
 
-
-TAR_GZ_PKGS: $(IPYTHON_PACKAGES)
-
-TAR_GZ_PKGS        = $(SOURCE_PKG)
 
 RPM.EXTRAS         = AutoReq:No\nObsoletes: ipython_py$(ROLLPYVERSION)\n%global _python_bytecompile_errors_terminate_build 0
 RPM.PREFIX         = $(PKGROOT)

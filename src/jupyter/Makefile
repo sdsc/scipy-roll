@@ -74,9 +74,19 @@ DESCRIPTION:
 	) > $@
 
 
-LICENSE: $(SRC_DIRS)
+LICENSE: jupyterdownload
+	for F in $(JUPYTER_NAMES); do \
+           if test -e $${F}-*/LICENSE; then \
+               cp $${F}-*/LICENSE $(SOURCE_DIR)/$$F-LICENSE; \
+           fi; \
+           if test -e $${F}-*/PKG-INFO; then \
+               cp $${F}-*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
+           fi; \
+        done
 	$(CHECK_LICENSE_FILES)
-	echo BSD > $@
+	echo Python and BSD and MIT > $@
+
+
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
