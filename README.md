@@ -32,6 +32,12 @@ package for scientific computing with Python.
 a Python library for common tasks in scientific computing.
 - <a href="http://sympy.org" target="_blank">sympy</a>  s a Python library for symbolic mathematics
 
+Note that the latest versons of the following packages are no longer supported by python 2.x:
+
+   matplotlib astropy IPython scipy
+
+and that ScientificPython will not build under python 3.7
+
 
 ## Requirements
 
