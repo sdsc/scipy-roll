@@ -36,7 +36,7 @@ Note that the latest versons of the following packages are no longer supported b
 
    matplotlib astropy IPython scipy
 
-and that ScientificPython will not build under python 3.7
+and that ScientificPython will not build under python 3.x
 
 
 ## Requirements
