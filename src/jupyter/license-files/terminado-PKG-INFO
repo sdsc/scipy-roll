@@ -1,0 +1,7 @@
+Metadata-Version: 1.1
+Name: terminado
+Version: 0.8.1
+Summary: Terminals served to xterm.js using Tornado websockets
+Home-page: https://github.com/jupyter/terminado
+Author: Jupyter Development Team
+Author-email: jupyter@googlegroups.com

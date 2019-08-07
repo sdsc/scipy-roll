@@ -74,27 +74,36 @@ DESCRIPTION:
 	) > $@
 
 
-LICENSE: $(SRC_DIRS)
+LICENSE: ipythondownload
+	for F in $(IPYTHON_NAMES); do \
+           if test -e $${F}-*/LICENSE; then \
+               cp $${F}-*/LICENSE $(SOURCE_DIR)/$$F-LICENSE; \
+           fi; \
+           if test -e $${F}-*/PKG-INFO; then \
+               cp $${F}-*/PKG-INFO $(SOURCE_DIR)/$$F-PKG-INFO; \
+           fi; \
+        done
 	$(CHECK_LICENSE_FILES)
-	echo BSD > $@
+	echo Python and BSD and MIT > $@
 
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
 ipythondownload : $(IPYTHON_PACKAGES)
-	for PYTHON_PACKAGE in $(IPYTHON_PKGS); do \
-           echo "::: Downloading $(DL.SERVER)/$(DL.PATH)/$${PYTHON_PACKAGE} :::"; \
-           if [ -f $${PYTHON_PACKAGE} ]; then \
-                echo "::: $${PYTHON_PACKAGE} exists. Skipping... :::" ; \
+	for IPYTHON_PACKAGE in $(IPYTHON_PKGS); do \
+           echo "::: Downloading $(DL.SERVER)/$(DL.PATH)/$${IPYTHON_PACKAGE} :::"; \
+           echo "PACKAGE $$IPYTHON_PACKAGE"; \
+           if [ -f $${IPYTHON_PACKAGE} ]; then \
+                echo "::: $${IPYTHON_PACKAGE} exists. Skipping... :::" ; \
            else \
-                $(DL.CMD) $(DL.OPTS) $(DL.SERVER)/$(DL.PATH)/$${PYTHON_PACKAGE} ; \
-                echo "::: Verifying size of $${PYTHON_PACKAGE} :::" ; \
-                $(GREP.CMD) `$(STAT.CMD) --printf="%s" $${PYTHON_PACKAGE}` $(VERIFY.HASHES) ; \
-                echo "::: Verifying hash of $${PYTHON_PACKAGE} :::" ; \
-                $(GREP.CMD) `$(VERIFY.CMD) $(VERIFY.OPTS) $${PYTHON_PACKAGE} ` $(VERIFY.HASHES) ; \
+                $(DL.CMD) $(DL.OPTS) $(DL.SERVER)/$(DL.PATH)/$${IPYTHON_PACKAGE} ; \
+                echo "::: Verifying size of $${IPYTHON_PACKAGE} :::" ; \
+                $(GREP.CMD) `$(STAT.CMD) --printf="%s" $${IPYTHON_PACKAGE}` $(VERIFY.HASHES) ; \
+                echo "::: Verifying hash of $${IPYTHON_PACKAGE} :::" ; \
+                $(GREP.CMD) `$(VERIFY.CMD) $(VERIFY.OPTS) $${IPYTHON_PACKAGE} ` $(VERIFY.HASHES) ; \
                 echo "" ; \
            fi; \
-           echo "::: Unbundling $${PYTHON_PACKAGE} :::"; \
-           $(TAR.CMD) $(TGZ.OPTS) $${PYTHON_PACKAGE}; \
+           echo "::: Unbundling $${IPYTHON_PACKAGE} :::"; \
+           $(TAR.CMD) $(TGZ.OPTS) $${IPYTHON_PACKAGE}; \
            echo ""; \
         done
 
@@ -121,12 +130,6 @@ install:: $(IPYTHON_PACKAGES)
 	     python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
              cd ..; \
           done; \
-          cd $(SOURCE_DIR); \
-          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages; \
-          python$(ROLLPYVERSION) setup.py build; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
-          export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages; \
-	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/easy-install.pth; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
 	  rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
