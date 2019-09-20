@@ -14,7 +14,6 @@ matplotlib http://matplotlib.sourceforge.net
 numba http://numba.pydata.org
 pandas http://pandas.pydata.org
 requests http://docs.python-requests.org
-scientificpython http://dirac.cnrs-orleans.fr/plone/software/scientificpython/
 scipy http://www.scipy.org
 setuptools https://pypi.python.org/pypi/setuptools
 sympy http://sympy.org
@@ -39,7 +38,6 @@ All rights reserved. Rocks(r) v7 www.rocksclusters.org
 <package>sdsc-numba_pyROLLPYVERSION</package>
 <package>sdsc-pandas_pyROLLPYVERSION</package>
 <package>sdsc-requests_pyROLLPYVERSION</package>
-<package>sdsc-scientificpython_pyROLLPYVERSION</package>
 <package>sdsc-scipy_pyROLLPYVERSION</package>
 <package>sdsc-sympy_pyROLLPYVERSION</package>
 <package>sdsc-scipy-modules</package>

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This roll bundles a collection of Python scientific computing modules: astropy,billiard,ipython, jupyter,libxml2,llvmlite,matplotlib,numba,pandas,requests,scientificpython,scipy and sympy.  
+This roll bundles a collection of Python scientific computing modules: astropy,billiard,ipython, jupyter,libxml2,llvmlite,matplotlib,numba,pandas,requests,scipy and sympy.  
 
 For more information about the various packages included in the scipy roll please visit their official web pages:
 
@@ -26,8 +26,6 @@ target="_blank">PyFITS</a> provides an interface to FITS formatted files in the
 Python scripting language and PyRAF, the Python-based interface to IRAF.
 - <a href="http://docs.python-requests.org"
 target="_blank">requests</a> is an Apache2 Licensed HTTP library, written in Python, for human beings.
-- <a href="http://http://dirac.cnrs-orleans.fr/plone/software/scientificpython" target="_blank">scientificpython</a> is  a
-package for scientific computing with Python.
 - <a href="http://www.scipy.org" target="_blank">scipy</a> is a Python-based
 a Python library for common tasks in scientific computing.
 - <a href="http://sympy.org" target="_blank">sympy</a>  s a Python library for symbolic mathematics
@@ -35,8 +33,6 @@ a Python library for common tasks in scientific computing.
 Note that the latest versons of the following packages are no longer supported by python 2.x:
 
    matplotlib astropy IPython scipy
-
-and that ScientificPython will not build under python 3.x
 
 
 ## Requirements

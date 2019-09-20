@@ -80,6 +80,9 @@ LICENSE: $(SRC_DIRS)
 CACHE_DIR=$(REDHAT.ROOT)/cache
 build: $(SRC_DIRS)
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) <= 3.4" |bc -l) )); then \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
@@ -91,6 +94,10 @@ install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
+          if  (( $$(echo "$(ROLLPYVERSION) <= 3.4" |bc -l) )); then \
+             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
+             exit; \
+          fi; \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_CC); \
 	  cd $(SOURCE_DIR); \
