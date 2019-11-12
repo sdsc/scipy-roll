@@ -11,7 +11,7 @@ endif
 
 NAME           = sdsc-pandas_py$(ROLLPYVERSION)
 VERSION        = 0.23.4
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = pandas

@@ -11,7 +11,7 @@ IPYTHON_PACKAGES = eggs-0.0.3 wcwidth-0.1.7 ptyprocess-0.6.0 ipython_genutils-0.
 
 NAME               = sdsc-ipython_py$(ROLLPYVERSION)
 VERSION            = 7.2.0
-RELEASE            = 2
+RELEASE            = 3
 PKGROOT            = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR         = ipython

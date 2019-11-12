@@ -113,7 +113,9 @@ install::
           rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/more_itertools*; \
           rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/attrs*; \
           rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/atomicwrites*; \
-          rm -f $(ROOT)/$(PKGROOT)/bin/py*test \
+          rm -f $(ROOT)/$(PKGROOT)/bin/py*test; \
+          find $(ROOT)/$(PKGROOT) -perm 0777 -exec chmod 0755 {} \;; \
+          find $(ROOT)/$(PKGROOT) -perm 0666 -exec chmod 0644 {} \; \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-astropy_py$(ROLLPYVERSION)
 VERSION        = 3.0.5
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = astropy

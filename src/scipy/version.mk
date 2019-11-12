@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-scipy_py$(ROLLPYVERSION)
 VERSION        = 1.3.0
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = scipy

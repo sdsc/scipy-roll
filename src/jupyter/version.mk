@@ -11,7 +11,7 @@ JUPYTER_PACKAGES = tornado-4.5.2 backports_abc-0.5 bleach-3.0.2 Data-Stag-0.14 d
 
 NAME               = sdsc-jupyter_py$(ROLLPYVERSION)
 VERSION            = 1.0.0
-RELEASE            = 3
+RELEASE            = 4
 PKGROOT            = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR         = jupyter

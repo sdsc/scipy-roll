@@ -13,7 +13,7 @@ endif
 
 NAME                   = sdsc-numba_py$(ROLLPYVERSION)
 VERSION                = 0.42.0
-RELEASE                = 0
+RELEASE                = 1
 PKGROOT                = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR             = numba

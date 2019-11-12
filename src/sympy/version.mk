@@ -8,7 +8,7 @@ endif
 
 NAME           = sdsc-sympy_py$(ROLLPYVERSION)
 VERSION        = 1.3
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = sympy
