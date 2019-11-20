@@ -131,7 +131,9 @@ install::
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.py; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyc; \
           rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/site.pyo; \
-          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__ \
+          rm -rf $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/__pycache__; \
+          find $(ROOT)/$(PKGROOT) -perm 0777 -exec chmod 0755 {} \;; \
+          find $(ROOT)/$(PKGROOT) -perm 0666 -exec chmod 0644 {} \; \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

@@ -110,7 +110,9 @@ install::
           if  (( $$(echo "$(ROLLPYVERSION) >= 3.0" |bc -l) )); then \
                m='m'; \
           fi; \
-          $(MAKE) CPPFLAGS=-I/opt/python/include/python$(ROLLPYVERSION)$${m} install \
+          $(MAKE) CPPFLAGS=-I/opt/python/include/python$(ROLLPYVERSION)$${m} install; \
+          find $(PKGROOT) -perm 0777 -exec chmod 0755 {} \;; \
+          find $(PKGROOT) -perm 0666 -exec chmod 0644 {} \; \
 	)
 	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)

@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-llvmlite_py$(ROLLPYVERSION)
 VERSION        = 0.27.0
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = llvmlite

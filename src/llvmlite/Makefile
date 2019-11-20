@@ -111,6 +111,8 @@ install::
 	 export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
 	 python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR); \
 	 rm -f $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages/{easy-install.pth,site.py*}; \
+         find $(ROOT)/$(PKGROOT) -perm 0777 -exec chmod 0755 {} \;; \
+         find $(ROOT)/$(PKGROOT) -perm 0666 -exec chmod 0644 {} \; \
 	)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"

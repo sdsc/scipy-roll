@@ -13,7 +13,7 @@ endif
 
 NAME           = sdsc-libxml2_py$(ROLLPYVERSION)
 VERSION        = 2.9.8
-RELEASE        = 0
+RELEASE        = 1
 PKGROOT        = /opt/scipy/$(ROLLPYVERSION)
 
 SRC_SUBDIR     = libxml2
