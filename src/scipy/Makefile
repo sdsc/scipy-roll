@@ -88,12 +88,7 @@ LICENSE: $(SRC_DIRS)
 CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
-	cp patch-files/site.cfg $(SOURCE_DIR)
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) < 3.5" |bc -l) )); then \
-              perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
-              exit; \
-          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MKL); \
 	  export MKLLIB=$${MKLHOME}/lib/intel64; \
@@ -103,7 +98,13 @@ build: $(SRC_DIRS)
 	    export MKLLINK="-L$${MKLLIB} -lmkl_rt"; \
 	    export COMMENTMKL=''; \
 	  fi; \
-	  cd $(SOURCE_DIR); \
+          if  (( $$(echo "$(ROLLPYVERSION) < 3.0" |bc -l) )); then \
+	      cd $(SOURCE_27_DIR); \
+	      cp patch-files/site.cfg $(SOURCE_27_DIR); \
+          else \
+	      cp patch-files/site.cfg $(SOURCE_DIR); \
+	      cd $(SOURCE_DIR); \
+          fi; \
 	  perl -pi -e "s!ROLL_COMMENTMKL\\s*!$${COMMENTMKL}!;s!ROLL_MKLLIB!$${MKLLIB}!;s!ROLL_MKLROOT!$${MKL_ROOT}!" site.cfg; \
 	  python$(ROLLPYVERSION) setup.py config $(SETUPOPTS) \
 	                  build_clib $(SETUPOPTS) \
@@ -117,7 +118,11 @@ install::
 	( \
 	  $(MODULE_LOAD_PYTHON); \
 	  $(MODULE_LOAD_CC); \
-          cd $(SOURCE_DIR); \
+          if  (( $$(echo "$(ROLLPYVERSION) < 3.0" |bc -l) )); then \
+	      cd $(SOURCE_27_DIR); \
+          else \
+	      cd $(SOURCE_DIR); \
+          fi; \
           export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
           python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT); \
           export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
@@ -134,5 +139,5 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) $(SOURCE_27_PKG) DESCRIPTION LICENSE
 
