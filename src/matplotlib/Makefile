@@ -83,9 +83,6 @@ CACHE_DIR=$(REDHAT.ROOT)/cache
 
 build: $(SRC_DIRS)
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) <= 3.4" |bc -l) )); then \
-             exit; \
-          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
 	  export -n DISPLAY; \
@@ -93,7 +90,13 @@ build: $(SRC_DIRS)
           python$(ROLLPYVERSION) setup.py build; \
           cd ../$(KIWISOLVER_DIR); \
           python$(ROLLPYVERSION) setup.py build; \
-          cd ../$(SOURCE_DIR); \
+          cd ../$(BACKPORTS_DIR); \
+          python$(ROLLPYVERSION) setup.py build; \
+          if  (( $$(echo "$(ROLLPYVERSION) < 3.0" |bc -l) )); then \
+	      cd ../$(SOURCE_27_DIR); \
+          else \
+	      cd ../$(SOURCE_DIR); \
+          fi; \
           python$(ROLLPYVERSION) setup.py build $(SETUPOPTS) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
@@ -102,10 +105,6 @@ install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages
 	mkdir -p -m 755 $(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages
 	( \
-          if  (( $$(echo "$(ROLLPYVERSION) <= 3.4" |bc -l) )); then \
-             perl -pi -e '$$_ = "" if m/$(NAME)/' $(REDHAT.ROOT)/nodes/scipy-common.xml; \
-             exit; \
-          fi; \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_PYTHON); \
           cd $(CYCLER_DIR); \
@@ -118,7 +117,16 @@ install::
           python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
 	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
 	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
-          cd ../$(SOURCE_DIR); \
+          cd ../$(BACKPORTS_DIR); \
+          export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+          python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
+	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
+	  python$(ROLLPYVERSION) setup.py install --prefix=$(CACHE_DIR) --root=/ --single-version-externally-managed; \
+          if  (( $$(echo "$(ROLLPYVERSION) < 3.0" |bc -l) )); then \
+	      cd ../$(SOURCE_27_DIR); \
+          else \
+	      cd ../$(SOURCE_DIR); \
+          fi; \
           export PYTHONPATH=$(ROOT)/$(PKGROOT)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
           python$(ROLLPYVERSION) setup.py install --prefix=$(ROOT)/$(PKGROOT) --root=/ --single-version-externally-managed; \
 	  export PYTHONPATH=$(CACHE_DIR)/lib/python$(ROLLPYVERSION)/site-packages:$${PYTHONPATH}; \
@@ -135,4 +143,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) $(SOURCE_27_PKG) $(BACKPORTS_PKG) $(KIWISOLVER_PKG) $(CYCLER_PKG) DESCRIPTION LICENSE
