@@ -32,7 +32,10 @@ a Python library for common tasks in scientific computing.
 
 Note that the latest versons of the following packages are no longer supported by python 2.x:
 
-   matplotlib astropy IPython scipy
+  matplotlib astropy IPython scipy
+
+However the latest versions of matplotlib and scipy that are compatible with python 2.x are included.
+.
 
 
 ## Requirements
