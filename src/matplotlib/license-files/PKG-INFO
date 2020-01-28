@@ -1,12 +1,15 @@
 Metadata-Version: 1.2
 Name: matplotlib
-Version: 3.0.2
+Version: 3.1.2
 Summary: Python plotting package
-Home-page: http://matplotlib.org
+Home-page: https://matplotlib.org
 Author: John D. Hunter, Michael Droettboom
 Author-email: matplotlib-users@python.org
-License: BSD
-Download-URL: http://matplotlib.org/users/installing.html
+License: PSF
+Download-URL: https://matplotlib.org/users/installing.html
+Project-URL: Bug Tracker, https://github.com/matplotlib/matplotlib/issues
+Project-URL: Documentation, https://matplotlib.org/contents.html
+Project-URL: Source Code, https://github.com/matplotlib/matplotlib
 Description: 
                 Matplotlib strives to produce publication quality 2D graphics
                 for interactive graphing, scientific publishing, user interface
@@ -19,8 +22,7 @@ Classifier: Intended Audience :: Science/Research
 Classifier: License :: OSI Approved :: Python Software Foundation License
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 3
-Classifier: Programming Language :: Python :: 3.5
 Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: 3.7
 Classifier: Topic :: Scientific/Engineering :: Visualization
-Requires-Python: >=3.5
+Requires-Python: >=3.6

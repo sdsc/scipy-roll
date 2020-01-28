@@ -48,7 +48,7 @@ SKIP: {
     foreach my $module(@MODULES) {
      SKIP: {
       skip "no python$pyversion $module module available", 1
-         if ( $module =~ /matplotlib|astropy|IPython|scipy|pandas|numba/  && $pyversion < 3 );
+         if ( $module =~ /astropy|IPython|pandas|numba/  && $pyversion < 3 );
       $output = `bash $TESTFILE.sh $module $pyversion 2>&1`;
       like($output, qr/$module name is $module/, "$module module for python $pyversion load works");
      }

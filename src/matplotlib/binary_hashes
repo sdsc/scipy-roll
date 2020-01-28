@@ -1,3 +1,5 @@
           16553  ecae15f8398f7e56a7489ede06106485f54e78f4  cycler-0.10.0.tar.gz
-          31618  a0b73747f28784808c02c717d446e0e317348776  kiwisolver-1.0.1.tar.gz
-       36496437  1d7178536dfaccd06cf8a2e421d4e386bf1182c4  matplotlib-3.0.2.tar.gz
+          30847  ade8c209816d0be131df9ecfd4daa0cdf8322f0d  kiwisolver-1.1.0.tar.gz
+       40909582  02c8ba8597bc23196c64e62697096fb07a6dd404  matplotlib-3.1.2.tar.gz
+       36974286  5ca52dd77fe22bf8756bc5df65fb081bbe5e14b7  matplotlib-2.2.4.tar.gz
+          12426  6987a01c1943fda30341a584008bbe60a9b8bb81  backports.functools_lru_cache-1.6.1.tar.gz
